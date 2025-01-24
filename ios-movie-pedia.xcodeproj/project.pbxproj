@@ -6,8 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F8B65AF92D435D03004BEFD3 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = F8B65AF82D435D03004BEFD3 /* .gitignore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		F8B65AAE2D4358A0004BEFD3 /* ios-movie-pedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ios-movie-pedia.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8B65AF82D435D03004BEFD3 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -45,6 +50,7 @@
 		F8B65AA52D4358A0004BEFD3 = {
 			isa = PBXGroup;
 			children = (
+				F8B65AF82D435D03004BEFD3 /* .gitignore */,
 				F8B65AB02D4358A0004BEFD3 /* ios-movie-pedia */,
 				F8B65AAF2D4358A0004BEFD3 /* Products */,
 			);
@@ -122,6 +128,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8B65AF92D435D03004BEFD3 /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
