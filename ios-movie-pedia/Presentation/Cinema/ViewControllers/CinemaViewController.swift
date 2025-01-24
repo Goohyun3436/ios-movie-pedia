@@ -12,7 +12,8 @@ class CinemaViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        let profile = loadJsonData(type: Profile.self, forKey: "profile")
+        print(profile)
     }
     
 }

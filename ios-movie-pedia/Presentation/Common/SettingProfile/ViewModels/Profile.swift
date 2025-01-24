@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Profile {
+struct Profile: Codable {
     var image: String?
     var nickname: String?
 }

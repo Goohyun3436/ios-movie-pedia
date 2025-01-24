@@ -10,7 +10,7 @@ import UIKit
 final class SettingProfileViewController: UIViewController {
     
     //MARK: - UI Property
-    private lazy var mainView = SettingProfileView()
+    private lazy var mainView = SettingProfileView(delegate: self)
     
     //MARK: - Property
     var profile = Profile()
@@ -52,8 +52,14 @@ final class SettingProfileViewController: UIViewController {
     
     @objc
     private func submitButtonTapped() {
-        print(#function)
-        print(profile)
+        saveJsonData(profile, type: Profile.self, forKey: "profile")
+        
+        guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = scene.windows.first else {
+            return
+        }
+
+        window.rootViewController = TabBarController()
     }
     
     private func configureProfile() {

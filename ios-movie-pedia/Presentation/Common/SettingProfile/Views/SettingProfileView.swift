@@ -16,6 +16,12 @@ final class SettingProfileView: BaseView {
     private let statusLabel = UILabel()
     let submitButton = AccentButton("완료")
     
+    //MARK: - Initializer Method
+    init(delegate: ProfileDelegate) {
+        super.init(frame: .zero)
+        profileImageView.delegate = delegate
+    }
+    
     //MARK: - Method
     func configureData(_ profile: Profile) {
         profileImageView.configureData(profile.image)
