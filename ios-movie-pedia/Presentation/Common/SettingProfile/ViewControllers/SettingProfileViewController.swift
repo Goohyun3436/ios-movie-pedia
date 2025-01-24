@@ -6,7 +6,23 @@
 //
 
 import UIKit
-import SwiftUI
+
+enum NicknameCondition {
+    case satisfied, length, symbol, number
+    
+    var msg: String {
+        switch self {
+        case .satisfied:
+            return "사용할 수 있는 닉네임이에요"
+        case .length:
+            return "2글자 이상 10글자 미만으로 설정해주세요"
+        case .symbol:
+            return "닉네임에 @, #, $, % 는 포함할 수 없어요"
+        case .number:
+            return "닉네임에 숫자는 포함할 수 없어요"
+        }
+    }
+}
 
 final class SettingProfileViewController: UIViewController {
     
@@ -22,11 +38,49 @@ final class SettingProfileViewController: UIViewController {
         super.viewDidLoad()
         navigationItem.title = "프로필 설정"
         
+        mainView.nicknameTextField.delegate = self
+        
         mainView.configureData("profile_\(Int.random(in: 0...11))")
+        mainView.configureStatus(NicknameCondition.length.msg)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        mainView.nicknameTextField.becomeFirstResponder()
     }
     
 }
 
-#Preview {
-    SettingProfileViewController()
+extension SettingProfileViewController: UITextFieldDelegate {
+    
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        guard var name = textField.text else {
+            return
+        }
+        
+        name = name.trimmingCharacters(in: .whitespaces)
+        
+        guard !name.matches("[0-9]") else {
+            mainView.configureStatus(NicknameCondition.number.msg)
+            return
+        }
+        
+        guard !name.matches("[@#$%]") else {
+            mainView.configureStatus(NicknameCondition.symbol.msg)
+            return
+        }
+        
+        guard 2 <= name.count && name.count < 10 else {
+            mainView.configureStatus(NicknameCondition.length.msg)
+            return
+        }
+        
+        mainView.configureStatus(NicknameCondition.satisfied.msg)
+        print(name)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
 }

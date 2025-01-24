@@ -12,13 +12,17 @@ final class SettingProfileView: BaseView {
     
     //MARK: - UI Property
     private let profileImageView = ProfileImageView()
-    private let nicknameTextField = UITextField()
+    let nicknameTextField = UITextField()
     private let statusLabel = UILabel()
     private let submitButton = AccentButton("완료")
     
     //MARK: - Method
     func configureData(_ image: String) {
         profileImageView.configureData(image)
+    }
+    
+    func configureStatus(_ msg: String) {
+        statusLabel.text = msg
     }
     
     //MARK: - Override Method
@@ -60,7 +64,6 @@ final class SettingProfileView: BaseView {
         nicknameTextField.addLeftPadding(16)
         nicknameTextField.configurePlaceholder(color: AppColor.secondaryLabel)
         
-        statusLabel.text = "닉네임에 숫자는 포함할 수 없어요"
         statusLabel.font = UIFont.systemFont(ofSize: 12)
         statusLabel.textColor = AppColor.accent
         
