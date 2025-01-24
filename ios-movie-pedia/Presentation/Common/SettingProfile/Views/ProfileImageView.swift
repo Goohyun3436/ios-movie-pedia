@@ -11,11 +11,17 @@ import SnapKit
 final class ProfileImageView: BaseView {
     
     //MARK: - UI Property
-    private let imageView = UIImageView()
+    let imageView = UIImageView()
     private let cameraImageView = UIImageView()
     
     //MARK: - Method
-    func configureData(_ image: String) {
+    func configureData(_ image: String?) {
+        guard let image else {
+            let randomImage = "profile_\(Int.random(in: 0...11))"
+            imageView.image = UIImage(named: randomImage)
+            return
+        }
+        
         imageView.image = UIImage(named: image)
     }
     

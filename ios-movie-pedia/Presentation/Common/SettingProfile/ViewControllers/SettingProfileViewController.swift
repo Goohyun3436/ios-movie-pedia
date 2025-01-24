@@ -7,27 +7,13 @@
 
 import UIKit
 
-enum NicknameCondition {
-    case satisfied, length, symbol, number
-    
-    var msg: String {
-        switch self {
-        case .satisfied:
-            return "사용할 수 있는 닉네임이에요"
-        case .length:
-            return "2글자 이상 10글자 미만으로 설정해주세요"
-        case .symbol:
-            return "닉네임에 @, #, $, % 는 포함할 수 없어요"
-        case .number:
-            return "닉네임에 숫자는 포함할 수 없어요"
-        }
-    }
-}
-
 final class SettingProfileViewController: UIViewController {
     
     //MARK: - UI Property
-    private let mainView = SettingProfileView()
+    private lazy var mainView = SettingProfileView()
+    
+    //MARK: - Property
+    var profile = Profile()
     
     //MARK: - Override Method
     override func loadView() {
@@ -40,20 +26,31 @@ final class SettingProfileViewController: UIViewController {
         
         mainView.nicknameTextField.delegate = self
         
-        mainView.configureData("profile_\(Int.random(in: 0...11))")
+        profile = Profile(image: nil, nickname: nil)
+        mainView.configureData(profile)
         mainView.configureStatus(NicknameCondition.length)
+        mainView.submitButton.addTarget(self, action: #selector(submitButtonTapped), for: .touchUpInside)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         mainView.nicknameTextField.becomeFirstResponder()
     }
     
+    //MARK: - Method
+    @objc
+    private func submitButtonTapped() {
+        print(#function)
+        print(profile)
+    }
+    
 }
 
-//MARK: - UITextField
+//MARK: - UITextFieldDelegate
 extension SettingProfileViewController: UITextFieldDelegate {
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
+        nicknameDidChange(textField.text)
+        
         guard var name = textField.text else {
             return
         }
@@ -81,6 +78,19 @@ extension SettingProfileViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+}
+
+//MARK: - ProfileDelegate
+extension SettingProfileViewController: ProfileDelegate {
+    
+    func profileImageDidChange(_ image: String?) {
+        profile.image = image
+    }
+    
+    func nicknameDidChange(_ nickname: String?) {
+        profile.nickname = nickname
     }
     
 }

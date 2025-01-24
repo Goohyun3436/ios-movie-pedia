@@ -14,11 +14,12 @@ final class SettingProfileView: BaseView {
     private let profileImageView = ProfileImageView()
     let nicknameTextField = UITextField()
     private let statusLabel = UILabel()
-    private let submitButton = AccentButton("완료")
+    let submitButton = AccentButton("완료")
     
     //MARK: - Method
-    func configureData(_ image: String) {
-        profileImageView.configureData(image)
+    func configureData(_ profile: Profile) {
+        profileImageView.configureData(profile.image)
+        nicknameTextField.text = profile.nickname
     }
     
     func configureStatus(_ condition: NicknameCondition) {
