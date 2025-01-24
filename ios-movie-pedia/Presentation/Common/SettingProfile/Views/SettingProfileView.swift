@@ -61,7 +61,7 @@ final class SettingProfileView: BaseView {
         submitButton.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview().inset(16)
             make.top.equalTo(statusLabel.snp.bottom).offset(32)
-            make.size.height.equalTo(40)
+            make.height.equalTo(40)
         }
     }
     
