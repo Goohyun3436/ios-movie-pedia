@@ -26,9 +26,8 @@ final class SettingProfileViewController: UIViewController {
         
         mainView.nicknameTextField.delegate = self
         
-        profile = Profile(image: nil, nickname: nil)
-        mainView.configureData(profile)
-        mainView.configureStatus(NicknameCondition.length)
+        configureProfile()
+        
         mainView.submitButton.addTarget(self, action: #selector(submitButtonTapped), for: .touchUpInside)
     }
     
@@ -43,6 +42,34 @@ final class SettingProfileViewController: UIViewController {
         print(profile)
     }
     
+    private func configureProfile() {
+        profile = Profile(image: nil, nickname: nil)
+        mainView.configureData(profile)
+        mainView.configureStatus(nicknameCondition(nil))
+    }
+    
+    private func nicknameCondition(_ nickname: String?) -> NicknameCondition {
+        guard var nickname else {
+            return .length
+        }
+        
+        nickname = nickname.trimmingCharacters(in: .whitespaces)
+        
+        guard !nickname.matches("[0-9]") else {
+            return .number
+        }
+        
+        guard !nickname.matches("[@#$%]") else {
+            return .symbol
+        }
+        
+        guard 2 <= nickname.count && nickname.count < 10 else {
+            return .length
+        }
+        
+        return .satisfied
+    }
+    
 }
 
 //MARK: - UITextFieldDelegate
@@ -50,29 +77,6 @@ extension SettingProfileViewController: UITextFieldDelegate {
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
         nicknameDidChange(textField.text)
-        
-        guard var name = textField.text else {
-            return
-        }
-        
-        name = name.trimmingCharacters(in: .whitespaces)
-        
-        guard !name.matches("[0-9]") else {
-            mainView.configureStatus(NicknameCondition.number)
-            return
-        }
-        
-        guard !name.matches("[@#$%]") else {
-            mainView.configureStatus(NicknameCondition.symbol)
-            return
-        }
-        
-        guard 2 <= name.count && name.count < 10 else {
-            mainView.configureStatus(NicknameCondition.length)
-            return
-        }
-        
-        mainView.configureStatus(NicknameCondition.satisfied)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -91,6 +95,9 @@ extension SettingProfileViewController: ProfileDelegate {
     
     func nicknameDidChange(_ nickname: String?) {
         profile.nickname = nickname
+        
+        let condition = nicknameCondition(nickname)
+        mainView.configureStatus(condition)
     }
     
 }
