@@ -12,4 +12,9 @@ extension UIImageView {
         let ratio = Double(image?.size.height ?? 0) / Double(image?.size.width ?? 0)
         frame.size.height = frame.size.width * ratio
     }
+    
+    func configureCircle() {
+        layer.cornerRadius = frame.width / 2
+        clipsToBounds = true
+    }
 }

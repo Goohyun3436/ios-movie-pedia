@@ -15,7 +15,7 @@ final class OnboardingView: BaseView {
     let imageView = UIImageView()
     private let titleLabel = UILabel()
     private let introLabel = UILabel()
-    let startButton = UIButton()
+    let startButton = AccentButton("시작하기")
     
     //MARK: - Configure Method
     override func configureHierarchy() {
@@ -65,12 +65,6 @@ final class OnboardingView: BaseView {
         introLabel.textColor = AppColor.secondaryLabel
         introLabel.textAlignment = .center
         introLabel.numberOfLines = 0
-        
-        startButton.setTitle("시작하기", for: .normal)
-        startButton.layer.cornerRadius = 20
-        startButton.layer.borderWidth = 2
-        startButton.layer.borderColor = AppColor.accent?.cgColor
-        startButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
     }
     
 }

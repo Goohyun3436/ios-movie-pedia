@@ -38,5 +38,6 @@ final class AppAppearance {
         UILabel.appearance().textColor = AppColor.white
         UIButton.appearance().setTitleColor(AppColor.accent, for: .normal)
         UIButton.appearance().tintColor = AppColor.accent
+        UITextField.appearance().textColor = AppColor.white
     }
 }
