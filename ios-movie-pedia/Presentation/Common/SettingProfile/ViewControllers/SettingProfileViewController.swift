@@ -23,16 +23,9 @@ final class SettingProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "프로필 설정"
-        
         mainView.nicknameTextField.delegate = self
-        
         configureProfile()
-        
-        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(backButtonTapped))
-        navigationItem.leftBarButtonItem = backButton
-        let singleTap = UITapGestureRecognizer(target: self, action: #selector(profileImageViewTapped))
-        mainView.profileImageView.addGestureRecognizer(singleTap)
-        mainView.submitButton.addTarget(self, action: #selector(submitButtonTapped), for: .touchUpInside)
+        configureAction()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -46,6 +39,27 @@ final class SettingProfileViewController: UIViewController {
     }
     
     //MARK: - Method
+    private func configureProfile() {
+        if let savedProfile = loadJsonData(type: Profile.self, forKey: "profile") {
+            profile = savedProfile
+        } else {
+            profile = Profile(image: nil, nickname: nil)
+        }
+        
+        mainView.configureData(profile)
+        mainView.configureStatus(nicknameCondition(profile.nickname))
+    }
+    
+    private func configureAction() {
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(backButtonTapped))
+        navigationItem.leftBarButtonItem = backButton
+        
+        let singleTap = UITapGestureRecognizer(target: self, action: #selector(profileImageViewTapped))
+        mainView.profileImageView.addGestureRecognizer(singleTap)
+        
+        mainView.submitButton.addTarget(self, action: #selector(submitButtonTapped), for: .touchUpInside)
+    }
+    
     @objc
     private func backButtonTapped() {
         UserDefaults.standard.removeObject(forKey: "profile")
@@ -68,17 +82,6 @@ final class SettingProfileViewController: UIViewController {
         }
 
         window.rootViewController = TabBarController()
-    }
-    
-    private func configureProfile() {
-        if let savedProfile = loadJsonData(type: Profile.self, forKey: "profile") {
-            profile = savedProfile
-        } else {
-            profile = Profile(image: nil, nickname: nil)
-        }
-        
-        mainView.configureData(profile)
-        mainView.configureStatus(nicknameCondition(profile.nickname))
     }
     
     private func nicknameCondition(_ nickname: String?) -> NicknameCondition {
