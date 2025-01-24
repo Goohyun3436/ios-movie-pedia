@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AccentButton: UIButton {
+final class AccentButton: UIButton {
     
     init(_ title: String) {
         super.init(frame: .zero)

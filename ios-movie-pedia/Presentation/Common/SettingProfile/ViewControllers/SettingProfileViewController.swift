@@ -28,6 +28,8 @@ final class SettingProfileViewController: UIViewController {
         
         configureProfile()
         
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(backButtonTapped))
+        navigationItem.leftBarButtonItem = backButton
         let singleTap = UITapGestureRecognizer(target: self, action: #selector(profileImageViewTapped))
         mainView.profileImageView.addGestureRecognizer(singleTap)
         mainView.submitButton.addTarget(self, action: #selector(submitButtonTapped), for: .touchUpInside)
@@ -44,6 +46,12 @@ final class SettingProfileViewController: UIViewController {
     }
     
     //MARK: - Method
+    @objc
+    private func backButtonTapped() {
+        UserDefaults.standard.removeObject(forKey: "profile")
+        navigationController?.popViewController(animated: true)
+    }
+    
     @objc
     private func profileImageViewTapped() {
         let vc = SettingProfileImageViewController()
