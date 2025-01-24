@@ -11,7 +11,7 @@ import SnapKit
 final class SettingProfileView: BaseView {
     
     //MARK: - UI Property
-    private let profileImageView = ProfileImageView()
+    let profileImageView = ProfileImageView()
     let nicknameTextField = UITextField()
     private let statusLabel = UILabel()
     let submitButton = AccentButton("완료")

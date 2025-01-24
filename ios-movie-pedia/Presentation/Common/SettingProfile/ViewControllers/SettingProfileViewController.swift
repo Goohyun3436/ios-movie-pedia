@@ -28,14 +28,28 @@ final class SettingProfileViewController: UIViewController {
         
         configureProfile()
         
+        let singleTap = UITapGestureRecognizer(target: self, action: #selector(profileImageViewTapped))
+        mainView.profileImageView.addGestureRecognizer(singleTap)
         mainView.submitButton.addTarget(self, action: #selector(submitButtonTapped), for: .touchUpInside)
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         mainView.nicknameTextField.becomeFirstResponder()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        mainView.nicknameTextField.resignFirstResponder()
+    }
+    
     //MARK: - Method
+    @objc
+    private func profileImageViewTapped() {
+        let vc = SettingProfileImageViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     @objc
     private func submitButtonTapped() {
         print(#function)

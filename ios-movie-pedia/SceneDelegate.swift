@@ -19,8 +19,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
 //        window?.rootViewController = TabBarController()
-//        window?.rootViewController = UINavigationController(rootViewController: OnboardingViewController())
-        window?.rootViewController = SettingProfileViewController()
+        window?.rootViewController = UINavigationController(rootViewController: OnboardingViewController())
+//        window?.rootViewController = SettingProfileViewController()
         window?.makeKeyAndVisible()
     }
 

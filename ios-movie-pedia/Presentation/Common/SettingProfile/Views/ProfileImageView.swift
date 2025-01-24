@@ -44,6 +44,7 @@ final class ProfileImageView: BaseView {
     }
     
     override func configureView() {
+        isUserInteractionEnabled = true
         backgroundColor = UIColor.clear
         
         imageView.layer.borderWidth = 3
