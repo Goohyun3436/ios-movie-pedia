@@ -71,9 +71,14 @@ final class SettingProfileViewController: UIViewController {
     }
     
     private func configureProfile() {
-        profile = Profile(image: nil, nickname: nil)
+        if let savedProfile = loadJsonData(type: Profile.self, forKey: "profile") {
+            profile = savedProfile
+        } else {
+            profile = Profile(image: nil, nickname: nil)
+        }
+        
         mainView.configureData(profile)
-        mainView.configureStatus(nicknameCondition(nil))
+        mainView.configureStatus(nicknameCondition(profile.nickname))
     }
     
     private func nicknameCondition(_ nickname: String?) -> NicknameCondition {
