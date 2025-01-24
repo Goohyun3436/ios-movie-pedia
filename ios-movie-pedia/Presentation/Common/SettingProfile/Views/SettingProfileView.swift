@@ -21,8 +21,14 @@ final class SettingProfileView: BaseView {
         profileImageView.configureData(image)
     }
     
-    func configureStatus(_ msg: String) {
-        statusLabel.text = msg
+    func configureStatus(_ condition: NicknameCondition) {
+        statusLabel.text = condition.msg
+        
+        if condition == .satisfied {
+            submitButton.setEnabled()
+        } else {
+            submitButton.setDisabled()
+        }
     }
     
     //MARK: - Override Method

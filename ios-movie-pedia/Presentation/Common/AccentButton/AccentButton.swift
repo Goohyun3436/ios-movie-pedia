@@ -18,6 +18,16 @@ class AccentButton: UIButton {
         titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
     }
     
+    func setEnabled() {
+        isEnabled = true
+        layer.borderColor = AppColor.accent?.cgColor
+    }
+    
+    func setDisabled() {
+        isEnabled = false
+        layer.borderColor = AppColor.darkgray?.cgColor
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

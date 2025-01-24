@@ -41,7 +41,7 @@ final class SettingProfileViewController: UIViewController {
         mainView.nicknameTextField.delegate = self
         
         mainView.configureData("profile_\(Int.random(in: 0...11))")
-        mainView.configureStatus(NicknameCondition.length.msg)
+        mainView.configureStatus(NicknameCondition.length)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -50,6 +50,7 @@ final class SettingProfileViewController: UIViewController {
     
 }
 
+//MARK: - UITextField
 extension SettingProfileViewController: UITextFieldDelegate {
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
@@ -60,22 +61,21 @@ extension SettingProfileViewController: UITextFieldDelegate {
         name = name.trimmingCharacters(in: .whitespaces)
         
         guard !name.matches("[0-9]") else {
-            mainView.configureStatus(NicknameCondition.number.msg)
+            mainView.configureStatus(NicknameCondition.number)
             return
         }
         
         guard !name.matches("[@#$%]") else {
-            mainView.configureStatus(NicknameCondition.symbol.msg)
+            mainView.configureStatus(NicknameCondition.symbol)
             return
         }
         
         guard 2 <= name.count && name.count < 10 else {
-            mainView.configureStatus(NicknameCondition.length.msg)
+            mainView.configureStatus(NicknameCondition.length)
             return
         }
         
-        mainView.configureStatus(NicknameCondition.satisfied.msg)
-        print(name)
+        mainView.configureStatus(NicknameCondition.satisfied)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
