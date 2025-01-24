@@ -15,7 +15,7 @@ final class OnboardingView: BaseView {
     let imageView = UIImageView()
     private let titleLabel = UILabel()
     private let introLabel = UILabel()
-    private let startButton = UIButton()
+    let startButton = UIButton()
     
     //MARK: - Configure Method
     override func configureHierarchy() {

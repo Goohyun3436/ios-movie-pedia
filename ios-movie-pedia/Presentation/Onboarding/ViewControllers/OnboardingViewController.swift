@@ -6,12 +6,11 @@
 //
 
 import UIKit
-import SnapKit
 
 final class OnboardingViewController: UIViewController {
     
     //MARK: - UI Property
-    let mainView = OnboardingView()
+    private let mainView = OnboardingView()
     
     //MARK: - Override Method
     override func loadView() {
@@ -20,11 +19,19 @@ final class OnboardingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        mainView.startButton.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
     }
     
     override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         mainView.imageView.heightToFit()
     }
     
+    //MARK: - Method
+    @objc
+    private func startButtonTapped() {
+        let vc = SettingProfileViewController()
+        navigationItem.backButtonTitle = ""
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }

@@ -7,12 +7,18 @@
 
 import UIKit
 
-class SettingProfileViewController: UIViewController {
+final class SettingProfileViewController: UIViewController {
     
+    //MARK: - Override Method
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        configureView()
+    }
+    
+    func configureView() {
+        view.backgroundColor = .systemOrange
+        navigationItem.title = "프로필 설정"
     }
     
 }
