@@ -13,7 +13,7 @@ enum AppColor {
     static let lightgray = UIColor(named: "LightGrayColor")
     static let black = UIColor.black
     static let white = UIColor.white
-    static let secondaryLable = UIColor.lightGray
+    static let secondaryLabel = UIColor.lightGray
     static let secondaryBackgroundColor = UIColor(named: "SecondaryBackgroundColor")
 }
 
@@ -34,6 +34,7 @@ final class AppAppearance {
         UINavigationBar.appearance().standardAppearance = appearanceN
         UINavigationBar.appearance().scrollEdgeAppearance = appearanceN
         
+        BaseView.appearance().backgroundColor = AppColor.black
         UILabel.appearance().textColor = AppColor.white
         UIButton.appearance().setTitleColor(AppColor.accent, for: .normal)
         UIButton.appearance().tintColor = AppColor.accent
