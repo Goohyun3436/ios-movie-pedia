@@ -39,5 +39,6 @@ final class AppAppearance {
         UIButton.appearance().setTitleColor(AppColor.accent, for: .normal)
         UIButton.appearance().tintColor = AppColor.accent
         UITextField.appearance().textColor = AppColor.white
+        UITextField.appearance().keyboardAppearance = UIKeyboardAppearance.dark
     }
 }
