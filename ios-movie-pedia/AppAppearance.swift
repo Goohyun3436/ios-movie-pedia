@@ -43,6 +43,8 @@ final class AppAppearance {
         UITextField.appearance().tintColor = AppColor.accent
         UITextField.appearance().textColor = AppColor.white
         UITextField.appearance().keyboardAppearance = UIKeyboardAppearance.dark
+        UITableView.appearance().backgroundColor = UIColor.clear
+        UITableViewCell.appearance().backgroundColor = UIColor.clear
         UICollectionView.appearance().backgroundColor = UIColor.clear
     }
 }
