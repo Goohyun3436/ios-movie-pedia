@@ -14,15 +14,13 @@ final class ProfileImageView: BaseView {
     let imageView = UIImageView()
     private let cameraImageView = UIImageView()
     
-    //MARK: - Property
-    var delegate: ProfileDelegate?
-    
     //MARK: - Method
     func configureData(_ image: String?) {
-        let img = image ?? "profile_\(Int.random(in: 0...11))"
+        guard let image else {
+            return
+        }
         
-        delegate?.profileImageDidChange(img)
-        imageView.image = UIImage(named: img)
+        imageView.image = UIImage(named: image)
     }
     
     //MARK: - Override Method

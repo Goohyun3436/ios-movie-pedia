@@ -6,13 +6,53 @@
 //
 
 import UIKit
+import SwiftUI
 
-class SettingProfileImageViewController: UIViewController {
+final class SettingProfileImageViewController: UIViewController {
+    
+    //MARK: - UI Property
+    private lazy var mainView = SettingProfileImageView()
+    
+    //MARK: - Property
+    var profile: Profile?
+    let profilesImages: [String] = [Int](0...30).map { "profile_\($0)" }
+    
+    //MARK: Override Method
+    override func loadView() {
+        view = mainView
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .blue
+        navigationItem.title = "프로필 이미지 설정"
+        
+        mainView.collectionView.delegate = self
+        mainView.collectionView.dataSource = self
+        mainView.collectionView.register(ProfileImageCollectionViewCell.self, forCellWithReuseIdentifier: ProfileImageCollectionViewCell.id)
+        
+        mainView.configureData(profile)
     }
     
+}
+
+extension SettingProfileImageViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return profilesImages.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = mainView.collectionView.dequeueReusableCell(withReuseIdentifier: ProfileImageCollectionViewCell.id, for: indexPath) as! ProfileImageCollectionViewCell
+        
+        cell.backgroundColor = .orange
+        
+        return cell
+    }
+    
+}
+
+#Preview {
+    SettingProfileImageViewController()
 }

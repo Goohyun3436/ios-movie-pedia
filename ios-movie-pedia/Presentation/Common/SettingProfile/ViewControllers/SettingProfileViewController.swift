@@ -10,7 +10,7 @@ import UIKit
 final class SettingProfileViewController: UIViewController {
     
     //MARK: - UI Property
-    private lazy var mainView = SettingProfileView(delegate: self)
+    private lazy var mainView = SettingProfileView()
     
     //MARK: - Property
     var profile = Profile()
@@ -23,6 +23,7 @@ final class SettingProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "프로필 설정"
+        navigationItem.backButtonTitle = ""
         mainView.nicknameTextField.delegate = self
         configureProfile()
         configureAction()
@@ -43,7 +44,9 @@ final class SettingProfileViewController: UIViewController {
         if let savedProfile = loadJsonData(type: Profile.self, forKey: "profile") {
             profile = savedProfile
         } else {
-            profile = Profile(image: nil, nickname: nil)
+            let randomImage = "profile_\(Int.random(in: 0...11))"
+            profileImageDidChange(randomImage)
+            profile = Profile(image: randomImage, nickname: nil)
         }
         
         mainView.configureData(profile)
@@ -69,6 +72,7 @@ final class SettingProfileViewController: UIViewController {
     @objc
     private func profileImageViewTapped() {
         let vc = SettingProfileImageViewController()
+        vc.profile = profile
         navigationController?.pushViewController(vc, animated: true)
     }
     
