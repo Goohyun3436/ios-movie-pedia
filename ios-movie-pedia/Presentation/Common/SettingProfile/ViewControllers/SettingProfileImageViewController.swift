@@ -15,7 +15,7 @@ final class SettingProfileImageViewController: UIViewController {
     
     //MARK: - Property
     var profile: Profile?
-    let profilesImages: [String] = [Int](0...30).map { "profile_\($0)" }
+    let profilesImages: [String] = [Int](0...11).map { "profile_\($0)" }
     
     //MARK: Override Method
     override func loadView() {
@@ -24,8 +24,6 @@ final class SettingProfileImageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.backgroundColor = .blue
         navigationItem.title = "프로필 이미지 설정"
         
         mainView.collectionView.delegate = self

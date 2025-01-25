@@ -42,5 +42,6 @@ final class AppAppearance {
         UITextField.appearance().tintColor = AppColor.accent
         UITextField.appearance().textColor = AppColor.white
         UITextField.appearance().keyboardAppearance = UIKeyboardAppearance.dark
+        UICollectionView.appearance().backgroundColor = UIColor.clear
     }
 }

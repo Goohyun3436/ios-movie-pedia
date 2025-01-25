@@ -57,7 +57,7 @@ final class ProfileImageView: BaseView {
         imageView.layer.borderColor = AppColor.accent?.cgColor
         imageView.contentMode = .scaleAspectFit
         
-        cameraImageView.image = UIImage(systemName: "camera.fill")
+        cameraImageView.image = UIImage(systemName: "camera.fill")?.applyingSymbolConfiguration(.init(pointSize: 12))
         cameraImageView.contentMode = .center
         cameraImageView.backgroundColor = AppColor.accent
         cameraImageView.tintColor = AppColor.white

@@ -27,8 +27,4 @@ class ProfileImageCollectionViewCell: BaseCollectionViewCell {
         }
     }
     
-    override func configureView() {
-        
-    }
-    
 }
