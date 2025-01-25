@@ -16,7 +16,7 @@ class ProfileImageCollectionViewCell: BaseCollectionViewCell {
     //MARK: - Property
     static let id = "ProfileImageCollectionViewCell"
     
-    //MARK: Override Method
+    //MARK: - Override Method
     override func configureHierarchy() {
         contentView.addSubview(profileImageView)
     }

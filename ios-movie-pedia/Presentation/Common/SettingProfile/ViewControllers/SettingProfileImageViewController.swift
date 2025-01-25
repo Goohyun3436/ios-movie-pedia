@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SwiftUI
 
 final class SettingProfileImageViewController: UIViewController {
     
@@ -14,10 +13,11 @@ final class SettingProfileImageViewController: UIViewController {
     private lazy var mainView = SettingProfileImageView()
     
     //MARK: - Property
-    var profile: Profile?
+    var profile = Profile()
     let profilesImages: [String] = [Int](0...11).map { "profile_\($0)" }
+    var delegate: ProfileDelegate?
     
-    //MARK: Override Method
+    //MARK: - Override Method
     override func loadView() {
         view = mainView
     }
@@ -44,13 +44,36 @@ extension SettingProfileImageViewController: UICollectionViewDelegate, UICollect
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = mainView.collectionView.dequeueReusableCell(withReuseIdentifier: ProfileImageCollectionViewCell.id, for: indexPath) as! ProfileImageCollectionViewCell
         
-        cell.profileImageView.configureData(profilesImages[indexPath.item])
+        guard let selectedImage = profile.image else {
+            return cell
+        }
+        
+        let image = profilesImages[indexPath.item]
+        
+        if image == selectedImage {
+            cell.profileImageView.setEnable()
+        } else {
+            cell.profileImageView.setDisable()
+        }
+        
+        cell.profileImageView.configureData(image)
         
         return cell
     }
     
-}
-
-#Preview {
-    SettingProfileImageViewController()
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let image = profile.image else {
+            return
+        }
+        
+        guard let beforeItem = profilesImages.firstIndex(of: image) else {
+            return
+        }
+        
+        profile.image = profilesImages[indexPath.item]
+        mainView.configureData(profile)
+        delegate?.profileImageDidChange(profile.image)
+        collectionView.reloadItems(at: [indexPath, IndexPath(item: beforeItem, section: 0)])
+    }
+    
 }

@@ -29,6 +29,18 @@ final class ProfileImageView: BaseView {
         imageView.image = UIImage(named: image)
     }
     
+    func setEnable() {
+        imageView.alpha = 1
+        imageView.layer.borderWidth = 3
+        imageView.layer.borderColor = AppColor.accent?.cgColor
+    }
+    
+    func setDisable() {
+        imageView.alpha = 0.5
+        imageView.layer.borderWidth = 1
+        imageView.layer.borderColor = AppColor.darkgray?.cgColor
+    }
+    
     //MARK: - Override Method
     override func configureHierarchy() {
         addSubview(imageView)

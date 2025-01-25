@@ -72,6 +72,7 @@ final class SettingProfileViewController: UIViewController {
     @objc
     private func profileImageViewTapped() {
         let vc = SettingProfileImageViewController()
+        vc.delegate = self
         vc.profile = profile
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -131,6 +132,7 @@ extension SettingProfileViewController: ProfileDelegate {
     
     func profileImageDidChange(_ image: String?) {
         profile.image = image
+        mainView.configureData(profile)
     }
     
     func nicknameDidChange(_ nickname: String?) {

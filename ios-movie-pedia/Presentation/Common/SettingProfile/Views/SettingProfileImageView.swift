@@ -31,8 +31,8 @@ final class SettingProfileImageView: BaseView {
     }())
     
     //MARK: - Method
-    func configureData(_ profile: Profile?) {
-        profileImageView.configureData(profile?.image)
+    func configureData(_ profile: Profile) {
+        profileImageView.configureData(profile.image)
     }
     
     //MARK: - Override Method
