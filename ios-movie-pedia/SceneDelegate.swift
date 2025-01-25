@@ -25,8 +25,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             ? UINavigationController(rootViewController: OnboardingViewController())
             : TabBarController()
         
-//        window?.rootViewController = UINavigationController(rootViewController: SettingProfileImageViewController())
-        
         window?.makeKeyAndVisible()
     }
 

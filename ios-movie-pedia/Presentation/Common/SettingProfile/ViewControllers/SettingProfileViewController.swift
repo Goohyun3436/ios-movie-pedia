@@ -57,10 +57,23 @@ final class SettingProfileViewController: UIViewController {
         let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(backButtonTapped))
         navigationItem.leftBarButtonItem = backButton
         
-        let singleTap = UITapGestureRecognizer(target: self, action: #selector(profileImageViewTapped))
-        mainView.profileImageView.addGestureRecognizer(singleTap)
+        mainView.isUserInteractionEnabled = true
+        mainView.addGestureRecognizer(UITapGestureRecognizer(
+            target: self,
+            action: #selector(mainViewTapped)
+        ))
+        
+        mainView.profileImageView.addGestureRecognizer(UITapGestureRecognizer(
+            target: self,
+            action: #selector(profileImageViewTapped)
+        ))
         
         mainView.submitButton.addTarget(self, action: #selector(submitButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc
+    private func mainViewTapped() {
+        mainView.nicknameTextField.resignFirstResponder()
     }
     
     @objc
