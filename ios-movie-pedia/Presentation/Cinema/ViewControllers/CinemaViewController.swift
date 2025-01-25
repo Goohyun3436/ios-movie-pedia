@@ -7,13 +7,27 @@
 
 import UIKit
 
-class CinemaViewController: UIViewController {
+final class CinemaViewController: UIViewController {
+    
+    //MARK: - UI Property
+    private let mainView = CinemaView()
+    
+    //MARK: - Property
+    private var profile = Profile()
+    
+    //MARK: - Override Method
+    override func loadView() {
+        view = mainView
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let profile = loadJsonData(type: Profile.self, forKey: "profile")
-        print(profile)
+        if let saved = loadJsonData(type: Profile.self, forKey: "profile") {
+            profile = saved
+        }
+        
+        mainView.userProfileView.configureData(profile)
     }
     
 }

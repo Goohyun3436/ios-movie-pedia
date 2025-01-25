@@ -14,7 +14,7 @@ final class SettingProfileView: BaseView {
     let profileImageView = ProfileImageView(camera: true)
     let nicknameTextField = UITextField()
     private let statusLabel = UILabel()
-    let submitButton = AccentButton("완료")
+    let submitButton = AccentBorderButton("완료")
     
     //MARK: - Method
     func configureData(_ profile: Profile) {

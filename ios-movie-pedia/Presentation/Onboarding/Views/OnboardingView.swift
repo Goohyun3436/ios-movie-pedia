@@ -15,7 +15,7 @@ final class OnboardingView: BaseView {
     let imageView = UIImageView()
     private let titleLabel = UILabel()
     private let introLabel = UILabel()
-    let startButton = AccentButton("시작하기")
+    let startButton = AccentBorderButton("시작하기")
     
     //MARK: - Configure Method
     override func configureHierarchy() {

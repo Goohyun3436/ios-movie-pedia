@@ -15,6 +15,7 @@ enum AppColor {
     static let white = UIColor.white
     static let secondaryLabel = UIColor.lightGray
     static let secondaryBackgroundColor = UIColor(named: "SecondaryBackgroundColor")
+    static let tertiaryBackgroundColor = UIColor(named: "TertiaryBackgroundColor")
 }
 
 final class AppAppearance {

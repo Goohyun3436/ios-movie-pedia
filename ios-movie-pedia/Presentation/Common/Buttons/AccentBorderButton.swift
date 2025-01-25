@@ -1,5 +1,5 @@
 //
-//  AccentButton.swift
+//  AccentBorderButton.swift
 //  ios-movie-pedia
 //
 //  Created by Goo on 1/24/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class AccentButton: UIButton {
+final class AccentBorderButton: UIButton {
     
     init(_ title: String) {
         super.init(frame: .zero)
