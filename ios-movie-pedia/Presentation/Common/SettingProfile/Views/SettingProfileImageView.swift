@@ -11,7 +11,7 @@ import SnapKit
 final class SettingProfileImageView: BaseView {
     
     //MARK: - UI Property
-    private var profileImageView = ProfileImageView()
+    private var profileImageView = ProfileImageView(camera: true)
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: {
         let layout = UICollectionViewFlowLayout()
         

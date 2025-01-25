@@ -11,8 +11,14 @@ import SnapKit
 final class ProfileImageView: BaseView {
     
     //MARK: - UI Property
-    let imageView = UIImageView()
+    private let imageView = UIImageView()
     private let cameraImageView = UIImageView()
+    
+    //MARK: - Initializer Method
+    init(frame: CGRect = .zero, camera isCameraImage: Bool) {
+        super.init(frame: frame)
+        cameraImageView.isHidden = !isCameraImage
+    }
     
     //MARK: - Method
     func configureData(_ image: String?) {
@@ -30,9 +36,11 @@ final class ProfileImageView: BaseView {
     }
     
     override func configureLayout() {
+        let diameter: CGFloat = self.frame.width == 0 ? 100 : self.frame.width
+        
         imageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-            make.size.equalTo(100)
+            make.size.equalTo(diameter)
         }
         
         cameraImageView.snp.makeConstraints { make in

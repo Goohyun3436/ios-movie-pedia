@@ -46,7 +46,7 @@ extension SettingProfileImageViewController: UICollectionViewDelegate, UICollect
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = mainView.collectionView.dequeueReusableCell(withReuseIdentifier: ProfileImageCollectionViewCell.id, for: indexPath) as! ProfileImageCollectionViewCell
         
-        cell.backgroundColor = .orange
+        cell.profileImageView.configureData(profilesImages[indexPath.item])
         
         return cell
     }

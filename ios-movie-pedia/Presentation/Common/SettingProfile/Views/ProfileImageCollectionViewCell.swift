@@ -6,19 +6,29 @@
 //
 
 import UIKit
+import SnapKit
 
-class ProfileImageCollectionViewCell: UICollectionViewCell {
+class ProfileImageCollectionViewCell: BaseCollectionViewCell {
+    
+    //MARK: - UI Property
+    lazy var profileImageView = ProfileImageView(frame: self.frame, camera: false)
     
     //MARK: - Property
     static let id = "ProfileImageCollectionViewCell"
     
     //MARK: Override Method
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override func configureHierarchy() {
+        contentView.addSubview(profileImageView)
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override func configureLayout() {
+        profileImageView.snp.makeConstraints { make in
+            make.edges.equalTo(contentView)
+        }
+    }
+    
+    override func configureView() {
+        
     }
     
 }
