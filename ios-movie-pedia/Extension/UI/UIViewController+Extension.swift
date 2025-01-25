@@ -16,4 +16,11 @@ extension UIViewController {
             UserDefaults.standard.setValue(encoded, forKey: forKey)
         }
     }
+    
+    func getToday() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        var today = formatter.string(from: Date())
+        return today
+    }
 }

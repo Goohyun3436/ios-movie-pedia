@@ -92,6 +92,8 @@ final class SettingProfileViewController: UIViewController {
     
     @objc
     private func submitButtonTapped() {
+        profile.created_at = getToday()
+        
         saveJsonData(profile, type: Profile.self, forKey: "profile")
         
         guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,

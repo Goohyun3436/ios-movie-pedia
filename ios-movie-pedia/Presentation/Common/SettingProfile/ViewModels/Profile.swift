@@ -10,6 +10,23 @@ import Foundation
 struct Profile: Codable {
     var image: String?
     var nickname: String?
+    var created_at: String?
+    var createdAtFormat: String {
+        guard let created_at else {
+            return ""
+        }
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        guard let convertDate = formatter.date(from: created_at) else {
+            return ""
+        }
+        
+        formatter.dateFormat = "yy.MM.dd 가입"
+        let date = formatter.string(from: convertDate)
+        return date
+    }
 }
 
 enum NicknameCondition {
