@@ -14,7 +14,7 @@ final class UserProfileView: BaseView {
     private let profileImage = ProfileImageView(frame: CGRect(x: .zero, y: .zero, width: 50, height: 50), camera: false)
     private let nicknameLabel = UILabel()
     private let createdAtLabel = UILabel()
-    private let rightButton = UIButton()
+    let rightButton = UIButton()
     private let bottomButton = AccentFillButton("0개의 무비박스 보관중")
     
     //MARK: - Method

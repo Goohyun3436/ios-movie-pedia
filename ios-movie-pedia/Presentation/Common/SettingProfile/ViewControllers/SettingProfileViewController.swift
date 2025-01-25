@@ -10,10 +10,12 @@ import UIKit
 final class SettingProfileViewController: UIViewController {
     
     //MARK: - UI Property
-    private lazy var mainView = SettingProfileView()
+    private let mainView = SettingProfileView()
     
     //MARK: - Property
-    var profile = Profile()
+    private var profile = Profile()
+    var presentDelegate: ProfileDelegate?
+    var isOnboarding: Bool = false
     
     //MARK: - Override Method
     override func loadView() {
@@ -27,6 +29,7 @@ final class SettingProfileViewController: UIViewController {
         mainView.nicknameTextField.delegate = self
         configureProfile()
         configureAction()
+        configureView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -35,7 +38,7 @@ final class SettingProfileViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+        super.viewWillDisappear(animated)
         mainView.nicknameTextField.resignFirstResponder()
     }
     
@@ -54,8 +57,19 @@ final class SettingProfileViewController: UIViewController {
     }
     
     private func configureAction() {
-        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(backButtonTapped))
-        navigationItem.leftBarButtonItem = backButton
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: isOnboarding ? "chevron.backward" : "xmark"),
+            style: .plain,
+            target: self,
+            action: #selector(backButtonTapped)
+        )
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "저장",
+            style: .plain,
+            target: self,
+            action: #selector(saveButtonTapped)
+        )
         
         mainView.isUserInteractionEnabled = true
         mainView.addGestureRecognizer(UITapGestureRecognizer(
@@ -71,6 +85,14 @@ final class SettingProfileViewController: UIViewController {
         mainView.submitButton.addTarget(self, action: #selector(submitButtonTapped), for: .touchUpInside)
     }
     
+    private func configureView() {
+        if isOnboarding {
+            navigationItem.rightBarButtonItem?.isHidden = true
+        } else {
+            mainView.submitButton.isHidden = true
+        }
+    }
+    
     @objc
     private func mainViewTapped() {
         mainView.nicknameTextField.resignFirstResponder()
@@ -78,8 +100,12 @@ final class SettingProfileViewController: UIViewController {
     
     @objc
     private func backButtonTapped() {
-        UserDefaults.standard.removeObject(forKey: "profile")
-        navigationController?.popViewController(animated: true)
+        if isOnboarding {
+            UserDefaults.standard.removeObject(forKey: "profile")
+            navigationController?.popViewController(animated: true)
+        } else {
+            dismiss(animated: true)
+        }
     }
     
     @objc
@@ -102,6 +128,14 @@ final class SettingProfileViewController: UIViewController {
         }
 
         window.rootViewController = TabBarController()
+    }
+    
+    @objc
+    private func saveButtonTapped() {
+        saveJsonData(profile, type: Profile.self, forKey: "profile")
+        presentDelegate?.profileImageDidChange(profile.image)
+        presentDelegate?.nicknameDidChange(profile.nickname)
+        dismiss(animated: true)
     }
     
     private func nicknameCondition(_ nickname: String?) -> NicknameCondition {
@@ -155,6 +189,14 @@ extension SettingProfileViewController: ProfileDelegate {
         
         let condition = nicknameCondition(nickname)
         mainView.configureStatus(condition)
+        
+        if condition == .satisfied {
+            mainView.submitButton.setEnabled()
+            navigationItem.rightBarButtonItem?.isEnabled = true
+        } else {
+            mainView.submitButton.setDisabled()
+            navigationItem.rightBarButtonItem?.isEnabled = false
+        }
     }
     
 }
