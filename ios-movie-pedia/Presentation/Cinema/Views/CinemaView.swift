@@ -23,17 +23,18 @@ final class CinemaView: BaseView {
     override func configureLayout() {
         userProfileView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview().inset(16)
-            make.top.equalTo(safeAreaLayoutGuide)
+            make.top.equalTo(safeAreaLayoutGuide).offset(16)
         }
         
         tableView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview()
-            make.top.equalTo(userProfileView.snp.bottom).offset(8)
+            make.top.equalTo(userProfileView.snp.bottom)
             make.bottom.equalTo(safeAreaLayoutGuide)
         }
     }
     
     override func configureView() {
         tableView.isScrollEnabled = false
+        tableView.separatorStyle = .none
     }
 }

@@ -1,5 +1,5 @@
 //
-//  ResentSearchCollectionView.swift
+//  PosterCollectionView.swift
 //  ios-movie-pedia
 //
 //  Created by Goo on 1/26/25.
@@ -7,16 +7,16 @@
 
 import UIKit
 
-final class ResentSearchCollectionView: UICollectionView {
+final class PosterCollectionView: UICollectionView {
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: .zero, collectionViewLayout: {
             let layout = UICollectionViewFlowLayout()
             
             let inset: CGFloat = 16
-            let spacing: CGFloat = 8
-            let width: CGFloat = 80
-            let height: CGFloat = 30
+            let spacing: CGFloat = 16
+            let width: CGFloat = 200
+            let height: CGFloat = 340
             
             layout.scrollDirection = .horizontal
             layout.itemSize = CGSize(width: width, height: height)

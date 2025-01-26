@@ -18,7 +18,11 @@ final class CinemaViewController: UIViewController {
             mainView.userProfileView.configureData(profile)
         }
     }
-    private var resentSearchList = ["스파이더", "해리포터", "소방관", "스파이더", "해리포터", "소방관"]
+    private let titles = ["최근검색어", "오늘의 영화"]
+    private var contents = [
+        ["스파이더", "해리포터", "소방관", "스파이더", "해리포터", "소방관"],
+        ["기생충", "하얼빈", "테스트1", "테스트2", "테스트3"]
+    ]
     
     //MARK: - Override Method
     override func loadView() {
@@ -33,6 +37,7 @@ final class CinemaViewController: UIViewController {
         mainView.tableView.delegate = self
         mainView.tableView.dataSource = self
         mainView.tableView.register(ResentSearchTableViewCell.self, forCellReuseIdentifier: ResentSearchTableViewCell.id)
+        mainView.tableView.register(PosterTableViewCell.self, forCellReuseIdentifier: PosterTableViewCell.id)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -71,17 +76,37 @@ extension CinemaViewController: ProfileDelegate {
 extension CinemaViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return titles.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = mainView.tableView.dequeueReusableCell(withIdentifier: ResentSearchTableViewCell.id, for: indexPath) as! ResentSearchTableViewCell
+        let row = indexPath.row
         
-        cell.collectionView.delegate = self
-        cell.collectionView.dataSource = self
-        cell.collectionView.register(ResentSearchCollectionViewCell.self, forCellWithReuseIdentifier: ResentSearchCollectionViewCell.id)
-        
-        return cell
+        if row == 0 {
+            let cell = mainView.tableView.dequeueReusableCell(withIdentifier: ResentSearchTableViewCell.id, for: indexPath) as! ResentSearchTableViewCell
+            
+            cell.collectionView.register(ResentSearchCollectionViewCell.self, forCellWithReuseIdentifier: ResentSearchCollectionViewCell.id)
+            
+            cell.collectionView.delegate = self
+            cell.collectionView.dataSource = self
+            
+            cell.collectionView.tag = row
+            cell.titleLabel.text = titles[row]
+            
+            return cell
+        } else {
+            let cell = mainView.tableView.dequeueReusableCell(withIdentifier: PosterTableViewCell.id, for: indexPath) as! PosterTableViewCell
+            
+            cell.collectionView.register(PosterCollectionViewCell.self, forCellWithReuseIdentifier: PosterCollectionViewCell.id)
+            
+            cell.collectionView.delegate = self
+            cell.collectionView.dataSource = self
+            
+            cell.collectionView.tag = row
+            cell.titleLabel.text = titles[row]
+            
+            return cell
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -94,16 +119,28 @@ extension CinemaViewController: UITableViewDelegate, UITableViewDataSource {
 extension CinemaViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        resentSearchList.count
+        contents[collectionView.tag].count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ResentSearchCollectionViewCell.id, for: indexPath) as! ResentSearchCollectionViewCell
+        let tag = collectionView.tag
         
-        let row = resentSearchList[indexPath.item]
-        cell.configureData(row)
+        if tag == 0 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ResentSearchCollectionViewCell.id, for: indexPath) as! ResentSearchCollectionViewCell
+            
+            let row = contents[collectionView.tag][indexPath.item]
+            cell.configureData(row)
+            
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PosterCollectionViewCell.id, for: indexPath) as! PosterCollectionViewCell
+            
+//            let row = contents[collectionView.tag][indexPath.item]
+//            cell.configureData(row)
+            
+            return cell
+        }
         
-        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

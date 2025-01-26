@@ -1,5 +1,5 @@
 //
-//  ResentSearchTableViewCell.swift.swift
+//  PosterTableViewCell.swift
 //  ios-movie-pedia
 //
 //  Created by Goo on 1/26/25.
@@ -8,20 +8,18 @@
 import UIKit
 import SnapKit
 
-final class ResentSearchTableViewCell: BaseTableViewCell {
+final class PosterTableViewCell: BaseTableViewCell {
     
-     //MARK: - Property
-    static let id = "CinemaTableViewCell"
+    //MARK: - Property
+    static let id = "PosterTableViewCell"
     
     //MARK: - UI Property
     let titleLabel = UILabel()
-    private let removeButton = UIButton()
-    let collectionView = ResentSearchCollectionView()
+    let collectionView = PosterCollectionView()
     
     //MARK: - Override Method
     override func configureHierarchy() {
         contentView.addSubview(titleLabel)
-        contentView.addSubview(removeButton)
         contentView.addSubview(collectionView)
     }
     
@@ -31,15 +29,10 @@ final class ResentSearchTableViewCell: BaseTableViewCell {
             make.top.equalTo(contentView).offset(16)
         }
         
-        removeButton.snp.makeConstraints { make in
-            make.trailing.equalTo(contentView).inset(16)
-            make.centerY.equalTo(titleLabel.snp.centerY)
-        }
-        
         collectionView.snp.makeConstraints { make in
             make.horizontalEdges.equalTo(contentView)
             make.top.equalTo(titleLabel.snp.bottom)
-            make.height.equalTo(50)
+            make.height.equalTo(360)
             make.bottom.equalTo(contentView)
         }
     }
@@ -47,7 +40,5 @@ final class ResentSearchTableViewCell: BaseTableViewCell {
     override func configureView() {
         selectionStyle = .none
         titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        removeButton.setTitle("전체 삭제", for: .normal)
-        removeButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .black)
     }
 }
