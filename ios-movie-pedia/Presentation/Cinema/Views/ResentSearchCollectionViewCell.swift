@@ -16,10 +16,27 @@ final class ResentSearchCollectionViewCell: BaseCollectionViewCell {
     
     //MARK: - Property
     static let id = "ResentSearchCollectionViewCell"
+    var delegate: SearchDelegate?
+    
+    //MARK: - Initializer Method
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        removeButton.addTarget(self, action: #selector(removeButtonTapped), for: .touchUpInside)
+    }
     
     //MARK: - Method
     func configureData(_ title: String) {
         titleLabel.text = title
+    }
+    
+    @objc
+    private func removeButtonTapped() {
+        guard let title = titleLabel.text else {
+            return
+        }
+        
+        delegate?.searchRemove(title)
     }
     
     //MARK: - Override Method

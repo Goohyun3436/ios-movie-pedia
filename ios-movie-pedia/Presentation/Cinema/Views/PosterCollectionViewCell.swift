@@ -19,6 +19,7 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
     
     //MARK: - Property
     static let id = "PosterCollectionViewCell"
+    var delegate: LikeDelegate?
     private var movieId: Int = 0
     private var isLike: Bool = false {
         didSet {
@@ -47,16 +48,7 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
     
     @objc
     func likeButtonTapped() {
-        if isLike {
-            if let index = User.likes.firstIndex(of: movieId) {
-                User.likes.remove(at: index)
-            }
-        } else {
-            User.likes.append(movieId)
-        }
-        
-        isLike.toggle()
-        setLikeButton()
+        delegate?.likesDidChange(movieId)
     }
     
     private func setLikeButton() {

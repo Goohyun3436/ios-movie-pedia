@@ -8,11 +8,12 @@
 import Foundation
 
 protocol SearchDelegate {
-    func searchesDidChange()
+    func searchesRemoveAll()
+    func searchRemove(_ title: String)
 }
 
 protocol LikeDelegate {
-    func likesDidChange()
+    func likesDidChange(_ movieId: Int)
 }
 
 protocol ProfileDelegate {

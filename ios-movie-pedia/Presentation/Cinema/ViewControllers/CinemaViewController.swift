@@ -34,8 +34,6 @@ final class CinemaViewController: UIViewController {
         
         configureTableView()
         
-        searches = ["search"]
-        
         NetworkManager.shared.tmdb(.trending(), TMDBResponse.self) { data in
             self.movies = data.results
             self.mainView.tableView.reloadData()
@@ -146,12 +144,16 @@ extension CinemaViewController: UICollectionViewDelegate, UICollectionViewDataSo
         if collectionView.tag == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ResentSearchCollectionViewCell.id, for: indexPath) as! ResentSearchCollectionViewCell
             
+            cell.delegate = self
+            
             let row = searches[indexPath.item]
             cell.configureData(row)
             
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PosterCollectionViewCell.id, for: indexPath) as! PosterCollectionViewCell
+            
+            cell.delegate = self
             
             let row = movies[indexPath.item]
             cell.configureData(row)
@@ -173,12 +175,35 @@ extension CinemaViewController: UICollectionViewDelegate, UICollectionViewDataSo
 //MARK: - UserDelegate
 extension CinemaViewController: SearchDelegate, LikeDelegate {
     
-    func searchesDidChange() {
+    func searchesRemoveAll() {
+        User.searches.removeAll()
         searches = User.searches
         mainView.tableView.reloadData()
     }
     
-    func likesDidChange() {
+    func searchRemove(_ title: String) {
+        if let index = User.searches.firstIndex(of: title) {
+            User.searches.remove(at: index)
+        }
+        
+        searches = User.searches
+        mainView.tableView.reloadData()
+    }
+    
+    func likesDidChange(_ movieId: Int) {
+        print(#function)
+        if let index = User.likes.firstIndex(of: movieId) {
+            User.likes.remove(at: index)
+        } else {
+            User.likes.append(movieId)
+        }
+        
+        for i in movies.indices {
+            if movies[i].id == movieId {
+                movies[i].is_like.toggle()
+            }
+        }
+        
         mainView.tableView.reloadData()
     }
     

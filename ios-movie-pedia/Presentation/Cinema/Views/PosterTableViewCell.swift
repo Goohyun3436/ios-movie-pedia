@@ -10,12 +10,12 @@ import SnapKit
 
 final class PosterTableViewCell: BaseTableViewCell {
     
-    //MARK: - Property
-    static let id = "PosterTableViewCell"
-    
     //MARK: - UI Property
     let titleLabel = UILabel()
     let collectionView = PosterCollectionView()
+    
+    //MARK: - Property
+    static let id = "PosterTableViewCell"
     
     //MARK: - Override Method
     override func configureHierarchy() {

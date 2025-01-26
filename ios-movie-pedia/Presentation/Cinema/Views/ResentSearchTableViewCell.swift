@@ -30,8 +30,7 @@ final class ResentSearchTableViewCell: BaseTableViewCell {
     //MARK: - Method
     @objc
     private func removeButtonTapped() {
-        User.searches.removeAll()
-        delegate?.searchesDidChange()
+        delegate?.searchesRemoveAll()
     }
     
     //MARK: - Override Method
