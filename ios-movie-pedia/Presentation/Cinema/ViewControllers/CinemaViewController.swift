@@ -34,10 +34,14 @@ final class CinemaViewController: UIViewController {
         
         mainView.userProfileView.rightButton.addTarget(self, action: #selector(userRightButtonTapped), for: .touchUpInside)
         
-        mainView.tableView.delegate = self
-        mainView.tableView.dataSource = self
-        mainView.tableView.register(ResentSearchTableViewCell.self, forCellReuseIdentifier: ResentSearchTableViewCell.id)
-        mainView.tableView.register(PosterTableViewCell.self, forCellReuseIdentifier: PosterTableViewCell.id)
+        configureTableView()
+        
+        NetworkManager.shared.tmdb(.trending(), TMDBResponse.self) { data in
+            print(data)
+        } failHandler: {
+            print("실패")
+        }
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -55,6 +59,13 @@ final class CinemaViewController: UIViewController {
         vc.presentDelegate = self
         vc.modalPresentationStyle = .pageSheet
         present(UINavigationController(rootViewController: vc), animated: true)
+    }
+    
+    private func configureTableView() {
+        mainView.tableView.delegate = self
+        mainView.tableView.dataSource = self
+        mainView.tableView.register(ResentSearchTableViewCell.self, forCellReuseIdentifier: ResentSearchTableViewCell.id)
+        mainView.tableView.register(PosterTableViewCell.self, forCellReuseIdentifier: PosterTableViewCell.id)
     }
     
 }
