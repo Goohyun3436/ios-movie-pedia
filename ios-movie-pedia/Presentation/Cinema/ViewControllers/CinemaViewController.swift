@@ -19,13 +19,8 @@ final class CinemaViewController: UIViewController {
         }
     }
     private let titles = ["최근검색어", "오늘의 영화"]
-    private var searches: [String] = []
-//    ["스파이더", "해리포터", "소방관", "스파이더", "해리포터", "소방관"]
-    private var movies = [Movie]() {
-        didSet {
-            mainView.tableView.reloadData()
-        }
-    }
+    private var searches: [String] = User.searches
+    private var movies = [Movie]()
     
     //MARK: - Override Method
     override func loadView() {
@@ -39,8 +34,11 @@ final class CinemaViewController: UIViewController {
         
         configureTableView()
         
+        searches = ["search"]
+        
         NetworkManager.shared.tmdb(.trending(), TMDBResponse.self) { data in
             self.movies = data.results
+            self.mainView.tableView.reloadData()
         } failHandler: {
             print("실패")
         }
@@ -101,6 +99,7 @@ extension CinemaViewController: UITableViewDelegate, UITableViewDataSource {
             
             cell.collectionView.reloadData()
             
+            cell.delegate = self
             cell.collectionView.delegate = self
             cell.collectionView.dataSource = self
             
@@ -167,6 +166,20 @@ extension CinemaViewController: UICollectionViewDelegate, UICollectionViewDataSo
         } else {
             print("영화", indexPath)
         }
+    }
+    
+}
+
+//MARK: - UserDelegate
+extension CinemaViewController: SearchDelegate, LikeDelegate {
+    
+    func searchesDidChange() {
+        searches = User.searches
+        mainView.tableView.reloadData()
+    }
+    
+    func likesDidChange() {
+        mainView.tableView.reloadData()
     }
     
 }

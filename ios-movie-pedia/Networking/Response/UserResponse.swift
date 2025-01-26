@@ -13,6 +13,11 @@ struct User {
             UserDefaults.standard.set(User.likes, forKey: "likes")
         }
     }
+    static var searches = [String]() {
+        didSet {
+            UserDefaults.standard.set(User.searches, forKey: "searches")
+        }
+    }
 }
 
 struct Profile: Codable {
@@ -52,9 +57,4 @@ enum NicknameCondition {
             return "닉네임에 숫자는 포함할 수 없어요"
         }
     }
-}
-
-protocol ProfileDelegate {
-    func profileImageDidChange(_ image: String?)
-    func nicknameDidChange(_ nickname: String?)
 }

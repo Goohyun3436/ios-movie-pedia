@@ -10,14 +10,29 @@ import SnapKit
 
 final class ResentSearchTableViewCell: BaseTableViewCell {
     
-     //MARK: - Property
-    static let id = "CinemaTableViewCell"
-    
     //MARK: - UI Property
     let titleLabel = UILabel()
     let removeButton = UIButton()
     let collectionView = ResentSearchCollectionView()
     let noneContentLabel = UILabel()
+    
+    //MARK: - Property
+    static let id = "CinemaTableViewCell"
+    var delegate: SearchDelegate?
+    
+    //MARK: - Initializer Method
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        removeButton.addTarget(self, action: #selector(removeButtonTapped), for: .touchUpInside)
+    }
+    
+    //MARK: - Method
+    @objc
+    private func removeButtonTapped() {
+        User.searches.removeAll()
+        delegate?.searchesDidChange()
+    }
     
     //MARK: - Override Method
     override func configureHierarchy() {

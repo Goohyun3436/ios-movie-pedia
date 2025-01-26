@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         DispatchQueue.global().async {
             User.likes = UserDefaults.standard.array(forKey: "likes") as? [Int] ?? []
+            User.searches = UserDefaults.standard.array(forKey: "searches") as? [String] ?? []
         }
         
         AppAppearance.setUpAppearance()
