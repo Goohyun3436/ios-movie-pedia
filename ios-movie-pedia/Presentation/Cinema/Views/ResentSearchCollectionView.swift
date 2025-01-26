@@ -28,6 +28,8 @@ final class ResentSearchCollectionView: UICollectionView {
         }())
         
         showsHorizontalScrollIndicator = false
+        
+        register(ResentSearchCollectionViewCell.self, forCellWithReuseIdentifier: ResentSearchCollectionViewCell.id)
     }
     
     required init?(coder: NSCoder) {

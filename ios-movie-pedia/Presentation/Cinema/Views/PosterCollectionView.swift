@@ -28,6 +28,8 @@ final class PosterCollectionView: UICollectionView {
         }())
         
         showsHorizontalScrollIndicator = false
+        
+        register(PosterCollectionViewCell.self, forCellWithReuseIdentifier: PosterCollectionViewCell.id)
     }
     
     required init?(coder: NSCoder) {

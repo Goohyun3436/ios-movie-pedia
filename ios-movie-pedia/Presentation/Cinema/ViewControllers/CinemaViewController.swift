@@ -20,7 +20,11 @@ final class CinemaViewController: UIViewController {
     }
     private let titles = ["최근검색어", "오늘의 영화"]
     private let searches: [String] = ["스파이더", "해리포터", "소방관", "스파이더", "해리포터", "소방관"]
-    private var movies = [Movie]()
+    private var movies = [Movie]() {
+        didSet {
+            mainView.tableView.reloadData()
+        }
+    }
     
     //MARK: - Override Method
     override func loadView() {
@@ -34,12 +38,11 @@ final class CinemaViewController: UIViewController {
         
         configureTableView()
         
-        movies = TMDBResponse.test.results
-//        NetworkManager.shared.tmdb(.trending(), TMDBResponse.self) { data in
-//            print(data)
-//        } failHandler: {
-//            print("실패")
-//        }
+        NetworkManager.shared.tmdb(.trending(), TMDBResponse.self) { data in
+            self.movies = data.results
+        } failHandler: {
+            print("실패")
+        }
 
     }
     
@@ -95,7 +98,7 @@ extension CinemaViewController: UITableViewDelegate, UITableViewDataSource {
         if row == 0 {
             let cell = mainView.tableView.dequeueReusableCell(withIdentifier: ResentSearchTableViewCell.id, for: indexPath) as! ResentSearchTableViewCell
             
-            cell.collectionView.register(ResentSearchCollectionViewCell.self, forCellWithReuseIdentifier: ResentSearchCollectionViewCell.id)
+            cell.collectionView.reloadData()
             
             cell.collectionView.delegate = self
             cell.collectionView.dataSource = self
@@ -107,7 +110,7 @@ extension CinemaViewController: UITableViewDelegate, UITableViewDataSource {
         } else {
             let cell = mainView.tableView.dequeueReusableCell(withIdentifier: PosterTableViewCell.id, for: indexPath) as! PosterTableViewCell
             
-            cell.collectionView.register(PosterCollectionViewCell.self, forCellWithReuseIdentifier: PosterCollectionViewCell.id)
+            cell.collectionView.reloadData()
             
             cell.collectionView.delegate = self
             cell.collectionView.dataSource = self
