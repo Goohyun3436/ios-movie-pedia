@@ -31,6 +31,8 @@ final class NetworkManager {
                 completionHandler(data)
                     
             case .failure(_):
+                print(response.response?.statusCode)
+                print(response.error?.errorDescription)
                 failHandler()
             }
         }

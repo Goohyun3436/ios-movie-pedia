@@ -1,11 +1,19 @@
 //
-//  Profile.swift
+//  UserResponse.swift
 //  ios-movie-pedia
 //
-//  Created by Goo on 1/25/25.
+//  Created by Goo on 1/26/25.
 //
 
 import Foundation
+
+struct User {
+    static var likes = [Int]() {
+        didSet {
+            UserDefaults.standard.set(User.likes, forKey: "likes")
+        }
+    }
+}
 
 struct Profile: Codable {
     var image: String?

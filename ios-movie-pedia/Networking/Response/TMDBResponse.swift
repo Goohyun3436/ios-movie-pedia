@@ -22,4 +22,7 @@ struct Movie: Decodable {
     let popularity: Double
     let release_date: String
     let vote_average: Double
+    var is_like: Bool {
+        return User.likes.contains(self.id)
+    }
 }

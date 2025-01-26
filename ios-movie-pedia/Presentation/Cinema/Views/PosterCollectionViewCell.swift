@@ -19,6 +19,19 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
     
     //MARK: - Property
     static let id = "PosterCollectionViewCell"
+    private var movieId: Int = 0
+    private var isLike: Bool = false {
+        didSet {
+            setLikeButton()
+        }
+    }
+    
+    //MARK: - Initializer Method
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+    }
     
     //MARK: - Method
     func configureData(_ movie: Movie) {
@@ -26,8 +39,28 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
             imageView.kf.setImage(with: url)
         }
         
+        movieId = movie.id
+        isLike = movie.is_like
         titleLabel.text = movie.title
         overviewLabel.text = movie.overview
+    }
+    
+    @objc
+    func likeButtonTapped() {
+        if isLike {
+            if let index = User.likes.firstIndex(of: movieId) {
+                User.likes.remove(at: index)
+            }
+        } else {
+            User.likes.append(movieId)
+        }
+        
+        isLike.toggle()
+        setLikeButton()
+    }
+    
+    private func setLikeButton() {
+        likeButton.setImage(UIImage(systemName: isLike ? "heart.fill" : "heart"), for: .normal)
     }
     
     //MARK: - Override Method
@@ -54,7 +87,7 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
             make.trailing.equalTo(contentView)
             make.centerY.equalTo(titleLabel.snp.centerY)
             make.width.equalTo(34)
-            make.height.equalTo(24)
+            make.height.equalTo(30)
         }
         
         overviewLabel.snp.makeConstraints { make in
@@ -70,7 +103,6 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
         imageView.layer.cornerRadius = 8
         imageView.contentMode = .scaleAspectFill
         
-        likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         likeButton.contentHorizontalAlignment = .right
         
         titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)

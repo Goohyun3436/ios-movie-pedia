@@ -140,9 +140,7 @@ extension CinemaViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let tag = collectionView.tag
-        
-        if tag == 0 {
+        if collectionView.tag == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ResentSearchCollectionViewCell.id, for: indexPath) as! ResentSearchCollectionViewCell
             
             let row = searches[indexPath.item]
@@ -157,11 +155,14 @@ extension CinemaViewController: UICollectionViewDelegate, UICollectionViewDataSo
             
             return cell
         }
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath)
+        if collectionView.tag == 0 {
+            print("최근검색어", indexPath)
+        } else {
+            print("영화", indexPath)
+        }
     }
     
 }
