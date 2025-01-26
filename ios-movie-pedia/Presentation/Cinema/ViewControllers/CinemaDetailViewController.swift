@@ -9,10 +9,14 @@ import UIKit
 
 class CinemaDetailViewController: UIViewController {
     
+    //MARK: - Property
+    var movie: Movie?
+    
+    //MARK: - Override Method
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        print(movie)
     }
     
 }

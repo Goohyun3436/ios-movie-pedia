@@ -185,7 +185,9 @@ extension CinemaViewController: UICollectionViewDelegate, UICollectionViewDataSo
             vc.query = searches[indexPath.item]
             navigationController?.pushViewController(vc, animated: true)
         } else {
-            print("영화", indexPath)
+            let vc = CinemaDetailViewController()
+            vc.movie = movies[indexPath.item]
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     
