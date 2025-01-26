@@ -15,7 +15,7 @@ final class UserProfileView: BaseView {
     private let nicknameLabel = UILabel()
     private let createdAtLabel = UILabel()
     let rightButton = UIButton()
-    private let bottomButton = AccentFillButton("0개의 무비박스 보관중")
+    private let bottomButton = AccentFillButton("\(User.likes.count)개의 무비박스 보관중")
     
     //MARK: - Method
     func configureData(_ profile: Profile) {
