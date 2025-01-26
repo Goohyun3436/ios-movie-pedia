@@ -15,14 +15,16 @@ final class ResentSearchTableViewCell: BaseTableViewCell {
     
     //MARK: - UI Property
     let titleLabel = UILabel()
-    private let removeButton = UIButton()
+    let removeButton = UIButton()
     let collectionView = ResentSearchCollectionView()
+    let noneContentLabel = UILabel()
     
     //MARK: - Override Method
     override func configureHierarchy() {
         contentView.addSubview(titleLabel)
         contentView.addSubview(removeButton)
         contentView.addSubview(collectionView)
+        contentView.addSubview(noneContentLabel)
     }
     
     override func configureLayout() {
@@ -42,6 +44,10 @@ final class ResentSearchTableViewCell: BaseTableViewCell {
             make.height.equalTo(50)
             make.bottom.equalTo(contentView)
         }
+        
+        noneContentLabel.snp.makeConstraints { make in
+            make.center.equalTo(collectionView)
+        }
     }
     
     override func configureView() {
@@ -49,5 +55,8 @@ final class ResentSearchTableViewCell: BaseTableViewCell {
         titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         removeButton.setTitle("전체 삭제", for: .normal)
         removeButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .black)
+        noneContentLabel.text = "최근 검색어 내역이 없습니다."
+        noneContentLabel.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
+        noneContentLabel.textColor = AppColor.darkgray
     }
 }

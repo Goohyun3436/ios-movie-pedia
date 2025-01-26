@@ -19,7 +19,8 @@ final class CinemaViewController: UIViewController {
         }
     }
     private let titles = ["최근검색어", "오늘의 영화"]
-    private let searches: [String] = ["스파이더", "해리포터", "소방관", "스파이더", "해리포터", "소방관"]
+    private var searches: [String] = []
+//    ["스파이더", "해리포터", "소방관", "스파이더", "해리포터", "소방관"]
     private var movies = [Movie]() {
         didSet {
             mainView.tableView.reloadData()
@@ -105,6 +106,9 @@ extension CinemaViewController: UITableViewDelegate, UITableViewDataSource {
             
             cell.collectionView.tag = row
             cell.titleLabel.text = titles[row]
+            
+            cell.removeButton.isHidden = searches.isEmpty
+            cell.noneContentLabel.isHidden = !searches.isEmpty
             
             return cell
         } else {
