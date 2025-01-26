@@ -29,18 +29,9 @@ final class CinemaViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        mainView.userProfileView.rightButton.addTarget(self, action: #selector(userRightButtonTapped), for: .touchUpInside)
-        
+        configureAction()
         configureTableView()
-        
-        NetworkManager.shared.tmdb(.trending(), TMDBResponse.self) { data in
-            self.movies = data.results
-            self.mainView.tableView.reloadData()
-        } failHandler: {
-            print("실패")
-        }
-
+        callRequest()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,6 +44,12 @@ final class CinemaViewController: UIViewController {
     
     //MARK: - Method
     @objc
+    private func searchButtonTapped() {
+        let vc = SearchViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc
     private func userRightButtonTapped() {
         let vc = SettingProfileViewController()
         vc.presentDelegate = self
@@ -60,11 +57,31 @@ final class CinemaViewController: UIViewController {
         present(UINavigationController(rootViewController: vc), animated: true)
     }
     
+    private func configureAction() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 15))),
+            style: .plain,
+            target: self,
+            action: #selector(searchButtonTapped)
+        )
+        
+        mainView.userProfileView.rightButton.addTarget(self, action: #selector(userRightButtonTapped), for: .touchUpInside)
+    }
+    
     private func configureTableView() {
         mainView.tableView.delegate = self
         mainView.tableView.dataSource = self
         mainView.tableView.register(ResentSearchTableViewCell.self, forCellReuseIdentifier: ResentSearchTableViewCell.id)
         mainView.tableView.register(PosterTableViewCell.self, forCellReuseIdentifier: PosterTableViewCell.id)
+    }
+    
+    private func callRequest() {
+        NetworkManager.shared.tmdb(.trending(), TMDBResponse.self) { data in
+            self.movies = data.results
+            self.mainView.tableView.reloadData()
+        } failHandler: {
+            print("실패")
+        }
     }
     
 }
@@ -164,7 +181,9 @@ extension CinemaViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView.tag == 0 {
-            print("최근검색어", indexPath)
+            let vc = SearchViewController()
+            vc.query = searches[indexPath.item]
+            navigationController?.pushViewController(vc, animated: true)
         } else {
             print("영화", indexPath)
         }
@@ -191,7 +210,6 @@ extension CinemaViewController: SearchDelegate, LikeDelegate {
     }
     
     func likesDidChange(_ movieId: Int) {
-        print(#function)
         if let index = User.likes.firstIndex(of: movieId) {
             User.likes.remove(at: index)
         } else {
