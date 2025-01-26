@@ -28,7 +28,7 @@ final class ResentSearchTableViewCell: BaseTableViewCell {
     override func configureLayout() {
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(contentView).offset(16)
-            make.top.equalTo(contentView).offset(16)
+            make.top.equalTo(contentView).offset(20)
         }
         
         removeButton.snp.makeConstraints { make in

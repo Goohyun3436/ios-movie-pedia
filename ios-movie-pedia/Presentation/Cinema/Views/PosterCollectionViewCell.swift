@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 import SnapKit
 
 final class PosterCollectionViewCell: BaseCollectionViewCell {
@@ -14,23 +15,33 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
     private let imageView = UIImageView()
     private let titleLabel = UILabel()
     private let likeButton = UIButton()
-    private let descriptionLabel = UILabel()
+    private let overviewLabel = UILabel()
     
     //MARK: - Property
     static let id = "PosterCollectionViewCell"
+    
+    //MARK: - Method
+    func configureData(_ movie: Movie) {
+        if let url = URL(string: TMDBImageRequest.w500(movie.poster_path).endpoint) {
+            imageView.kf.setImage(with: url)
+        }
+        
+        titleLabel.text = movie.title
+        overviewLabel.text = movie.overview
+    }
     
     //MARK: - Override Method
     override func configureHierarchy() {
         contentView.addSubview(imageView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(likeButton)
-        contentView.addSubview(descriptionLabel)
+        contentView.addSubview(overviewLabel)
     }
     
     override func configureLayout() {
         imageView.snp.makeConstraints { make in
             make.horizontalEdges.top.equalTo(contentView)
-            make.height.equalTo(270)
+            make.height.equalTo(286)
         }
         
         titleLabel.snp.makeConstraints { make in
@@ -46,7 +57,7 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
             make.height.equalTo(24)
         }
         
-        descriptionLabel.snp.makeConstraints { make in
+        overviewLabel.snp.makeConstraints { make in
             make.horizontalEdges.equalTo(contentView)
             make.top.equalTo(titleLabel.snp.bottom).offset(4)
             make.bottom.lessThanOrEqualTo(contentView).offset(-0)
@@ -55,19 +66,18 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
     }
     
     override func configureView() {
-        contentView.backgroundColor = .red
-        imageView.backgroundColor = .orange
-        titleLabel.backgroundColor = .yellow
-        likeButton.backgroundColor = .green
-        descriptionLabel.backgroundColor = .blue
-        titleLabel.text = "titleLabel"
-        descriptionLabel.text = "descriptionLabeldescriptionLabeldescriptionLabeldescriptionLabeldescriptionLabeldescriptionLabeldescriptionLabeldescriptionLabeldescriptionLabel"
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 8
+        imageView.contentMode = .scaleAspectFill
         
         likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         likeButton.contentHorizontalAlignment = .right
+        
         titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        descriptionLabel.numberOfLines = 2
-        descriptionLabel.font = UIFont.systemFont(ofSize: 14)
+        
+        overviewLabel.numberOfLines = 2
+        overviewLabel.font = UIFont.systemFont(ofSize: 12)
+        overviewLabel.textColor = AppColor.darkgray
     }
     
 }

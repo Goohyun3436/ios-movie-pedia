@@ -19,10 +19,8 @@ final class CinemaViewController: UIViewController {
         }
     }
     private let titles = ["최근검색어", "오늘의 영화"]
-    private var contents = [
-        ["스파이더", "해리포터", "소방관", "스파이더", "해리포터", "소방관"],
-        ["기생충", "하얼빈", "테스트1", "테스트2", "테스트3"]
-    ]
+    private let searches: [String] = ["스파이더", "해리포터", "소방관", "스파이더", "해리포터", "소방관"]
+    private var movies = [Movie]()
     
     //MARK: - Override Method
     override func loadView() {
@@ -36,11 +34,12 @@ final class CinemaViewController: UIViewController {
         
         configureTableView()
         
-        NetworkManager.shared.tmdb(.trending(), TMDBResponse.self) { data in
-            print(data)
-        } failHandler: {
-            print("실패")
-        }
+        movies = TMDBResponse.test.results
+//        NetworkManager.shared.tmdb(.trending(), TMDBResponse.self) { data in
+//            print(data)
+//        } failHandler: {
+//            print("실패")
+//        }
 
     }
     
@@ -130,7 +129,11 @@ extension CinemaViewController: UITableViewDelegate, UITableViewDataSource {
 extension CinemaViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        contents[collectionView.tag].count
+        if collectionView.tag == 0 {
+            return searches.count
+        } else {
+            return movies.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -139,15 +142,15 @@ extension CinemaViewController: UICollectionViewDelegate, UICollectionViewDataSo
         if tag == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ResentSearchCollectionViewCell.id, for: indexPath) as! ResentSearchCollectionViewCell
             
-            let row = contents[collectionView.tag][indexPath.item]
+            let row = searches[indexPath.item]
             cell.configureData(row)
             
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PosterCollectionViewCell.id, for: indexPath) as! PosterCollectionViewCell
             
-//            let row = contents[collectionView.tag][indexPath.item]
-//            cell.configureData(row)
+            let row = movies[indexPath.item]
+            cell.configureData(row)
             
             return cell
         }

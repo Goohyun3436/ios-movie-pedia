@@ -44,7 +44,7 @@ final class ResentSearchCollectionViewCell: BaseCollectionViewCell {
     
     override func configureView() {
         contentView.layer.cornerRadius = 15
-        contentView.backgroundColor = AppColor.white
+        contentView.backgroundColor = AppColor.lightgray
         
         titleLabel.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
         titleLabel.textColor = AppColor.black

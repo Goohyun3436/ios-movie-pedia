@@ -18,14 +18,14 @@ enum TMDBRequest {
     
     private var path: String {
         switch self {
-            case .trending(let timewindow, let language, let page):
+            case .trending(let timewindow, _, _):
                 return "/trending/movie/\(timewindow)"
         }
     }
     
     var parameters: Parameters {
         switch self {
-            case .trending(let timewindow, let language, let page):
+            case .trending(_, let language, let page):
                 return [
                     "language": language,
                     "page": page
@@ -43,12 +43,21 @@ enum TMDBRequest {
 }
 
 //MARK: - TMDB Image
-enum TMDBImageRequest: String {
-    case origin
-    case w500
+enum TMDBImageRequest {
+    case origin(_ imagePath: String)
+    case w500(_ imagePath: String)
     
     var endpoint: String {
-        return APIUrl.tmdbImage + self.rawValue
+        return APIUrl.tmdbImage + self.path
+    }
+    
+    private var path: String {
+        switch self {
+        case .origin(let imagePath):
+            return "/origin/\(imagePath)"
+        case .w500(let imagePath):
+            return "/w500/\(imagePath)"
+        }
     }
 }
 

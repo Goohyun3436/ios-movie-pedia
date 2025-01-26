@@ -16,7 +16,7 @@ final class PosterCollectionView: UICollectionView {
             let inset: CGFloat = 16
             let spacing: CGFloat = 16
             let width: CGFloat = 200
-            let height: CGFloat = 340
+            let height: CGFloat = 356
             
             layout.scrollDirection = .horizontal
             layout.itemSize = CGSize(width: width, height: height)

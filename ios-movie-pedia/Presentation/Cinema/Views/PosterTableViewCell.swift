@@ -26,13 +26,13 @@ final class PosterTableViewCell: BaseTableViewCell {
     override func configureLayout() {
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(contentView).offset(16)
-            make.top.equalTo(contentView).offset(16)
+            make.top.equalTo(contentView).offset(10)
         }
         
         collectionView.snp.makeConstraints { make in
             make.horizontalEdges.equalTo(contentView)
             make.top.equalTo(titleLabel.snp.bottom)
-            make.height.equalTo(360)
+            make.height.equalTo(376)
             make.bottom.equalTo(contentView)
         }
     }
