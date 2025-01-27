@@ -15,6 +15,8 @@ class CinemaDetailViewController: UIViewController {
     //MARK: - Override Method
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print(movie)
     }
     
 }

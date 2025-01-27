@@ -56,6 +56,7 @@ final class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "영화 검색"
+        navigationItem.backButtonTitle = ""
         mainView.searchBar.delegate = self
         mainView.tableView.delegate = self
         mainView.tableView.dataSource = self
@@ -179,7 +180,9 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(indexPath)
+        let vc = CinemaDetailViewController()
+        vc.movie = movies[indexPath.row]
+        navigationController?.pushViewController(vc, animated: true)
     }
     
 }
