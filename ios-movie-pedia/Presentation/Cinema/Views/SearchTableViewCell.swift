@@ -62,7 +62,8 @@ final class SearchTableViewCell: BaseTableViewCell {
     
     @objc
     private func likeButtonTapped() {
-        delegate?.likesDidChange(movieId)
+        print(#function)
+        delegate?.likesDidChange(movieId, onlyCellReload: false)
     }
     
     //MARK: - Override Method

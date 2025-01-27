@@ -14,7 +14,7 @@ protocol SearchDelegate {
 }
 
 protocol LikeDelegate {
-    func likesDidChange(_ movieId: Int)
+    func likesDidChange(_ movieId: Int, onlyCellReload: Bool)
 }
 
 protocol ProfileDelegate {

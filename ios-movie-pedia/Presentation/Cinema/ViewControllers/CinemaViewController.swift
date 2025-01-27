@@ -185,6 +185,8 @@ extension CinemaViewController: UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView.tag == 0 {
             let vc = SearchViewController()
+            vc.searchDelegate = self
+            vc.likeDelegate = self
             vc.query = searches[indexPath.item]
             navigationController?.pushViewController(vc, animated: true)
         } else {
@@ -224,7 +226,19 @@ extension CinemaViewController: SearchDelegate, LikeDelegate {
         mainView.tableView.reloadData()
     }
     
-    func likesDidChange(_ movieId: Int) {
+    func likesDidChange(_ movieId: Int, onlyCellReload: Bool) {
+        print("CinemaViewController", #function)
+        
+        if onlyCellReload {
+            for i in movies.indices {
+                if movies[i].id == movieId {
+                    movies[i].is_like.toggle()
+                }
+            }
+            mainView.tableView.reloadData()
+            return
+        }
+        
         if let index = User.likes.firstIndex(of: movieId) {
             User.likes.remove(at: index)
         } else {

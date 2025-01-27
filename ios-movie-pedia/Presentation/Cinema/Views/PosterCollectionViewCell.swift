@@ -45,7 +45,7 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
     
     @objc
     private func likeButtonTapped() {
-        delegate?.likesDidChange(movieId)
+        delegate?.likesDidChange(movieId, onlyCellReload: false)
     }
     
     //MARK: - Override Method

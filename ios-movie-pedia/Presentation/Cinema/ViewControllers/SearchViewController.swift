@@ -78,6 +78,8 @@ final class SearchViewController: UIViewController {
             return
         }
         
+        searchDelegate?.searchAdd(query)
+        
         NetworkManager.shared.tmdb(.search(query, page), TMDBSearchResponse.self) { data in
             if self.page == 1 {
                 self.totalPages = data.total_pages
@@ -140,7 +142,6 @@ extension SearchViewController: UISearchBarDelegate {
         }
         
         self.query = query
-        searchDelegate?.searchAdd(query)
     }
     
 }
@@ -187,7 +188,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
     
 }
 
-//MARK: -
+//MARK: - UserDelegate
 extension SearchViewController: SearchDelegate, LikeDelegate {
     func searchAdd(_ text: String) {}
     
@@ -195,9 +196,21 @@ extension SearchViewController: SearchDelegate, LikeDelegate {
     
     func searchRemove(_ text: String) {}
     
-    func likesDidChange(_ movieId: Int) {
-        likeDelegate?.likesDidChange(movieId)
+    func likesDidChange(_ movieId: Int, onlyCellReload: Bool) {
+        if let index = User.likes.firstIndex(of: movieId) {
+            User.likes.remove(at: index)
+        } else {
+            User.likes.append(movieId)
+        }
+        
+        for i in movies.indices {
+            if movies[i].id == movieId {
+                movies[i].is_like.toggle()
+            }
+        }
+        
         mainView.tableView.reloadData()
+        likeDelegate?.likesDidChange(movieId, onlyCellReload: true)
     }
     
 }
