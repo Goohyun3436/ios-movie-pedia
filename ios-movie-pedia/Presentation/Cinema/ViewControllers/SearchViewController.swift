@@ -25,6 +25,7 @@ final class SearchViewController: UIViewController {
                 return
             }
             
+            mainView.searchBar.text = query
             totalPages = 0
             totalResults = 0
             isEnd = false
