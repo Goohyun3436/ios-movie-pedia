@@ -97,6 +97,8 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.id, for: indexPath) as! SearchTableViewCell
         
+        cell.delegate = self
+        
         let row = movies[indexPath.row]
         cell.configureData(movie: row)
         
@@ -105,6 +107,35 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(indexPath)
+    }
+    
+}
+
+//MARK: - UserDelegate
+extension SearchViewController: SearchDelegate, LikeDelegate {
+    
+    func searchesRemoveAll() {}
+    
+    func searchRemove(_ title: String) {}
+    
+    func likesDidChange(_ movieId: Int) {
+        if let index = User.likes.firstIndex(of: movieId) {
+            User.likes.remove(at: index)
+        } else {
+            User.likes.append(movieId)
+        }
+        
+        for i in movies.indices {
+            if movies[i].id == movieId {
+                movies[i].is_like.toggle()
+            }
+        }
+        
+        mainView.tableView.reloadData()
     }
     
 }

@@ -20,10 +20,15 @@ final class SearchTableViewCell: BaseTableViewCell {
         UILabel(),
         UILabel()
     ]
-    private let likeButton = LikeButton()
+    lazy private var likeButton = {
+        let button = LikeButton()
+        button.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+        return button
+    }()
     
     //MARK: - Property
     static let id = "SearchTableViewCell"
+    var delegate: LikeDelegate?
     private var movieId: Int = 0
     private var isLike: Bool = false {
         didSet {
@@ -51,18 +56,23 @@ final class SearchTableViewCell: BaseTableViewCell {
         }
     }
     
+    @objc
+    private func likeButtonTapped() {
+        delegate?.likesDidChange(movieId)
+    }
+    
     //MARK: - Override Method
     override func configureHierarchy() {
-        addSubview(posterImageView)
-        addSubview(titleLabel)
-        addSubview(releaseDateLabel)
-        addSubview(genreWrapView)
+        contentView.addSubview(posterImageView)
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(releaseDateLabel)
+        contentView.addSubview(genreWrapView)
         
         for item in genreIdLabels {
             genreWrapView.addArrangedSubview(item)
         }
         
-        addSubview(likeButton)
+        contentView.addSubview(likeButton)
     }
     
     override func configureLayout() {

@@ -14,7 +14,11 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
     //MARK: - UI Property
     private let imageView = UIImageView()
     private let titleLabel = UILabel()
-    private let likeButton = LikeButton()
+    lazy private var likeButton = {
+        let button = LikeButton()
+        button.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+        return button
+    }()
     private let overviewLabel = UILabel()
     
     //MARK: - Property
@@ -25,13 +29,6 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
         didSet {
             likeButton.setLikeButton(isLike)
         }
-    }
-    
-    //MARK: - Initializer Method
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
     }
     
     //MARK: - Method
@@ -47,7 +44,7 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
     }
     
     @objc
-    func likeButtonTapped() {
+    private func likeButtonTapped() {
         delegate?.likesDidChange(movieId)
     }
     
