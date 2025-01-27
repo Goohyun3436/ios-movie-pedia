@@ -51,8 +51,6 @@ final class SearchViewController: UIViewController {
         mainView.tableView.delegate = self
         mainView.tableView.dataSource = self
         mainView.tableView.prefetchDataSource = self
-        
-        query = "액션"
     }
     
     override func viewDidAppear(_ animated: Bool) {

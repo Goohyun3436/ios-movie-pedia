@@ -55,6 +55,7 @@ final class SearchView: BaseView {
         
         tableView.keyboardDismissMode = .onDrag
         
+        noneContentLabel.isHidden = true
         noneContentLabel.text = "원하는 검색결과를 찾지 못했습니다"
         noneContentLabel.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
         noneContentLabel.textColor = AppColor.darkgray
