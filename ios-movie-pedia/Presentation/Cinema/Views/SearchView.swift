@@ -17,11 +17,13 @@ final class SearchView: BaseView {
         view.register(SearchTableViewCell.self, forCellReuseIdentifier: SearchTableViewCell.id)
         return view
     }()
+    let noneContentLabel = UILabel()
     
     //MARK: - Override Method
     override func configureHierarchy() {
         addSubview(searchBar)
         addSubview(tableView)
+        addSubview(noneContentLabel)
     }
     
     override func configureLayout() {
@@ -36,6 +38,11 @@ final class SearchView: BaseView {
             make.top.equalTo(searchBar.snp.bottom)
             make.bottom.equalTo(safeAreaLayoutGuide)
         }
+        
+        noneContentLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(searchBar).offset(200)
+        }
     }
     
     override func configureView() {
@@ -46,6 +53,10 @@ final class SearchView: BaseView {
         searchBar.searchTextField.leftView?.tintColor = AppColor.lightgray
         
         tableView.keyboardDismissMode = .onDrag
+        
+        noneContentLabel.text = "원하는 검색결과를 찾지 못했습니다"
+        noneContentLabel.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
+        noneContentLabel.textColor = AppColor.darkgray
     }
     
 }

@@ -35,7 +35,7 @@ final class SearchViewController: UIViewController {
         mainView.tableView.delegate = self
         mainView.tableView.dataSource = self
         
-        query = "액션"
+        query = "뚫뚫뚫"
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -53,6 +53,9 @@ final class SearchViewController: UIViewController {
             self.total_pages = data.total_pages
             self.total_results = data.total_results
             self.movies = data.results
+            
+            self.mainView.noneContentLabel.isHidden = !self.movies.isEmpty
+            
             self.mainView.tableView.reloadData()
         } failHandler: {
             print("실패")
