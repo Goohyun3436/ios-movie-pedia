@@ -13,6 +13,8 @@ final class SearchViewController: UIViewController {
     private let mainView = SearchView()
     
     //MARK: - Property
+    var searchDelegate: SearchDelegate?
+    var likeDelegate: LikeDelegate?
     var query: String? {
         didSet {
             guard let query else {
@@ -114,7 +116,24 @@ extension SearchViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
-        query = searchBar.text
+        searchBar.setShowsCancelButton(false, animated: true)
+        
+        guard var query = searchBar.text else {
+            return
+        }
+        
+        query = query.trimmingCharacters(in: .whitespaces)
+        
+        guard !query.isEmpty else {
+            return
+        }
+        
+        guard query.count >= 2 else {
+            return
+        }
+        
+        self.query = query
+        searchDelegate?.searchAdd(query)
     }
     
 }
@@ -159,26 +178,16 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
     
 }
 
-//MARK: - UserDelegate
+//MARK: -
 extension SearchViewController: SearchDelegate, LikeDelegate {
+    func searchAdd(_ text: String) {}
     
     func searchesRemoveAll() {}
     
-    func searchRemove(_ title: String) {}
+    func searchRemove(_ text: String) {}
     
     func likesDidChange(_ movieId: Int) {
-        if let index = User.likes.firstIndex(of: movieId) {
-            User.likes.remove(at: index)
-        } else {
-            User.likes.append(movieId)
-        }
-        
-        for i in movies.indices {
-            if movies[i].id == movieId {
-                movies[i].is_like.toggle()
-            }
-        }
-        
+        likeDelegate?.likesDidChange(movieId)
         mainView.tableView.reloadData()
     }
     

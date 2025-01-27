@@ -47,6 +47,8 @@ final class CinemaViewController: UIViewController {
     @objc
     private func searchButtonTapped() {
         let vc = SearchViewController()
+        vc.likeDelegate = self
+        vc.searchDelegate = self
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -196,6 +198,16 @@ extension CinemaViewController: UICollectionViewDelegate, UICollectionViewDataSo
 
 //MARK: - UserDelegate
 extension CinemaViewController: SearchDelegate, LikeDelegate {
+    
+    func searchAdd(_ text: String) {
+        if let index = User.searches.lastIndex(of: text) {
+            User.searches.remove(at: index)
+        }
+        
+        User.searches.insert(text, at: 0)
+        searches = User.searches
+        mainView.tableView.reloadData()
+    }
     
     func searchesRemoveAll() {
         User.searches.removeAll()

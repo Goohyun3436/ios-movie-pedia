@@ -8,8 +8,9 @@
 import Foundation
 
 protocol SearchDelegate {
+    func searchAdd(_ text: String)
     func searchesRemoveAll()
-    func searchRemove(_ title: String)
+    func searchRemove(_ text: String)
 }
 
 protocol LikeDelegate {
