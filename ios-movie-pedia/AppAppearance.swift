@@ -53,6 +53,7 @@ final class AppAppearance {
         
         UITableView.appearance().backgroundColor = UIColor.clear
         UITableView.appearance().separatorColor = AppColor.tertiaryBackgroundColor
+        UITableView.appearance().indicatorStyle = .white
         UITableViewCell.appearance().backgroundColor = UIColor.clear
         UITableViewCell.appearance().selectionStyle = .none
         

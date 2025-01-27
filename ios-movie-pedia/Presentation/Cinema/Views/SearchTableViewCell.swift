@@ -105,7 +105,7 @@ final class SearchTableViewCell: BaseTableViewCell {
         
         likeButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(12)
-            make.bottom.equalToSuperview().inset(12)
+            make.bottom.equalToSuperview().inset(4)
             make.width.equalTo(34)
             make.height.equalTo(30)
         }

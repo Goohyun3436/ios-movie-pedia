@@ -15,13 +15,29 @@ final class SearchViewController: UIViewController {
     //MARK: - Property
     var query: String? {
         didSet {
+            guard let query else {
+                return
+            }
+            
+            guard oldValue != query else {
+                return
+            }
+            
+            totalPages = 0
+            totalResults = 0
+            isEnd = false
+            page = 1
+        }
+    }
+    private var page: Int = 0 {
+        didSet {
             callRequest()
         }
     }
-    private var page: Int = 1
-    private var total_pages: Int = 0
-    private var total_results: Int = 0
+    private var totalPages: Int = 0
+    private var totalResults: Int = 0
     private var movies = [Movie]()
+    private var isEnd: Bool = false
     
     //MARK: - Override Method
     override func loadView() {
@@ -34,8 +50,9 @@ final class SearchViewController: UIViewController {
         mainView.searchBar.delegate = self
         mainView.tableView.delegate = self
         mainView.tableView.dataSource = self
+        mainView.tableView.prefetchDataSource = self
         
-        query = "뚫뚫뚫"
+        query = "액션"
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -49,18 +66,32 @@ final class SearchViewController: UIViewController {
             return
         }
         
-        NetworkManager.shared.tmdb(.search(query, 1), TMDBSearchResponse.self) { data in
-            self.total_pages = data.total_pages
-            self.total_results = data.total_results
-            self.movies = data.results
+        NetworkManager.shared.tmdb(.search(query, page), TMDBSearchResponse.self) { data in
+            if self.page == 1 {
+                self.totalPages = data.total_pages
+                self.totalResults = data.total_results
+                self.movies = data.results
+                
+                self.mainView.noneContentLabel.isHidden = !self.movies.isEmpty
+                self.mainView.tableView.reloadData()
+                
+                guard !self.movies.isEmpty else {
+                    return
+                }
+                
+                self.mainView.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+            } else {
+                self.movies.append(contentsOf: data.results)
+            }
             
-            self.mainView.noneContentLabel.isHidden = !self.movies.isEmpty
-            
-            self.mainView.tableView.reloadData()
+            if self.page == self.totalPages {
+                self.isEnd = true
+            }
+            print("\(self.page)/\(self.totalPages)")
         } failHandler: {
             print("실패")
-            self.total_pages = 0
-            self.total_results = 0
+            self.totalPages = 0
+            self.totalResults = 0
             self.movies = []
             self.mainView.tableView.reloadData()
         }
@@ -91,7 +122,7 @@ extension SearchViewController: UISearchBarDelegate {
 }
 
 //MARK: - UITableViewDelegate
-extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
+extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return movies.count
@@ -110,6 +141,18 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        guard !isEnd else {
+            return
+        }
+        
+        for item in indexPaths {
+            if movies.count - 2 == item.row {
+                page += 1
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

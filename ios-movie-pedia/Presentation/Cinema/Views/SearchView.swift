@@ -38,6 +38,7 @@ final class SearchView: BaseView {
             make.top.equalTo(searchBar.snp.bottom)
             make.bottom.equalTo(safeAreaLayoutGuide)
         }
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
         
         noneContentLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
