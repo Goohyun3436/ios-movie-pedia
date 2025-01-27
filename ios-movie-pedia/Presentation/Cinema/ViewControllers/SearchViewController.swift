@@ -18,6 +18,12 @@ final class SearchViewController: UIViewController {
     var query: String? {
         didSet {
             guard let query else {
+                mainView.searchBar.text = ""
+                movies = []
+                totalPages = 0
+                totalResults = 0
+                isEnd = false
+                mainView.tableView.reloadData()
                 return
             }
             
@@ -58,7 +64,11 @@ final class SearchViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        mainView.searchBar.becomeFirstResponder()
+        if query == nil {
+            mainView.searchBar.becomeFirstResponder()
+        } else {
+            mainView.searchBar.setShowsCancelButton(true, animated: true)
+        }
     }
     
     //MARK: - Method
@@ -88,7 +98,6 @@ final class SearchViewController: UIViewController {
             if self.page == self.totalPages {
                 self.isEnd = true
             }
-            print("\(self.page)/\(self.totalPages)")
         } failHandler: {
             print("실패")
             self.totalPages = 0
