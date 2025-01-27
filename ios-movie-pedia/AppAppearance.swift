@@ -52,6 +52,7 @@ final class AppAppearance {
         UISearchTextField.appearance().backgroundColor = AppColor.tertiaryBackgroundColor
         
         UITableView.appearance().backgroundColor = UIColor.clear
+        UITableView.appearance().separatorColor = AppColor.tertiaryBackgroundColor
         UITableViewCell.appearance().backgroundColor = UIColor.clear
         UITableViewCell.appearance().selectionStyle = .none
         

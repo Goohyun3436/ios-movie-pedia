@@ -52,16 +52,16 @@ final class SearchTableViewCell: BaseTableViewCell {
     
     override func configureLayout() {
         posterImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(8)
-            make.verticalEdges.equalToSuperview().inset(8)
+            make.leading.equalToSuperview().offset(12)
+            make.verticalEdges.equalToSuperview().inset(12)
             make.width.equalTo(100)
-            make.height.equalTo(130)
+            make.height.equalTo(130).priority(.high)
         }
         
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(posterImageView.snp.trailing).offset(16)
             make.trailing.lessThanOrEqualToSuperview().offset(-16)
-            make.top.equalToSuperview().offset(12)
+            make.top.equalToSuperview().offset(16)
         }
         
         releaseDateLabel.snp.makeConstraints { make in
@@ -72,28 +72,32 @@ final class SearchTableViewCell: BaseTableViewCell {
         
         genreWrapView.snp.makeConstraints { make in
             make.leading.equalTo(posterImageView.snp.trailing).offset(16)
-            make.bottom.equalToSuperview().inset(8)
+            make.bottom.equalToSuperview().inset(12)
             make.height.equalTo(24)
         }
         genreWrapView.axis = .horizontal
         genreWrapView.spacing = 3
         
         likeButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(16)
-            make.bottom.equalToSuperview().inset(8)
+            make.trailing.equalToSuperview().inset(12)
+            make.bottom.equalToSuperview().inset(12)
             make.width.equalTo(34)
             make.height.equalTo(30)
         }
     }
     
     override func configureView() {
+        posterImageView.clipsToBounds = true
+        posterImageView.layer.cornerRadius = 8
+        posterImageView.backgroundColor = .red
+        
+        titleLabel.numberOfLines = 2
         titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         
         releaseDateLabel.font = UIFont.systemFont(ofSize: 13)
         releaseDateLabel.textColor = AppColor.darkgray
         
         for item in genreIdLabels {
-            item.text = " 액션 "
             item.clipsToBounds = true
             item.layer.cornerRadius = 4
             item.backgroundColor = AppColor.darkgray

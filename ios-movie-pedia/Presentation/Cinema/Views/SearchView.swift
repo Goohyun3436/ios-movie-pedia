@@ -33,7 +33,7 @@ final class SearchView: BaseView {
         
         tableView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview()
-            make.top.equalTo(searchBar.snp.bottom).offset(16)
+            make.top.equalTo(searchBar.snp.bottom)
             make.bottom.equalTo(safeAreaLayoutGuide)
         }
     }
