@@ -24,7 +24,7 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
     //MARK: - Property
     static let id = "PosterCollectionViewCell"
     var delegate: LikeDelegate?
-    private var movieId: Int = 0
+    private var movieId: Int?
     private var isLike: Bool = false {
         didSet {
             likeButton.setLikeButton(isLike)
@@ -45,10 +45,22 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
     
     @objc
     private func likeButtonTapped() {
+        guard let movieId else {
+            return
+        }
+        
         delegate?.likesDidChange(movieId, onlyCellReload: false)
     }
     
     //MARK: - Override Method
+    override func prepareForReuse() {
+        imageView.image = nil
+        movieId = nil
+        isLike = false
+        titleLabel.text = ""
+        overviewLabel.text = ""
+    }
+    
     override func configureHierarchy() {
         contentView.addSubview(imageView)
         contentView.addSubview(titleLabel)

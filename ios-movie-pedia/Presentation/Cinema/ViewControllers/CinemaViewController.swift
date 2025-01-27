@@ -227,8 +227,6 @@ extension CinemaViewController: SearchDelegate, LikeDelegate {
     }
     
     func likesDidChange(_ movieId: Int, onlyCellReload: Bool) {
-        print("CinemaViewController", #function)
-        
         if onlyCellReload {
             for i in movies.indices {
                 if movies[i].id == movieId {

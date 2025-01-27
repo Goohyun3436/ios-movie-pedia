@@ -29,7 +29,7 @@ final class SearchTableViewCell: BaseTableViewCell {
     //MARK: - Property
     static let id = "SearchTableViewCell"
     var delegate: LikeDelegate?
-    private var movieId: Int = 0
+    private var movieId: Int?
     private var isLike: Bool = false {
         didSet {
             likeButton.setLikeButton(isLike)
@@ -62,11 +62,25 @@ final class SearchTableViewCell: BaseTableViewCell {
     
     @objc
     private func likeButtonTapped() {
-        print(#function)
+        guard let movieId else {
+            return
+        }
+        
         delegate?.likesDidChange(movieId, onlyCellReload: false)
     }
     
     //MARK: - Override Method
+    override func prepareForReuse() {
+        posterImageView.image = nil
+        movieId = nil
+        isLike = false
+        titleLabel.text = ""
+        releaseDateLabel.text = ""
+        for item in genreIdLabels {
+            item.text = ""
+        }
+    }
+    
     override func configureHierarchy() {
         contentView.addSubview(posterImageView)
         contentView.addSubview(titleLabel)
