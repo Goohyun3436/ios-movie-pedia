@@ -29,6 +29,7 @@ final class CinemaViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.backButtonTitle = ""
         configureAction()
         configureTableView()
         callRequest()

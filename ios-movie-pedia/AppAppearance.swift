@@ -39,10 +39,15 @@ final class AppAppearance {
         UILabel.appearance().textColor = AppColor.white
         UIButton.appearance().setTitleColor(AppColor.accent, for: .normal)
         UIButton.appearance().setTitleColor(AppColor.darkgray, for: .disabled)
-        UIButton.appearance().tintColor = AppColor.accent
         UITextField.appearance().tintColor = AppColor.accent
         UITextField.appearance().textColor = AppColor.white
         UITextField.appearance().keyboardAppearance = UIKeyboardAppearance.dark
+        
+        UISearchBar.appearance().barTintColor = UIColor.black
+        UISearchBar.appearance().keyboardAppearance = UIKeyboardAppearance.dark
+        UISearchTextField.appearance().tintColor = AppColor.lightgray
+        UISearchTextField.appearance().backgroundColor = AppColor.tertiaryBackgroundColor
+        
         UITableView.appearance().backgroundColor = UIColor.clear
         UITableViewCell.appearance().backgroundColor = UIColor.clear
         UICollectionView.appearance().backgroundColor = UIColor.clear
