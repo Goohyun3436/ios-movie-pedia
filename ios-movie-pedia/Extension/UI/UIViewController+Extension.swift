@@ -20,7 +20,7 @@ extension UIViewController {
     func getToday() -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        var today = formatter.string(from: Date())
+        let today = formatter.string(from: Date())
         return today
     }
 }
