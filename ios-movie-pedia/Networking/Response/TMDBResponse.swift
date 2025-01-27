@@ -20,6 +20,27 @@ struct TMDBSearchResponse: Decodable {
 }
 
 struct Movie: Decodable {
+    static let genre = [
+        12: GenreName(ko: "모험"),
+        14: GenreName(ko: "판타지"),
+        16: GenreName(ko: "애니메이션"),
+        18: GenreName(ko: "드라마"),
+        27: GenreName(ko: "공포"),
+        28: GenreName(ko: "액션"),
+        35: GenreName(ko: "코미디"),
+        36: GenreName(ko: "역사"),
+        37: GenreName(ko: "서부"),
+        53: GenreName(ko: "스릴러"),
+        80: GenreName(ko: "범죄"),
+        99: GenreName(ko: "다큐멘터리"),
+        878: GenreName(ko: "SF"),
+        9648: GenreName(ko: "미스터리"),
+        10402: GenreName(ko: "음악"),
+        10749: GenreName(ko: "로맨스"),
+        10751: GenreName(ko: "가족"),
+        10752: GenreName(ko: "전쟁"),
+        10770: GenreName(ko: "TV 영화")
+    ]
     let id: Int
     let title: String
     let overview: String
@@ -54,4 +75,8 @@ struct Movie: Decodable {
         vote_average = try container.decode(Double.self, forKey: CodingKeys.vote_average)
         is_like = User.likes.contains(id)
     }
+}
+
+struct GenreName {
+    let ko: String
 }

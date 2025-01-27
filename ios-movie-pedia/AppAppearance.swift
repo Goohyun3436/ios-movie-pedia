@@ -9,8 +9,9 @@ import UIKit
 
 enum AppColor {
     static let accent = UIColor(named: "AccentColor")
-    static let darkgray = UIColor(named: "DarkGrayColor")
     static let lightgray = UIColor(named: "LightGrayColor")
+    static let darkgray = UIColor(named: "DarkGrayColor")
+    static let deepgray  = UIColor(named: "DeepGrayColor")
     static let black = UIColor.black
     static let white = UIColor.white
     static let secondaryLabel = UIColor.lightGray

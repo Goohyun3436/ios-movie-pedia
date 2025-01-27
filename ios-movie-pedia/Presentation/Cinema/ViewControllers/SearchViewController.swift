@@ -138,10 +138,6 @@ extension SearchViewController: UISearchBarDelegate {
             return
         }
         
-        guard query.count >= 2 else {
-            return
-        }
-        
         self.query = query
         searchDelegate?.searchAdd(query)
     }

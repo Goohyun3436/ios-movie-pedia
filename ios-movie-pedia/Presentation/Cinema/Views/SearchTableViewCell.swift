@@ -52,7 +52,11 @@ final class SearchTableViewCell: BaseTableViewCell {
                 return
             }
             
-            genreIdLabels[i].text = "\(movie.genre_ids[i])"
+            guard let genre = Movie.genre[movie.genre_ids[i]]?.ko else {
+                return
+            }
+            
+            genreIdLabels[i].text = " \(genre) "
         }
     }
     
@@ -124,8 +128,9 @@ final class SearchTableViewCell: BaseTableViewCell {
         for item in genreIdLabels {
             item.clipsToBounds = true
             item.layer.cornerRadius = 4
-            item.backgroundColor = AppColor.darkgray
+            item.backgroundColor = AppColor.deepgray
             item.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+            item.textColor = AppColor.lightgray
         }
     }
     
