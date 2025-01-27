@@ -33,7 +33,7 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
     
     //MARK: - Method
     func configureData(_ movie: Movie) {
-        if let url = URL(string: TMDBImageRequest.w500(movie.poster_path).endpoint) {
+        if let poster = movie.poster_path, let url = URL(string: TMDBImageRequest.w500(poster).endpoint) {
             imageView.kf.setImage(with: url)
         }
         

@@ -85,15 +85,7 @@ final class SearchViewController: UIViewController {
                 self.totalPages = data.total_pages
                 self.totalResults = data.total_results
                 self.movies = data.results
-                
                 self.mainView.noneContentLabel.isHidden = !self.movies.isEmpty
-                self.mainView.tableView.reloadData()
-                
-                guard !self.movies.isEmpty else {
-                    return
-                }
-                
-                self.mainView.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
             } else {
                 self.movies.append(contentsOf: data.results)
             }
@@ -101,6 +93,8 @@ final class SearchViewController: UIViewController {
             if self.page == self.totalPages {
                 self.isEnd = true
             }
+            
+            self.mainView.tableView.reloadData()
         } failHandler: {
             print("실패")
             self.totalPages = 0

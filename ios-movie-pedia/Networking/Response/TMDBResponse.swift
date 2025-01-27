@@ -44,7 +44,7 @@ struct Movie: Decodable {
     let id: Int
     let title: String
     let overview: String
-    let poster_path: String
+    let poster_path: String?
     let genre_ids: [Int]
     let popularity: Double
     let release_date: String
@@ -68,7 +68,7 @@ struct Movie: Decodable {
         id = try container.decode(Int.self, forKey: CodingKeys.id)
         title = try container.decode(String.self, forKey: CodingKeys.title)
         overview = try container.decode(String.self, forKey: CodingKeys.overview)
-        poster_path = try container.decode(String.self, forKey: CodingKeys.poster_path)
+        poster_path = try container.decode(String?.self, forKey: CodingKeys.poster_path)
         genre_ids = try container.decode([Int].self, forKey: CodingKeys.genre_ids)
         popularity = try container.decode(Double.self, forKey: CodingKeys.popularity)
         release_date = try container.decode(String.self, forKey: CodingKeys.release_date)
