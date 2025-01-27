@@ -12,9 +12,16 @@ final class SearchView: BaseView {
     
     //MARK: - UI Property
     let searchBar = UISearchBar()
+    let tableView = {
+        let view = UITableView()
+        view.register(SearchTableViewCell.self, forCellReuseIdentifier: SearchTableViewCell.id)
+        return view
+    }()
     
+    //MARK: - Override Method
     override func configureHierarchy() {
         addSubview(searchBar)
+        addSubview(tableView)
     }
     
     override func configureLayout() {
@@ -22,6 +29,12 @@ final class SearchView: BaseView {
             make.horizontalEdges.equalToSuperview()
             make.top.equalTo(safeAreaLayoutGuide)
             make.height.equalTo(44)
+        }
+        
+        tableView.snp.makeConstraints { make in
+            make.horizontalEdges.equalToSuperview()
+            make.top.equalTo(searchBar.snp.bottom).offset(16)
+            make.bottom.equalTo(safeAreaLayoutGuide)
         }
     }
     
@@ -31,6 +44,8 @@ final class SearchView: BaseView {
         searchBar.setImage(UIImage(systemName: "xmark.circle.fill"), for: .clear, state: .normal)
         searchBar.tintColor = AppColor.white
         searchBar.searchTextField.leftView?.tintColor = AppColor.lightgray
+        
+        tableView.keyboardDismissMode = .onDrag
     }
     
 }

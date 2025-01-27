@@ -36,9 +36,12 @@ final class AppAppearance {
         UINavigationBar.appearance().scrollEdgeAppearance = appearanceN
         
         BaseView.appearance().backgroundColor = AppColor.black
+        
         UILabel.appearance().textColor = AppColor.white
+        
         UIButton.appearance().setTitleColor(AppColor.accent, for: .normal)
         UIButton.appearance().setTitleColor(AppColor.darkgray, for: .disabled)
+        
         UITextField.appearance().tintColor = AppColor.accent
         UITextField.appearance().textColor = AppColor.white
         UITextField.appearance().keyboardAppearance = UIKeyboardAppearance.dark
@@ -50,6 +53,8 @@ final class AppAppearance {
         
         UITableView.appearance().backgroundColor = UIColor.clear
         UITableViewCell.appearance().backgroundColor = UIColor.clear
+        UITableViewCell.appearance().selectionStyle = .none
+        
         UICollectionView.appearance().backgroundColor = UIColor.clear
     }
 }

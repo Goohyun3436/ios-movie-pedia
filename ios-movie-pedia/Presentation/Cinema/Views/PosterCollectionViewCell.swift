@@ -14,7 +14,7 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
     //MARK: - UI Property
     private let imageView = UIImageView()
     private let titleLabel = UILabel()
-    private let likeButton = UIButton()
+    private let likeButton = LikeButton()
     private let overviewLabel = UILabel()
     
     //MARK: - Property
@@ -23,7 +23,7 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
     private var movieId: Int = 0
     private var isLike: Bool = false {
         didSet {
-            setLikeButton()
+            likeButton.setLikeButton(isLike)
         }
     }
     
@@ -49,10 +49,6 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
     @objc
     func likeButtonTapped() {
         delegate?.likesDidChange(movieId)
-    }
-    
-    private func setLikeButton() {
-        likeButton.setImage(UIImage(systemName: isLike ? "heart.fill" : "heart"), for: .normal)
     }
     
     //MARK: - Override Method
@@ -94,8 +90,6 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 8
         imageView.contentMode = .scaleAspectFill
-        
-        likeButton.contentHorizontalAlignment = .right
         
         titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         
