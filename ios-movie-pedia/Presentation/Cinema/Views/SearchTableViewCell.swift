@@ -24,6 +24,7 @@ final class SearchTableViewCell: BaseTableViewCell {
     
     //MARK: - Property
     static let id = "SearchTableViewCell"
+    private var movieId: Int = 0
     private var isLike: Bool = false {
         didSet {
             likeButton.setLikeButton(isLike)
@@ -32,8 +33,22 @@ final class SearchTableViewCell: BaseTableViewCell {
     
     //MARK: - Method
     func configureData(movie: Movie) {
-        print(movie)
-        isLike = false
+        if let url = URL(string: TMDBImageRequest.w500(movie.poster_path).endpoint) {
+            posterImageView.kf.setImage(with: url)
+        }
+        
+        movieId = movie.id
+        isLike = movie.is_like
+        titleLabel.text = movie.title
+        releaseDateLabel.text = movie.release_date
+        
+        for i in movie.genre_ids.indices {
+            guard i <= genreIdLabels.count - 1 else {
+                return
+            }
+            
+            genreIdLabels[i].text = "\(movie.genre_ids[i])"
+        }
     }
     
     //MARK: - Override Method
@@ -89,7 +104,6 @@ final class SearchTableViewCell: BaseTableViewCell {
     override func configureView() {
         posterImageView.clipsToBounds = true
         posterImageView.layer.cornerRadius = 8
-        posterImageView.backgroundColor = .red
         
         titleLabel.numberOfLines = 2
         titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)

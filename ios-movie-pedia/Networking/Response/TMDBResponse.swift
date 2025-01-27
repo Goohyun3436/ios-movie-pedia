@@ -12,6 +12,13 @@ struct TMDBResponse: Decodable {
     let results: [Movie]
 }
 
+struct TMDBSearchResponse: Decodable {
+    let page: Int
+    let results: [Movie]
+    let total_pages: Int
+    let total_results: Int
+}
+
 struct Movie: Decodable {
     let id: Int
     let backdrop_path: String

@@ -10,11 +10,18 @@ import UIKit
 final class SearchViewController: UIViewController {
     
     //MARK: - UI Property
-    let mainView = SearchView()
+    private let mainView = SearchView()
     
     //MARK: - Property
-    var query: String?
-    private var movie = [Movie]()
+    var query: String? {
+        didSet {
+            callRequest()
+        }
+    }
+    private var page: Int = 1
+    private var total_pages: Int = 0
+    private var total_results: Int = 0
+    private var movies = [Movie]()
     
     //MARK: - Override Method
     override func loadView() {
@@ -27,11 +34,34 @@ final class SearchViewController: UIViewController {
         mainView.searchBar.delegate = self
         mainView.tableView.delegate = self
         mainView.tableView.dataSource = self
+        
+        query = "액션"
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         mainView.searchBar.becomeFirstResponder()
+    }
+    
+    //MARK: - Method
+    private func callRequest() {
+        guard let query else {
+            return
+        }
+        
+        NetworkManager.shared.tmdb(.search(query, 1), TMDBSearchResponse.self) { data in
+            self.total_pages = data.total_pages
+            self.total_results = data.total_results
+            self.movies = data.results
+            self.mainView.tableView.reloadData()
+        } failHandler: {
+            print("실패")
+            self.total_pages = 0
+            self.total_results = 0
+            self.movies = []
+            self.mainView.tableView.reloadData()
+        }
+
     }
     
 }
@@ -61,15 +91,14 @@ extension SearchViewController: UISearchBarDelegate {
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return movie.count
-        return 5
+        return movies.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.id, for: indexPath) as! SearchTableViewCell
         
-//        let row = movie[indexPath.row]
-//        cell.configureData(movie: row)
+        let row = movies[indexPath.row]
+        cell.configureData(movie: row)
         
         return cell
     }
