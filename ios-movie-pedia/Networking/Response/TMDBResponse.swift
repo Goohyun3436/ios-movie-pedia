@@ -21,7 +21,6 @@ struct TMDBSearchResponse: Decodable {
 
 struct Movie: Decodable {
     let id: Int
-    let backdrop_path: String
     let title: String
     let overview: String
     let poster_path: String
@@ -46,7 +45,6 @@ struct Movie: Decodable {
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int.self, forKey: CodingKeys.id)
-        backdrop_path = try container.decode(String.self, forKey: CodingKeys.backdrop_path)
         title = try container.decode(String.self, forKey: CodingKeys.title)
         overview = try container.decode(String.self, forKey: CodingKeys.overview)
         poster_path = try container.decode(String.self, forKey: CodingKeys.poster_path)
