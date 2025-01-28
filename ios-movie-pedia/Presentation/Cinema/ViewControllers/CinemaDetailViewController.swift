@@ -31,8 +31,11 @@ class CinemaDetailViewController: UIViewController {
         view = mainView
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        mainView.backdropScrollView.images = ["heart", "heart.fill", "star", "star", "star", "star"]
         
         guard let movie else {
             return
@@ -44,6 +47,7 @@ class CinemaDetailViewController: UIViewController {
         isLike = movie.is_like
         
         print(movie)
+//        mainView.backdropScrollView.images = ["heart", "heart.fill", "start"]
     }
     
     //MARK: - Method
