@@ -18,10 +18,11 @@ final class ImageScrollView: BaseView {
     //MARK: - Property
     var images = [String]() {
         didSet {
-            pageControl.numberOfPages = images.count
-            pageControl.size(forNumberOfPages: images.count)
+            let numberOfPages = images.count > 5 ? 5 : images.count
+            pageControl.numberOfPages = numberOfPages
+            pageControl.size(forNumberOfPages: numberOfPages)
             
-            for i in images.indices {
+            for i in 0..<numberOfPages {
                 let imageView = UIImageView()
                 imageView.image = UIImage(systemName: images[i])
                 
@@ -76,6 +77,7 @@ final class ImageScrollView: BaseView {
         pageControl.isUserInteractionEnabled = false
         pageControl.currentPage = 0
         pageControl.layer.cornerRadius = 12
+        pageControl.allowsContinuousInteraction = false
         pageControl.backgroundColor = AppColor.deepgray
         pageControl.pageIndicatorTintColor = AppColor.darkgray
         pageControl.currentPageIndicatorTintColor = AppColor.white
@@ -83,6 +85,7 @@ final class ImageScrollView: BaseView {
     
 }
 
+//MARK: - UIScrollViewDelegate
 extension ImageScrollView: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

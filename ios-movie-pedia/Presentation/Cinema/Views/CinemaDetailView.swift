@@ -12,6 +12,7 @@ final class CinemaDetailView: BaseView {
     
     //MARK: - UI Property
     let backdropScrollView = ImageScrollView()
+//    let 
     
     //MARK: - Override Method
     override func configureHierarchy() {
