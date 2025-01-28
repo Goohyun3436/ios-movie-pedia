@@ -191,6 +191,7 @@ extension CinemaViewController: UICollectionViewDelegate, UICollectionViewDataSo
             navigationController?.pushViewController(vc, animated: true)
         } else {
             let vc = CinemaDetailViewController()
+            vc.delegate = self
             vc.movie = movies[indexPath.item]
             navigationController?.pushViewController(vc, animated: true)
         }

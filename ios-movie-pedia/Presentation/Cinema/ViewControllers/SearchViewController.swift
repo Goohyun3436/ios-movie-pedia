@@ -176,6 +176,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = CinemaDetailViewController()
+        vc.delegate = self
         vc.movie = movies[indexPath.row]
         navigationController?.pushViewController(vc, animated: true)
     }
