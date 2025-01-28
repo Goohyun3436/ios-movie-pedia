@@ -47,16 +47,10 @@ final class SearchTableViewCell: BaseTableViewCell {
         titleLabel.text = movie.title
         releaseDateLabel.text = movie.release_date
         
-        for i in movie.genre_ids.indices {
-            guard i <= genreIdLabels.count - 1 else {
-                return
-            }
-            
-            guard let genre = Movie.genre[movie.genre_ids[i]]?.ko else {
-                return
-            }
-            
-            genreIdLabels[i].text = " \(genre) "
+        let genres = convertGenreIds(movie.genre_ids)
+        
+        for i in genres.indices {
+            genreIdLabels[i].text = " \(genres[i]) "
         }
     }
     
