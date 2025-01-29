@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 import SnapKit
 
 final class ImageScrollView: BaseView {
@@ -16,7 +17,7 @@ final class ImageScrollView: BaseView {
     private let pageControl = UIPageControl()
     
     //MARK: - Property
-    var images = [String]() {
+    var images = [Image]() {
         didSet {
             let numberOfPages = images.count > 5 ? 5 : images.count
             pageControl.numberOfPages = numberOfPages
@@ -24,7 +25,10 @@ final class ImageScrollView: BaseView {
             
             for i in 0..<numberOfPages {
                 let imageView = UIImageView()
-                imageView.image = UIImage(systemName: images[i])
+                
+                if let image = images[i].file_path, let url = URL(string: TMDBImageRequest.original(image).endpoint) {
+                    imageView.kf.setImage(with: url)
+                }
                 
                 stackView.addArrangedSubview(imageView)
                 
@@ -33,7 +37,7 @@ final class ImageScrollView: BaseView {
                 }
                 
                 imageView.clipsToBounds = true
-                imageView.contentMode = .scaleAspectFit
+                imageView.contentMode = .scaleAspectFill
             }
         }
     }

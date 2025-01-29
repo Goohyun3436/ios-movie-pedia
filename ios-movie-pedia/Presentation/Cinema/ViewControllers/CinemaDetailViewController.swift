@@ -35,7 +35,14 @@ final class CinemaDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        mainView.backdropScrollView.images = ["heart", "heart.fill", "star", "star", "star", "star"]
+        mainView.backdropScrollView.images = [
+            Image(file_path: "/jgj73WS5IJq8OCGNZJUBGV6mkkK.jpg"),
+            Image(file_path: "/jgj73WS5IJq8OCGNZJUBGV6mkkK.jpg"),
+            Image(file_path: "/jgj73WS5IJq8OCGNZJUBGV6mkkK.jpg"),
+            Image(file_path: "/jgj73WS5IJq8OCGNZJUBGV6mkkK.jpg"),
+            Image(file_path: "/jgj73WS5IJq8OCGNZJUBGV6mkkK.jpg"),
+            Image(file_path: "/jgj73WS5IJq8OCGNZJUBGV6mkkK.jpg")
+        ]
         mainView.tableView.delegate = self
         mainView.tableView.dataSource = self
 //        

@@ -66,7 +66,7 @@ enum TMDBRequest {
 
 //MARK: - TMDB Image
 enum TMDBImageRequest {
-    case origin(_ imagePath: String)
+    case original(_ imagePath: String)
     case w500(_ imagePath: String)
     
     var endpoint: String {
@@ -75,8 +75,8 @@ enum TMDBImageRequest {
     
     private var path: String {
         switch self {
-        case .origin(let imagePath):
-            return "/origin/\(imagePath)"
+        case .original(let imagePath):
+            return "/original/\(imagePath)"
         case .w500(let imagePath):
             return "/w500/\(imagePath)"
         }
