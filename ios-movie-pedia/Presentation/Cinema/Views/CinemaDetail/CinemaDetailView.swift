@@ -25,6 +25,7 @@ final class CinemaDetailView: BaseView {
        let view = UITableView()
         view.register(OverviewTableViewCell.self, forCellReuseIdentifier: OverviewTableViewCell.id)
         view.register(CastTableViewCell.self, forCellReuseIdentifier: CastTableViewCell.id)
+        view.register(PosterMiniTableViewCell.self, forCellReuseIdentifier: PosterMiniTableViewCell.id)
         return view
     }()
     
@@ -62,7 +63,7 @@ final class CinemaDetailView: BaseView {
         tableView.snp.makeConstraints { make in
             make.horizontalEdges.bottom.equalToSuperview()
             make.top.equalTo(infoStackView.snp.bottom)
-            make.height.equalTo(500)
+            make.height.equalTo(508)
         }
     }
     
@@ -73,8 +74,11 @@ final class CinemaDetailView: BaseView {
         tableView.backgroundColor = .gray
         
         scrollView.bouncesVertically = false
+        
         infoStackView.backgroundColor = AppColor.darkgray
+        
         tableView.isScrollEnabled = false
+        tableView.separatorStyle = .none
     }
     
 }

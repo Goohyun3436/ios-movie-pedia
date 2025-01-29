@@ -45,6 +45,13 @@ final class CinemaDetailViewController: UIViewController {
 //            print("실패")
 //        }
         
+//        NetworkManager.shared.tmdb(.images(604362), TMDBImagesResponse.self) { data in
+//            print(data)
+//        } failHandler: {
+//            print("실패")
+//        }
+
+        
         guard let movie else {
             return
         }
@@ -96,9 +103,16 @@ extension CinemaDetailViewController: UITableViewDelegate, UITableViewDataSource
             
             return cell
         } else {
-            let cell = mainView.tableView.dequeueReusableCell(withIdentifier: OverviewTableViewCell.id, for: indexPath) as! OverviewTableViewCell
+            let cell = mainView.tableView.dequeueReusableCell(withIdentifier: PosterMiniTableViewCell.id, for: indexPath) as! PosterMiniTableViewCell
             
-            cell.configureData(titles[row], "overviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverview")
+            cell.configureData(titles[row], [
+                Image(file_path: "/jgj73WS5IJq8OCGNZJUBGV6mkkK.jpg"),
+                Image(file_path: "/jgj73WS5IJq8OCGNZJUBGV6mkkK.jpg"),
+                Image(file_path: "/jgj73WS5IJq8OCGNZJUBGV6mkkK.jpg"),
+                Image(file_path: "/jgj73WS5IJq8OCGNZJUBGV6mkkK.jpg"),
+                Image(file_path: "/jgj73WS5IJq8OCGNZJUBGV6mkkK.jpg"),
+                Image(file_path: "/jgj73WS5IJq8OCGNZJUBGV6mkkK.jpg")
+            ])
             
             return cell
         }

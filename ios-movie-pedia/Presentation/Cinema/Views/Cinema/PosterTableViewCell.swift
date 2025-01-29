@@ -12,7 +12,7 @@ final class PosterTableViewCell: BaseTableViewCell {
     
     //MARK: - UI Property
     let titleLabel = UILabel()
-    let collectionView = PosterCollectionView()
+    let collectionView = PosterCollectionView(CGSize(width: 200, height: 356), 16, 16)
     
     //MARK: - Property
     static let id = "PosterTableViewCell"

@@ -24,6 +24,12 @@ struct TMDBCreditsResponse: Decodable {
     let cast: [Person]
 }
 
+struct TMDBImagesResponse: Decodable {
+    let id: Int
+    let backdrops: [Image]
+    let posters: [Image]
+}
+
 struct Movie: Decodable {
     static let genre = [
         12: GenreName(ko: "모험"),
@@ -86,6 +92,10 @@ struct Person: Decodable {
     let name: String
     let original_name: String
     let profile_path: String?
+}
+
+struct Image: Decodable {
+    let file_path: String?
 }
 
 struct GenreName {

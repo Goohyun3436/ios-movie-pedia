@@ -13,6 +13,7 @@ enum TMDBRequest {
     case trending(_ timewindow: Timewindow = .day, _ page: Int = 1, _ language: Language = .ko)
     case search(_ query: String, _ page: Int = 1, _ include_adult: Bool = false, _ language: Language = .ko)
     case credits(_ movieId: Int, _ language: Language = .ko)
+    case images(_ movieId: Int)
     
     var endpoint: String {
         return APIUrl.tmdb + self.path
@@ -26,6 +27,8 @@ enum TMDBRequest {
             return "/search/movie"
         case .credits(let movieId, _):
             return "/movie/\(movieId)/credits"
+        case .images(let movieId):
+            return "/movie/\(movieId)/images"
         }
     }
     
@@ -47,6 +50,8 @@ enum TMDBRequest {
             return [
                 "language": language.rawValue
             ]
+        case .images(_):
+            return [:]
         }
     }
     

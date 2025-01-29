@@ -9,14 +9,12 @@ import UIKit
 
 final class PosterCollectionView: UICollectionView {
     
-    override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
+    init(_ size: CGSize, _ inset: CGFloat, _ spacing: CGFloat) {
         super.init(frame: .zero, collectionViewLayout: {
             let layout = UICollectionViewFlowLayout()
             
-            let inset: CGFloat = 16
-            let spacing: CGFloat = 16
-            let width: CGFloat = 200
-            let height: CGFloat = 356
+            let width: CGFloat = size.width
+            let height: CGFloat = size.height
             
             layout.scrollDirection = .horizontal
             layout.itemSize = CGSize(width: width, height: height)

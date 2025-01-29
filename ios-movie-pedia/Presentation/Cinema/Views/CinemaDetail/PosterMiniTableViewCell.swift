@@ -1,0 +1,75 @@
+//
+//  PosterTableViewCell.swift
+//  ios-movie-pedia
+//
+//  Created by Goo on 1/29/25.
+//
+
+import UIKit
+import SnapKit
+
+final class PosterMiniTableViewCell: BaseTableViewCell {
+    
+    //MARK: - UI Property
+    private let titleLabel = UILabel()
+    private lazy var collectionView = {
+        let view = PosterCollectionView(CGSize(width: 130, height: 200), 16, 8)
+        
+        view.delegate = self
+        view.dataSource = self
+        view.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: ImageCollectionViewCell.id)
+        
+        return view
+    }()
+    
+    //MARK: - Property
+    static let id = "PosterMiniTableViewCell"
+    private var posters = [Image]()
+    
+    //MARK: - Method
+    func configureData(_ title: String, _ posters: [Image]) {
+        titleLabel.text = title
+        self.posters = posters
+        collectionView.reloadData()
+    }
+    
+    //MARK: - Override Method
+    override func configureHierarchy() {
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(collectionView)
+    }
+    
+    override func configureLayout() {
+        titleLabel.snp.makeConstraints { make in
+            make.leading.top.equalTo(contentView).offset(16)
+        }
+        
+        collectionView.snp.makeConstraints { make in
+            make.horizontalEdges.equalTo(contentView)
+            make.top.equalTo(titleLabel.snp.bottom)
+            make.bottom.equalTo(contentView)
+            make.height.equalTo(216)
+        }
+    }
+    
+    override func configureView() {
+        titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+    }
+    
+}
+
+extension PosterMiniTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return posters.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionViewCell.id, for: indexPath) as! ImageCollectionViewCell
+        
+        cell.configureData(posters[indexPath.item].file_path)
+        
+        return cell
+    }
+    
+}
