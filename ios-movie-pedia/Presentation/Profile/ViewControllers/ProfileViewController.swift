@@ -67,6 +67,25 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 44
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 3 {
+            presentAlert("탈퇴하기", "탈퇴를 하면 데이터가 모두 초기화 됩니다. 탈퇴 하시겠습니까?") {
+                UserDefaults.standard.removeObject(forKey: "profile")
+                
+                guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                      let window = scene.windows.first else {
+                    return
+                }
+
+                window.rootViewController = UINavigationController(rootViewController: OnboardingViewController())
+            }
+        }
+    }
+    
 }
 
 //MARK: - ProfileDelegate
