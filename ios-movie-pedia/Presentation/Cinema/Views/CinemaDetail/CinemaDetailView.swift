@@ -21,6 +21,11 @@ final class CinemaDetailView: BaseView {
         view.addArrangedSubview(MovieInfoView(.genre_ids, [12, 14, 27, 28]))
         return view
     }()
+    let tableView = {
+       let view = UITableView()
+        view.register(OverviewTableViewCell.self, forCellReuseIdentifier: OverviewTableViewCell.id)
+        return view
+    }()
     
     //MARK: - Override Method
     override func configureHierarchy() {
@@ -28,6 +33,7 @@ final class CinemaDetailView: BaseView {
         scrollView.addSubview(contentView)
         contentView.addSubview(backdropScrollView)
         contentView.addSubview(infoStackView)
+        contentView.addSubview(tableView)
     }
     
     override func configureLayout() {
@@ -46,20 +52,28 @@ final class CinemaDetailView: BaseView {
         }
         
         infoStackView.snp.makeConstraints { make in
-            make.centerX.bottom.equalToSuperview()
+            make.centerX.equalToSuperview()
             make.top.equalTo(backdropScrollView.snp.bottom).offset(16)
-            make.bottom.equalToSuperview()
         }
         infoStackView.axis = .horizontal
         infoStackView.spacing = 0.5
+        
+        tableView.snp.makeConstraints { make in
+            make.horizontalEdges.bottom.equalToSuperview()
+            make.top.equalTo(infoStackView.snp.bottom)
+            make.height.equalTo(500)
+        }
     }
     
     override func configureView() {
         scrollView.backgroundColor = .red
         contentView.backgroundColor = .orange
         backdropScrollView.backgroundColor = .yellow
+        tableView.backgroundColor = .gray
         
+        scrollView.bouncesVertically = false
         infoStackView.backgroundColor = AppColor.darkgray
+        tableView.isScrollEnabled = false
     }
     
 }
