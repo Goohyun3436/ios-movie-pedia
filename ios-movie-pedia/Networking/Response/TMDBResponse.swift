@@ -20,12 +20,10 @@ struct TMDBSearchResponse: Decodable {
 }
 
 struct TMDBCreditsResponse: Decodable {
-    let id: Int
     let cast: [Person]
 }
 
 struct TMDBImagesResponse: Decodable {
-    let id: Int
     let backdrops: [Image]
     let posters: [Image]
 }

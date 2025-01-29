@@ -21,6 +21,9 @@ final class CinemaDetailViewController: UIViewController {
     var delegate: LikeDelegate?
     private let titles = ["Synopsis", "Cast", "Poster"]
     var movie: Movie?
+    private var cast = [Person]()
+    private var backdrops = [Image]()
+    private var posters = [Image]()
     private var isLike: Bool = false {
         didSet {
             likeButton.setLikeButton(isLike)
@@ -35,39 +38,48 @@ final class CinemaDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        mainView.backdropScrollView.images = [
-            Image(file_path: "/jgj73WS5IJq8OCGNZJUBGV6mkkK.jpg"),
-            Image(file_path: "/jgj73WS5IJq8OCGNZJUBGV6mkkK.jpg"),
-            Image(file_path: "/jgj73WS5IJq8OCGNZJUBGV6mkkK.jpg"),
-            Image(file_path: "/jgj73WS5IJq8OCGNZJUBGV6mkkK.jpg"),
-            Image(file_path: "/jgj73WS5IJq8OCGNZJUBGV6mkkK.jpg"),
-            Image(file_path: "/jgj73WS5IJq8OCGNZJUBGV6mkkK.jpg")
-        ]
         mainView.tableView.delegate = self
         mainView.tableView.dataSource = self
-//        
-//        NetworkManager.shared.tmdb(.credits(604362, .en), TMDBCreditsResponse.self) { data in
-//            print(data)
-//        } failHandler: {
-//            print("실패")
-//        }
-        
-//        NetworkManager.shared.tmdb(.images(604362), TMDBImagesResponse.self) { data in
-//            print(data)
-//        } failHandler: {
-//            print("실패")
-//        }
-
         
         guard let movie else {
             return
         }
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: likeButton)
-        
         navigationItem.title = movie.title
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: likeButton)
         isLike = movie.is_like
+        callRequest(movie.id)
+    }
+    
+    private func callRequest(_ movieId: Int) {
+        let group = DispatchGroup()
+        
+        group.enter()
+        NetworkManager.shared.tmdb(.images(movieId), TMDBImagesResponse.self) { data in
+            self.backdrops = data.backdrops
+            self.posters = data.posters
+            group.leave()
+        } failHandler: {
+            print("실패")
+            self.backdrops = []
+            self.posters = []
+            group.leave()
+        }
+        
+        group.enter()
+        NetworkManager.shared.tmdb(.credits(movieId, .en), TMDBCreditsResponse.self) { data in
+            self.cast = data.cast
+            group.leave()
+        } failHandler: {
+            print("실패")
+            self.cast = []
+            group.leave()
+        }
+        
+        group.notify(queue: .main) {
+            self.mainView.backdropScrollView.images = self.backdrops
+            self.mainView.tableView.reloadData()
+        }
     }
     
     //MARK: - Method
@@ -97,32 +109,20 @@ extension CinemaDetailViewController: UITableViewDelegate, UITableViewDataSource
             
             cell.delegate = self
             
-            cell.configureData(titles[row], "overviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverview")
+            cell.configureData(titles[row], movie?.overview)
             
             return cell
         } else if row == 1 {
             let cell = mainView.tableView.dequeueReusableCell(withIdentifier: CastTableViewCell.id, for: indexPath) as! CastTableViewCell
             
-            cell.configureData(titles[row], [
-                Person(name: "Kwon Sang-woo", original_name: "권상우", profile_path: "/sXWZ82ph4ZPPG9kv2x6nXha1Kk4.jpg"),
-                Person(name: "Kwon Sang-woo", original_name: "권상우", profile_path: "/sXWZ82ph4ZPPG9kv2x6nXha1Kk4.jpg"),
-                Person(name: "Kwon Sang-woo", original_name: "권상우", profile_path: "/sXWZ82ph4ZPPG9kv2x6nXha1Kk4.jpg"),
-                Person(name: "Kwon Sang-woo", original_name: "권상우", profile_path: "/sXWZ82ph4ZPPG9kv2x6nXha1Kk4.jpg"),
-                Person(name: "Kwon Sang-woo", original_name: "권상우", profile_path: "/sXWZ82ph4ZPPG9kv2x6nXha1Kk4.jpg")
-            ])
+            cell.configureData(titles[row], cast)
             
             return cell
         } else {
             let cell = mainView.tableView.dequeueReusableCell(withIdentifier: PosterMiniTableViewCell.id, for: indexPath) as! PosterMiniTableViewCell
             
-            cell.configureData(titles[row], [
-                Image(file_path: "/jgj73WS5IJq8OCGNZJUBGV6mkkK.jpg"),
-                Image(file_path: "/jgj73WS5IJq8OCGNZJUBGV6mkkK.jpg"),
-                Image(file_path: "/jgj73WS5IJq8OCGNZJUBGV6mkkK.jpg"),
-                Image(file_path: "/jgj73WS5IJq8OCGNZJUBGV6mkkK.jpg"),
-                Image(file_path: "/jgj73WS5IJq8OCGNZJUBGV6mkkK.jpg"),
-                Image(file_path: "/jgj73WS5IJq8OCGNZJUBGV6mkkK.jpg")
-            ])
+            print(posters.count)
+            cell.configureData(titles[row], posters)
             
             return cell
         }

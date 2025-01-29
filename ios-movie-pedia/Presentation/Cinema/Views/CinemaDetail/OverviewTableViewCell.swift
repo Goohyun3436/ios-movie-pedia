@@ -25,7 +25,7 @@ final class OverviewTableViewCell: BaseTableViewCell {
     private var isMore: Bool = false
     
     //MARK: - Method
-    func configureData(_ title: String, _ overview: String) {
+    func configureData(_ title: String, _ overview: String?) {
         titleLabel.text = title
         overviewLabel.text = overview
     }

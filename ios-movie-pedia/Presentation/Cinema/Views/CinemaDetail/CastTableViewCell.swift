@@ -39,12 +39,12 @@ final class CastTableViewCell: BaseTableViewCell {
     
     //MARK: - Property
     static let id = "CastTableViewCell"
-    private var casts = [Person]()
+    private var cast = [Person]()
     
     //MARK: - Method
-    func configureData(_ title: String, _ casts: [Person]) {
+    func configureData(_ title: String, _ cast: [Person]) {
         titleLabel.text = title
-        self.casts = casts
+        self.cast = cast
         collectionView.reloadData()
     }
     
@@ -80,13 +80,13 @@ final class CastTableViewCell: BaseTableViewCell {
 extension CastTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return casts.count
+        return cast.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PersonCollectionViewCell.id, for: indexPath) as! PersonCollectionViewCell
         
-        cell.configureData(casts[indexPath.item])
+        cell.configureData(cast[indexPath.item])
         
         return cell
     }
