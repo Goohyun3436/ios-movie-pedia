@@ -27,6 +27,9 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        mainView.userProfileView.rightButton.addTarget(self, action: #selector(userRightButtonTapped), for: .touchUpInside)
+        
         mainView.tableView.delegate = self
         mainView.tableView.dataSource = self
     }
@@ -38,9 +41,18 @@ class ProfileViewController: UIViewController {
         }
     }
     
+    //MARK: - Method
+    @objc
+    private func userRightButtonTapped() {
+        let vc = SettingProfileViewController()
+        vc.presentDelegate = self
+        vc.modalPresentationStyle = .pageSheet
+        present(UINavigationController(rootViewController: vc), animated: true)
+    }
+    
 }
 
-//MARK: -
+//MARK: - UITableViewDelegate
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -53,6 +65,19 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         cell.configureData(menu[indexPath.row])
         
         return cell
+    }
+    
+}
+
+//MARK: - ProfileDelegate
+extension ProfileViewController: ProfileDelegate {
+    
+    func profileImageDidChange(_ image: String?) {
+        profile.image = image
+    }
+    
+    func nicknameDidChange(_ nickname: String?) {
+        profile.nickname = nickname
     }
     
 }
