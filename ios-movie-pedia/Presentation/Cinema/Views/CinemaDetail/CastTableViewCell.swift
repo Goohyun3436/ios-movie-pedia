@@ -16,14 +16,14 @@ final class CastTableViewCell: BaseTableViewCell {
         let view = UICollectionView(frame: .zero, collectionViewLayout: {
             let layout = UICollectionViewFlowLayout()
             
-            let inset: CGFloat = 8
-            let spacing: CGFloat = 8
+            let inset: CGFloat = 16
+            let spacing: CGFloat = 16
             let width: CGFloat = 170
             let height: CGFloat = 50
             
             layout.scrollDirection = .horizontal
             layout.itemSize = CGSize(width: width, height: height)
-            layout.sectionInset = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
+            layout.sectionInset = UIEdgeInsets(top: 0, left: inset, bottom: 0, right: inset)
             layout.minimumLineSpacing = spacing
             layout.minimumInteritemSpacing = spacing
             
@@ -61,16 +61,15 @@ final class CastTableViewCell: BaseTableViewCell {
         
         collectionView.snp.makeConstraints { make in
             make.horizontalEdges.equalTo(contentView)
-            make.top.equalTo(titleLabel.snp.bottom)
-            make.bottom.equalTo(contentView)
-            make.height.equalTo(124)
+            make.top.equalTo(titleLabel.snp.bottom).offset(8)
+            make.bottom.equalTo(contentView).inset(8)
+            make.height.equalTo(116)
         }
     }
     
     override func configureView() {
         selectionStyle = .none
         titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        
         collectionView.bouncesHorizontally = false
         collectionView.showsHorizontalScrollIndicator = false
     }
