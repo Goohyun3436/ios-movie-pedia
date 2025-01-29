@@ -26,6 +26,7 @@ final class CinemaDetailViewController: UIViewController {
             likeButton.setLikeButton(isLike)
         }
     }
+    private var isMore: Bool = false
     
     //MARK: - Override Method
     override func loadView() {
@@ -94,7 +95,9 @@ extension CinemaDetailViewController: UITableViewDelegate, UITableViewDataSource
         if row == 0 {
             let cell = mainView.tableView.dequeueReusableCell(withIdentifier: OverviewTableViewCell.id, for: indexPath) as! OverviewTableViewCell
             
-            cell.configureData(titles[row], "overviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverview")
+            cell.delegate = self
+            
+            cell.configureData(titles[row], "overviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverview")
             
             return cell
         } else if row == 1 {
@@ -127,6 +130,15 @@ extension CinemaDetailViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+    }
+    
+}
+
+//MARK: - MoreDelegate
+extension CinemaDetailViewController: MoreDelegate {
+    
+    func didChange(_ isMore: Bool) {
+        mainView.configureTableViewHeight()
     }
     
 }

@@ -12,16 +12,30 @@ final class OverviewTableViewCell: BaseTableViewCell {
     
     //MARK: - UI Property
     private let titleLabel = UILabel()
-    private let moreButton = UIButton()
+    private lazy var moreButton = {
+        let button = UIButton()
+        button.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
+        return button
+    }()
     private let overviewLabel = UILabel()
     
     //MARK: - Property
     static let id = "OverviewTableViewCell"
+    var delegate: MoreDelegate?
+    private var isMore: Bool = false
     
     //MARK: - Method
     func configureData(_ title: String, _ overview: String) {
         titleLabel.text = title
         overviewLabel.text = overview
+    }
+    
+    @objc
+    private func moreButtonTapped() {
+        isMore.toggle()
+        moreButton.setTitle(isMore ? "Hide" : "More", for: .normal)
+        overviewLabel.numberOfLines = isMore ? 0 : 3
+        delegate?.didChange(isMore)
     }
     
     //MARK: - Override Method
@@ -57,7 +71,7 @@ final class OverviewTableViewCell: BaseTableViewCell {
         moreButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         
         overviewLabel.numberOfLines = 3
-        overviewLabel.font = UIFont.systemFont(ofSize: 14)
+        overviewLabel.font = UIFont.systemFont(ofSize: 12)
     }
     
 }

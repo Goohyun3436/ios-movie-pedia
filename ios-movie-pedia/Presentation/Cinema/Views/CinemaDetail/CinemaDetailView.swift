@@ -29,6 +29,26 @@ final class CinemaDetailView: BaseView {
         return view
     }()
     
+    //MARK: - Property
+    private var tableViewHeightConstraint: Constraint?
+    
+    //MARK: - Method
+    func configureTableViewHeight() {
+        tableView.reloadData()
+        
+        var height: CGFloat = 0
+        
+        for item in tableView.visibleCells {
+            height += item.frame.height
+        }
+        
+        tableViewHeightConstraint?.deactivate()
+        
+        tableView.snp.makeConstraints { make in
+            tableViewHeightConstraint = make.height.equalTo(height).constraint
+        }
+    }
+    
     //MARK: - Override Method
     override func configureHierarchy() {
         addSubview(scrollView)
@@ -63,16 +83,11 @@ final class CinemaDetailView: BaseView {
         tableView.snp.makeConstraints { make in
             make.horizontalEdges.bottom.equalToSuperview()
             make.top.equalTo(infoStackView.snp.bottom)
-            make.height.equalTo(508)
+            tableViewHeightConstraint = make.height.equalTo(508).constraint
         }
     }
     
     override func configureView() {
-        scrollView.backgroundColor = .red
-        contentView.backgroundColor = .orange
-        backdropScrollView.backgroundColor = .yellow
-        tableView.backgroundColor = .gray
-        
         scrollView.bouncesVertically = false
         
         infoStackView.backgroundColor = AppColor.darkgray
