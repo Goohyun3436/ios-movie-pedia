@@ -19,6 +19,11 @@ struct TMDBSearchResponse: Decodable {
     let total_results: Int
 }
 
+struct TMDBCreditsResponse: Decodable {
+    let id: Int
+    let cast: [Person]
+}
+
 struct Movie: Decodable {
     static let genre = [
         12: GenreName(ko: "모험"),
@@ -75,6 +80,12 @@ struct Movie: Decodable {
         vote_average = try container.decode(Double.self, forKey: CodingKeys.vote_average)
         is_like = User.likes.contains(id)
     }
+}
+
+struct Person: Decodable {
+    let name: String
+    let original_name: String
+    let profile_path: String?
 }
 
 struct GenreName {

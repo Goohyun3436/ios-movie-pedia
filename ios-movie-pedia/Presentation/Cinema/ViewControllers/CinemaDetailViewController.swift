@@ -38,6 +38,12 @@ final class CinemaDetailViewController: UIViewController {
         mainView.backdropScrollView.images = ["heart", "heart.fill", "star", "star", "star", "star"]
         mainView.tableView.delegate = self
         mainView.tableView.dataSource = self
+//        
+//        NetworkManager.shared.tmdb(.credits(604362, .en), TMDBCreditsResponse.self) { data in
+//            print(data)
+//        } failHandler: {
+//            print("실패")
+//        }
         
         guard let movie else {
             return
@@ -69,7 +75,6 @@ extension CinemaDetailViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print(indexPath.row)
         let row = indexPath.row
         
         if row == 0 {
@@ -79,9 +84,15 @@ extension CinemaDetailViewController: UITableViewDelegate, UITableViewDataSource
             
             return cell
         } else if row == 1 {
-            let cell = mainView.tableView.dequeueReusableCell(withIdentifier: OverviewTableViewCell.id, for: indexPath) as! OverviewTableViewCell
+            let cell = mainView.tableView.dequeueReusableCell(withIdentifier: CastTableViewCell.id, for: indexPath) as! CastTableViewCell
             
-            cell.configureData(titles[row], "overviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverviewoverview")
+            cell.configureData(titles[row], [
+                Person(name: "Kwon Sang-woo", original_name: "권상우", profile_path: "/sXWZ82ph4ZPPG9kv2x6nXha1Kk4.jpg"),
+                Person(name: "Kwon Sang-woo", original_name: "권상우", profile_path: "/sXWZ82ph4ZPPG9kv2x6nXha1Kk4.jpg"),
+                Person(name: "Kwon Sang-woo", original_name: "권상우", profile_path: "/sXWZ82ph4ZPPG9kv2x6nXha1Kk4.jpg"),
+                Person(name: "Kwon Sang-woo", original_name: "권상우", profile_path: "/sXWZ82ph4ZPPG9kv2x6nXha1Kk4.jpg"),
+                Person(name: "Kwon Sang-woo", original_name: "권상우", profile_path: "/sXWZ82ph4ZPPG9kv2x6nXha1Kk4.jpg")
+            ])
             
             return cell
         } else {

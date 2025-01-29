@@ -24,6 +24,7 @@ final class CinemaDetailView: BaseView {
     let tableView = {
        let view = UITableView()
         view.register(OverviewTableViewCell.self, forCellReuseIdentifier: OverviewTableViewCell.id)
+        view.register(CastTableViewCell.self, forCellReuseIdentifier: CastTableViewCell.id)
         return view
     }()
     

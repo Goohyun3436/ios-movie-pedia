@@ -12,6 +12,7 @@ import Alamofire
 enum TMDBRequest {
     case trending(_ timewindow: Timewindow = .day, _ page: Int = 1, _ language: Language = .ko)
     case search(_ query: String, _ page: Int = 1, _ include_adult: Bool = false, _ language: Language = .ko)
+    case credits(_ movieId: Int, _ language: Language = .ko)
     
     var endpoint: String {
         return APIUrl.tmdb + self.path
@@ -23,6 +24,8 @@ enum TMDBRequest {
             return "/trending/movie/\(timewindow)"
         case .search:
             return "/search/movie"
+        case .credits(let movieId, _):
+            return "/movie/\(movieId)/credits"
         }
     }
     
@@ -38,6 +41,10 @@ enum TMDBRequest {
                 "query": query,
                 "page": page,
                 "include_adult": include_adult,
+                "language": language.rawValue
+            ]
+        case .credits(_, let language):
+            return [
                 "language": language.rawValue
             ]
         }
@@ -73,7 +80,7 @@ enum TMDBImageRequest {
 
 //MARK: - Query Params
 enum Language: String {
-    case english = "en-US"
+    case en = "en-US"
     case ko = "ko-KR"
 }
 
