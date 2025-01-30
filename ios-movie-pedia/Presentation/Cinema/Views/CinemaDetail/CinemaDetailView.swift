@@ -14,13 +14,7 @@ final class CinemaDetailView: BaseView {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     let backdropScrollView = ImageScrollView()
-    let infoStackView = {
-        let view = UIStackView()
-        view.addArrangedSubview(MovieInfoView(.release_date, "2024-10-10"))
-        view.addArrangedSubview(MovieInfoView(.vote_average, 4.5))
-        view.addArrangedSubview(MovieInfoView(.genre_ids, [12, 14, 27, 28]))
-        return view
-    }()
+    let infoStackView = MovieInfoStackView()
     let tableView = {
        let view = UITableView()
         view.register(OverviewTableViewCell.self, forCellReuseIdentifier: OverviewTableViewCell.id)
@@ -77,8 +71,6 @@ final class CinemaDetailView: BaseView {
             make.centerX.equalToSuperview()
             make.top.equalTo(backdropScrollView.snp.bottom).offset(16)
         }
-        infoStackView.axis = .horizontal
-        infoStackView.spacing = 0.5
         
         tableView.snp.makeConstraints { make in
             make.horizontalEdges.bottom.equalToSuperview()
@@ -89,8 +81,6 @@ final class CinemaDetailView: BaseView {
     
     override func configureView() {
         scrollView.bounces = false
-        
-        infoStackView.backgroundColor = AppColor.darkgray
         
         tableView.isScrollEnabled = false
         tableView.separatorStyle = .none

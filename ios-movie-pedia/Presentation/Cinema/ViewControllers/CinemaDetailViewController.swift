@@ -78,6 +78,11 @@ final class CinemaDetailViewController: UIViewController {
         
         group.notify(queue: .main) {
             self.mainView.backdropScrollView.images = self.backdrops
+            self.mainView.infoStackView.configureData([
+                MovieInfoValue(movieInfo: .genre_ids, value: self.movie?.genre_ids),
+                MovieInfoValue(movieInfo: .release_date, value: self.movie?.release_date),
+                MovieInfoValue(movieInfo: .vote_average, value: self.movie?.vote_average)
+            ])
             self.mainView.tableView.reloadData()
         }
     }

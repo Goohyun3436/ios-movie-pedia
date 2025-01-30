@@ -17,23 +17,49 @@ enum MovieInfo {
 final class MovieInfoView: BaseView {
     
     //MARK: - UI Property
-    let imageView = UIImageView()
-    let label = UILabel()
+    private let imageView = UIImageView()
+    private let label = UILabel()
+    
+    //MARK: - Property
+    private var info: MovieInfo?
     
     //MARK: - Initializer Method
-    init(_ info: MovieInfo, _ value: Any) {
+    init(_ info: MovieInfo) {
         super.init(frame: .zero)
+        self.info = info
         
         switch info {
         case .genre_ids:
             imageView.image = UIImage(systemName: "film.fill")
-            label.text = convertGenreIds(value as! [Int]).joined(separator: ", ")
+            label.text = "장르 로드중"
+        case .release_date:
+            imageView.image = UIImage(systemName: "calendar")
+            label.text = "개봉일 로드중"
+        case .vote_average:
+            imageView.image = UIImage(systemName: "star.fill")
+            label.text = "추천수 로드중"
+        }
+    }
+    
+    //MARK: - Method
+    func configureData(_ value: Any?) {
+        guard let value else {
+            return
+        }
+        
+        switch info {
+        case .genre_ids:
+            imageView.image = UIImage(systemName: "film.fill")
+            label.text = convertGenreIds(value as? [Int] ?? []).joined(separator: ", ")
         case .release_date:
             imageView.image = UIImage(systemName: "calendar")
             label.text = "\(value)"
         case .vote_average:
             imageView.image = UIImage(systemName: "star.fill")
             label.text = "\(value)"
+        case .none:
+            imageView.isHidden = true
+            label.isHidden = true
         }
     }
     
