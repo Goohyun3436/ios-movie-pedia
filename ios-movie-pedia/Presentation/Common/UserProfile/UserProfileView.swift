@@ -15,13 +15,14 @@ final class UserProfileView: BaseView {
     private let nicknameLabel = UILabel()
     private let createdAtLabel = UILabel()
     let rightButton = UIButton()
-    private let bottomButton = AccentFillButton("\(User.likes.count)개의 무비박스 보관중")
+    private let bottomButton = AccentFillButton()
     
     //MARK: - Method
-    func configureData(_ profile: Profile) {
-        profileImage.configureData(profile.image)
-        nicknameLabel.text = profile.nickname
-        createdAtLabel.text = profile.createdAtFormat
+    func configureData(_ profile: Profile?, _ likes: [Int]) {
+        profileImage.configureData(profile?.image)
+        nicknameLabel.text = profile?.nickname
+        createdAtLabel.text = profile?.createdAtFormat
+        bottomButton.setTitle("\(likes.count)개의 무비박스 보관중", for: .normal)
     }
     
     //MARK: - Override Method

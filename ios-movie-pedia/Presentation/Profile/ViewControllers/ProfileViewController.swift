@@ -13,9 +13,9 @@ class ProfileViewController: UIViewController {
     private let mainView = ProfileView()
     
     //MARK: - Property
-    private var profile = Profile() {
+    private var profile: Profile? {
         didSet {
-            mainView.userProfileView.configureData(profile)
+            mainView.userProfileView.configureData(profile, User.likes)
         }
     }
     private let menu = ["자주 묻는 질문", "1:1 문의", "알림 설정", "탈퇴하기"]
@@ -36,9 +36,7 @@ class ProfileViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let saved = loadJsonData(type: Profile.self, forKey: "profile") {
-            profile = saved
-        }
+        profile = getUserProfile()
     }
     
     //MARK: - Method
@@ -92,11 +90,11 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
 extension ProfileViewController: ProfileDelegate {
     
     func profileImageDidChange(_ image: String?) {
-        profile.image = image
+        profile?.image = image
     }
     
     func nicknameDidChange(_ nickname: String?) {
-        profile.nickname = nickname
+        profile?.nickname = nickname
     }
     
 }

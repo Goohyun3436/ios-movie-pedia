@@ -37,4 +37,12 @@ extension UIViewController {
         
         present(alert, animated: true)
     }
+    
+    func getUserProfile() -> Profile? {
+        guard let saved = loadJsonData(type: Profile.self, forKey: "profile") else {
+            return nil
+        }
+        
+        return saved
+    }
 }

@@ -9,7 +9,7 @@ import UIKit
 
 final class AccentFillButton: UIButton {
     
-    init(_ title: String) {
+    init(_ title: String = "") {
         super.init(frame: .zero)
         setTitle(title, for: .normal)
         layer.cornerRadius = 8

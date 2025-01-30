@@ -13,9 +13,14 @@ final class CinemaViewController: UIViewController {
     private let mainView = CinemaView()
     
     //MARK: - Property
-    private var profile = Profile() {
+    private var profile: Profile? {
         didSet {
-            mainView.userProfileView.configureData(profile)
+            mainView.userProfileView.configureData(profile, likes)
+        }
+    }
+    private var likes = User.likes {
+        didSet {
+            mainView.userProfileView.configureData(profile, likes)
         }
     }
     private let titles = ["최근검색어", "오늘의 영화"]
@@ -37,10 +42,8 @@ final class CinemaViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        if let saved = loadJsonData(type: Profile.self, forKey: "profile") {
-            profile = saved
-        }
+        profile = getUserProfile()
+        likes = User.likes
     }
     
     //MARK: - Method
@@ -93,11 +96,11 @@ final class CinemaViewController: UIViewController {
 extension CinemaViewController: ProfileDelegate {
     
     func profileImageDidChange(_ image: String?) {
-        profile.image = image
+        profile?.image = image
     }
     
     func nicknameDidChange(_ nickname: String?) {
-        profile.nickname = nickname
+        profile?.nickname = nickname
     }
     
 }
@@ -251,6 +254,7 @@ extension CinemaViewController: SearchDelegate, LikeDelegate {
         }
         
         mainView.tableView.reloadData()
+        likes = User.likes
     }
     
 }
