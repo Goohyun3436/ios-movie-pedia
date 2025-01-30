@@ -27,6 +27,14 @@ final class OverviewTableViewCell: BaseTableViewCell {
     //MARK: - Method
     func configureData(_ title: String, _ overview: String?) {
         titleLabel.text = title
+        
+        guard let overview, !overview.isEmpty else {
+            moreButton.isHidden = true
+            overviewLabel.text = "줄거리가 등록되지 않은 영화입니다."
+            return
+        }
+        
+        moreButton.isHidden = false
         overviewLabel.text = overview
     }
     
@@ -58,7 +66,7 @@ final class OverviewTableViewCell: BaseTableViewCell {
         
         overviewLabel.snp.makeConstraints { make in
             make.horizontalEdges.equalTo(contentView).inset(16)
-            make.top.equalTo(titleLabel.snp.bottom)
+            make.top.equalTo(titleLabel.snp.bottom).offset(8)
             make.bottom.equalTo(contentView)
         }
     }
