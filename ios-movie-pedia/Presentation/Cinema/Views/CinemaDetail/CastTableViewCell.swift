@@ -70,7 +70,7 @@ final class CastTableViewCell: BaseTableViewCell {
     override func configureView() {
         selectionStyle = .none
         titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        collectionView.bouncesHorizontally = false
+        collectionView.bounces = false
         collectionView.showsHorizontalScrollIndicator = false
     }
     

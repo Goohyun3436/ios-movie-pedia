@@ -26,6 +26,7 @@ final class PosterCollectionView: UICollectionView {
         }())
         
         showsHorizontalScrollIndicator = false
+        bounces = false
         
         register(PosterCollectionViewCell.self, forCellWithReuseIdentifier: PosterCollectionViewCell.id)
     }

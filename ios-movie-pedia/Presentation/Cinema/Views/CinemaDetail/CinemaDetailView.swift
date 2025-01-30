@@ -88,7 +88,7 @@ final class CinemaDetailView: BaseView {
     }
     
     override func configureView() {
-        scrollView.bouncesVertically = false
+        scrollView.bounces = false
         
         infoStackView.backgroundColor = AppColor.darkgray
         
