@@ -67,7 +67,7 @@ final class OverviewTableViewCell: BaseTableViewCell {
         overviewLabel.snp.makeConstraints { make in
             make.horizontalEdges.equalTo(contentView).inset(16)
             make.top.equalTo(titleLabel.snp.bottom).offset(8)
-            make.bottom.equalTo(contentView)
+            make.bottom.equalTo(contentView).inset(8)
         }
     }
     
