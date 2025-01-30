@@ -102,9 +102,9 @@ final class SettingProfileViewController: UIViewController {
     private func backButtonTapped() {
         if isOnboarding {
             UserDefaults.standard.removeObject(forKey: "profile")
-            navigationController?.popViewController(animated: true)
+            popVC()
         } else {
-            dismiss(animated: true)
+            dismissVC()
         }
     }
     
@@ -113,7 +113,7 @@ final class SettingProfileViewController: UIViewController {
         let vc = SettingProfileImageViewController()
         vc.delegate = self
         vc.profile = profile
-        navigationController?.pushViewController(vc, animated: true)
+        pushVC(vc)
     }
     
     @objc
@@ -122,12 +122,7 @@ final class SettingProfileViewController: UIViewController {
         
         saveJsonData(profile, type: Profile.self, forKey: "profile")
         
-        guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let window = scene.windows.first else {
-            return
-        }
-
-        window.rootViewController = TabBarController()
+        configureRootVC(TabBarController())
     }
     
     @objc
@@ -135,7 +130,7 @@ final class SettingProfileViewController: UIViewController {
         saveJsonData(profile, type: Profile.self, forKey: "profile")
         presentDelegate?.profileImageDidChange(profile.image)
         presentDelegate?.nicknameDidChange(profile.nickname)
-        dismiss(animated: true)
+        dismissVC()
     }
     
     private func nicknameCondition(_ nickname: String?) -> NicknameCondition {

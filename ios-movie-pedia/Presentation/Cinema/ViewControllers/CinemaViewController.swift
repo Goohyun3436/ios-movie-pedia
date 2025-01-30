@@ -52,7 +52,7 @@ final class CinemaViewController: UIViewController {
         let vc = SearchViewController()
         vc.likeDelegate = self
         vc.searchDelegate = self
-        navigationController?.pushViewController(vc, animated: true)
+        pushVC(vc)
     }
     
     @objc
@@ -60,7 +60,7 @@ final class CinemaViewController: UIViewController {
         let vc = SettingProfileViewController()
         vc.presentDelegate = self
         vc.modalPresentationStyle = .pageSheet
-        present(UINavigationController(rootViewController: vc), animated: true)
+        presentVC(UINavigationController(rootViewController: vc))
     }
     
     private func configureAction() {
@@ -191,12 +191,12 @@ extension CinemaViewController: UICollectionViewDelegate, UICollectionViewDataSo
             vc.searchDelegate = self
             vc.likeDelegate = self
             vc.query = searches[indexPath.item]
-            navigationController?.pushViewController(vc, animated: true)
+            pushVC(vc)
         } else {
             let vc = CinemaDetailViewController()
             vc.delegate = self
             vc.movie = movies[indexPath.item]
-            navigationController?.pushViewController(vc, animated: true)
+            pushVC(vc)
         }
     }
     

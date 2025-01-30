@@ -45,4 +45,29 @@ extension UIViewController {
         
         return saved
     }
+    
+    func pushVC(_ viewController: UIViewController) {
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func popVC() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    func presentVC(_ viewController: UIViewController) {
+        present(viewController, animated: true)
+    }
+    
+    func dismissVC() {
+        dismiss(animated: true)
+    }
+    
+    func configureRootVC(_ viewController: UIViewController) {
+        guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = scene.windows.first else {
+            return
+        }
+
+        window.rootViewController = viewController
+    }
 }

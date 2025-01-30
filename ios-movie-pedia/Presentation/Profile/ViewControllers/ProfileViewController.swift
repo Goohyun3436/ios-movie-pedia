@@ -45,7 +45,7 @@ class ProfileViewController: UIViewController {
         let vc = SettingProfileViewController()
         vc.presentDelegate = self
         vc.modalPresentationStyle = .pageSheet
-        present(UINavigationController(rootViewController: vc), animated: true)
+        presentVC(UINavigationController(rootViewController: vc))
     }
     
 }
@@ -74,12 +74,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             presentAlert("탈퇴하기", "탈퇴를 하면 데이터가 모두 초기화 됩니다. 탈퇴 하시겠습니까?") {
                 UserDefaults.standard.removeObject(forKey: "profile")
                 
-                guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                      let window = scene.windows.first else {
-                    return
-                }
-
-                window.rootViewController = UINavigationController(rootViewController: OnboardingViewController())
+                self.configureRootVC(UINavigationController(rootViewController: OnboardingViewController()))
             }
         }
     }
