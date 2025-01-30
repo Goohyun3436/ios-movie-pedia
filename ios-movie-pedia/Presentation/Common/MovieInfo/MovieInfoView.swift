@@ -12,6 +12,28 @@ enum MovieInfo {
     case genre_ids
     case release_date
     case vote_average
+    
+    var image: String {
+        switch self {
+        case .genre_ids:
+            return "film.fill"
+        case .release_date:
+            return "calendar"
+        case .vote_average:
+            return "star.fill"
+        }
+    }
+    
+    var placeholder: String {
+        switch self {
+        case .genre_ids:
+            return "장르 로드중"
+        case .release_date:
+            return "개봉일 로드중"
+        case .vote_average:
+            return "평점 로드중"
+        }
+    }
 }
 
 final class MovieInfoView: BaseView {
@@ -28,17 +50,8 @@ final class MovieInfoView: BaseView {
         super.init(frame: .zero)
         self.info = info
         
-        switch info {
-        case .genre_ids:
-            imageView.image = UIImage(systemName: "film.fill")
-            label.text = "장르 로드중"
-        case .release_date:
-            imageView.image = UIImage(systemName: "calendar")
-            label.text = "개봉일 로드중"
-        case .vote_average:
-            imageView.image = UIImage(systemName: "star.fill")
-            label.text = "추천수 로드중"
-        }
+        imageView.image = UIImage(systemName: info.image)
+        label.text = info.placeholder
     }
     
     //MARK: - Method
@@ -49,14 +62,11 @@ final class MovieInfoView: BaseView {
         
         switch info {
         case .genre_ids:
-            imageView.image = UIImage(systemName: "film.fill")
             label.text = convertGenreIds(value as? [Int] ?? []).joined(separator: ", ")
         case .release_date:
-            imageView.image = UIImage(systemName: "calendar")
             label.text = "\(value)"
         case .vote_average:
-            imageView.image = UIImage(systemName: "star.fill")
-            label.text = "\(value)"
+            label.text = "\(round(value as? Double ?? 0))"
         case .none:
             imageView.isHidden = true
             label.isHidden = true
