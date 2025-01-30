@@ -8,11 +8,14 @@
 import Foundation
 
 enum NoneContent {
+    case backdrops
     case overview
     case poster
     
     var message: String {
         switch self {
+        case .backdrops:
+            return "배경 이미지가 등록되지 않은 영화입니다."
         case .overview:
             return "줄거리가 등록되지 않은 영화입니다."
         case .poster:

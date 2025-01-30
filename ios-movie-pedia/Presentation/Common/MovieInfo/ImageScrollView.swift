@@ -15,10 +15,18 @@ final class ImageScrollView: BaseView {
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
     private let pageControl = UIPageControl()
+    private let noneContentLabel = UILabel()
     
     //MARK: - Property
     var images = [Image]() {
         didSet {
+            guard !images.isEmpty else {
+                noneContentLabel.isHidden = false
+                return
+            }
+            
+            noneContentLabel.isHidden = true
+            
             let numberOfPages = images.count > 5 ? 5 : images.count
             pageControl.numberOfPages = numberOfPages
             pageControl.size(forNumberOfPages: numberOfPages)
@@ -47,6 +55,7 @@ final class ImageScrollView: BaseView {
         addSubview(scrollView)
         scrollView.addSubview(stackView)
         addSubview(pageControl)
+        addSubview(noneContentLabel)
     }
     
     override func configureLayout() {
@@ -68,6 +77,10 @@ final class ImageScrollView: BaseView {
             make.bottom.equalToSuperview().inset(8)
             make.height.equalTo(24)
         }
+        
+        noneContentLabel.snp.makeConstraints { make in
+            make.center.equalTo(scrollView)
+        }
     }
     
     override func configureView() {
@@ -85,6 +98,9 @@ final class ImageScrollView: BaseView {
         pageControl.backgroundColor = AppColor.deepgray
         pageControl.pageIndicatorTintColor = AppColor.darkgray
         pageControl.currentPageIndicatorTintColor = AppColor.white
+        
+        noneContentLabel.text = NoneContent.backdrops.message
+        noneContentLabel.font = UIFont.systemFont(ofSize: 12)
     }
     
 }

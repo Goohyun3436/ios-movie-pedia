@@ -126,7 +126,7 @@ extension CinemaDetailViewController: UITableViewDelegate, UITableViewDataSource
         } else {
             let cell = mainView.tableView.dequeueReusableCell(withIdentifier: PosterMiniTableViewCell.id, for: indexPath) as! PosterMiniTableViewCell
             
-            cell.configureData(titles[row], [])
+            cell.configureData(titles[row], posters)
             
             return cell
         }
