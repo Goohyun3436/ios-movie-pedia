@@ -23,6 +23,10 @@ final class PersonCollectionViewCell: BaseCollectionViewCell {
     func configureData(_ person: Person) {
         if let profile = person.profile_path, let url = URL(string: TMDBImageRequest.w500(profile).endpoint) {
             imageView.kf.setImage(with: url)
+            imageView.contentMode = .scaleAspectFill
+        }
+        else {
+            imageView.image = nil
         }
         
         originNameLabel.text = person.original_name
@@ -57,9 +61,11 @@ final class PersonCollectionViewCell: BaseCollectionViewCell {
     }
     
     override func configureView() {
+        imageView.adjustsImageSizeForAccessibilityContentSizeCategory = false
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 25
-        imageView.contentMode = .scaleAspectFill
+        imageView.backgroundColor = AppColor.deepgray
+        imageView.tintColor = AppColor.darkgray
         originNameLabel.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         nameLabel.font = UIFont.systemFont(ofSize: 12)
         nameLabel.textColor = AppColor.lightgray

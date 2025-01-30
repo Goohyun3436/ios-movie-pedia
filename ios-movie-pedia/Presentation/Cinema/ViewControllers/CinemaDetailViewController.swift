@@ -83,7 +83,6 @@ final class CinemaDetailViewController: UIViewController {
                 MovieInfoValue(movieInfo: .release_date, value: self.movie?.release_date),
                 MovieInfoValue(movieInfo: .vote_average, value: self.movie?.vote_average)
             ])
-            self.mainView.tableView.reloadData()
             self.mainView.configureTableViewHeight()
         }
     }

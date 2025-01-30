@@ -39,13 +39,16 @@ final class CastTableViewCell: BaseTableViewCell {
     
     //MARK: - Property
     static let id = "CastTableViewCell"
-    private var cast = [Person]()
+    private var cast = [Person]() {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
     
     //MARK: - Method
     func configureData(_ title: String, _ cast: [Person]) {
         titleLabel.text = title
         self.cast = cast
-        collectionView.reloadData()
     }
     
     //MARK: - Override Method
