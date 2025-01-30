@@ -30,7 +30,7 @@ final class OverviewTableViewCell: BaseTableViewCell {
         
         guard let overview, !overview.isEmpty else {
             moreButton.isHidden = true
-            overviewLabel.text = "줄거리가 등록되지 않은 영화입니다."
+            overviewLabel.text = NoneContent.overview.message
             return
         }
         

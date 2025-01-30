@@ -21,22 +21,28 @@ final class PosterMiniTableViewCell: BaseTableViewCell {
         
         return view
     }()
+    private let noneContentLabel = UILabel()
     
     //MARK: - Property
     static let id = "PosterMiniTableViewCell"
-    private var posters = [Image]()
+    private var posters = [Image]() {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
     
     //MARK: - Method
     func configureData(_ title: String, _ posters: [Image]) {
         titleLabel.text = title
         self.posters = posters
-        collectionView.reloadData()
+        noneContentLabel.isHidden = !posters.isEmpty
     }
     
     //MARK: - Override Method
     override func configureHierarchy() {
         contentView.addSubview(titleLabel)
         contentView.addSubview(collectionView)
+        contentView.addSubview(noneContentLabel)
     }
     
     override func configureLayout() {
@@ -50,10 +56,17 @@ final class PosterMiniTableViewCell: BaseTableViewCell {
             make.bottom.equalTo(contentView)
             make.height.equalTo(216)
         }
+        
+        noneContentLabel.snp.makeConstraints { make in
+            make.leading.equalTo(contentView).offset(16)
+            make.top.equalTo(titleLabel.snp.bottom).offset(8)
+        }
     }
     
     override func configureView() {
         titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        noneContentLabel.text = NoneContent.poster.message
+        noneContentLabel.font = UIFont.systemFont(ofSize: 12)
     }
     
 }
