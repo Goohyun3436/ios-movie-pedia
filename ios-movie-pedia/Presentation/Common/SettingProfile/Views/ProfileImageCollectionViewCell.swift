@@ -28,3 +28,4 @@ class ProfileImageCollectionViewCell: BaseCollectionViewCell {
     }
     
 }
+

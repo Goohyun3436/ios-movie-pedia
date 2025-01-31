@@ -70,13 +70,19 @@ final class ProfileImageView: BaseView {
         imageView.contentMode = .scaleAspectFit
         
         cameraImageView.image = UIImage(systemName: "camera.fill", withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 12)))
+        cameraImageView.clipsToBounds = true
+        cameraImageView.layer.cornerRadius = 15
         cameraImageView.contentMode = .center
         cameraImageView.backgroundColor = AppColor.accent
         cameraImageView.tintColor = AppColor.white
         
-        DispatchQueue.main.async {
-            self.imageView.configureCircle()
-            self.cameraImageView.configureCircle()
+        if self.frame.width == 0 {
+            DispatchQueue.main.async {
+                self.imageView.configureCircle()
+            }
+        } else {
+            imageView.clipsToBounds = true
+            imageView.layer.cornerRadius = self.frame.width / 2
         }
     }
     
