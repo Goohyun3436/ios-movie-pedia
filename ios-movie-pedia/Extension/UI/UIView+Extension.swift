@@ -8,7 +8,11 @@
 import UIKit
 
 extension UIView {
-    func convertGenreIds(_ ids: [Int]) -> [String] {
+    func convertGenreIds(_ ids: [Int]?) -> [String] {
+        guard let ids else {
+            return []
+        }
+        
         var result = [String]()
         
         for i in ids.indices {

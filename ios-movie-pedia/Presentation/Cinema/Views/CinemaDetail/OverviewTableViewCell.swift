@@ -80,6 +80,7 @@ final class OverviewTableViewCell: BaseTableViewCell {
         
         overviewLabel.text = ContentMessage.overview.loading
         overviewLabel.numberOfLines = 3
+        overviewLabel.lineBreakMode = .byCharWrapping
         overviewLabel.font = UIFont.systemFont(ofSize: 12)
     }
     

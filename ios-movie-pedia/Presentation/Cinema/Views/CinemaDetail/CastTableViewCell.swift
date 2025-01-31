@@ -36,6 +36,7 @@ final class CastTableViewCell: BaseTableViewCell {
         
         return view
     }()
+    private let noneContentLabel = UILabel()
     
     //MARK: - Property
     static let id = "CastTableViewCell"
@@ -49,12 +50,21 @@ final class CastTableViewCell: BaseTableViewCell {
     func configureData(_ title: String, _ cast: [Person]) {
         titleLabel.text = title
         self.cast = cast
+        
+        guard !cast.isEmpty else {
+            noneContentLabel.text = ContentMessage.cast.none
+            noneContentLabel.isHidden = false
+            return
+        }
+        
+        noneContentLabel.isHidden = true
     }
     
     //MARK: - Override Method
     override func configureHierarchy() {
         contentView.addSubview(titleLabel)
         contentView.addSubview(collectionView)
+        contentView.addSubview(noneContentLabel)
     }
     
     override func configureLayout() {
@@ -68,6 +78,11 @@ final class CastTableViewCell: BaseTableViewCell {
             make.bottom.equalTo(contentView).inset(8)
             make.height.equalTo(116)
         }
+        
+        noneContentLabel.snp.makeConstraints { make in
+            make.leading.equalTo(contentView).offset(16)
+            make.top.equalTo(titleLabel.snp.bottom).offset(8)
+        }
     }
     
     override func configureView() {
@@ -75,6 +90,8 @@ final class CastTableViewCell: BaseTableViewCell {
         titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         collectionView.bounces = false
         collectionView.showsHorizontalScrollIndicator = false
+        noneContentLabel.text = ContentMessage.cast.loading
+        noneContentLabel.font = UIFont.systemFont(ofSize: 12)
     }
     
 }

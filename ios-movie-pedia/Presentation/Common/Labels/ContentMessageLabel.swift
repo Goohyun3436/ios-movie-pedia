@@ -10,6 +10,7 @@ import UIKit
 enum ContentMessage: String {
     case backdrops = "배경 이미지"
     case overview = "줄거리"
+    case cast = "캐스트"
     case poster = "포스터 이미지"
     
     var loading: String {

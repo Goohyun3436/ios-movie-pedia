@@ -54,10 +54,10 @@ struct Movie: Decodable {
     let title: String
     let overview: String
     let poster_path: String?
-    let genre_ids: [Int]
-    let popularity: Double
-    let release_date: String
-    let vote_average: Double
+    let genre_ids: [Int]?
+    let popularity: Double?
+    let release_date: String?
+    let vote_average: Double?
     var is_like: Bool = false
     
     enum CodingKeys: CodingKey {
@@ -78,10 +78,10 @@ struct Movie: Decodable {
         title = try container.decode(String.self, forKey: CodingKeys.title)
         overview = try container.decode(String.self, forKey: CodingKeys.overview)
         poster_path = try container.decode(String?.self, forKey: CodingKeys.poster_path)
-        genre_ids = try container.decode([Int].self, forKey: CodingKeys.genre_ids)
-        popularity = try container.decode(Double.self, forKey: CodingKeys.popularity)
-        release_date = try container.decode(String.self, forKey: CodingKeys.release_date)
-        vote_average = try container.decode(Double.self, forKey: CodingKeys.vote_average)
+        genre_ids = try container.decodeIfPresent([Int].self, forKey: CodingKeys.genre_ids)
+        popularity = try container.decodeIfPresent(Double.self, forKey: CodingKeys.popularity)
+        release_date = try container.decodeIfPresent(String.self, forKey: CodingKeys.release_date)
+        vote_average = try container.decodeIfPresent(Double.self, forKey: CodingKeys.vote_average)
         is_like = User.likes.contains(id)
     }
 }
