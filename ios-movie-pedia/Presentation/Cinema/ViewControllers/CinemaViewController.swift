@@ -35,12 +35,12 @@ final class CinemaViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.backButtonTitle = ""
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 15))),
-            style: .plain,
-            target: self,
-            action: #selector(searchButtonTapped)
+        navigationItem.rightBarButtonItem = makeBarButtonItemWithImage(
+            "magnifyingglass",
+            size: 15,
+            handler: #selector(searchButtonTapped)
         )
+        
         mainView.userProfileView.delegate = self
         configureTableView()
         callRequest()

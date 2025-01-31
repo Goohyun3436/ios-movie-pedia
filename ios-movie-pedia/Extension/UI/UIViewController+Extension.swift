@@ -70,4 +70,27 @@ extension UIViewController {
 
         window.rootViewController = viewController
     }
+    
+    func makeBarButtonItemWithImage(_ image: String, size: CGFloat = 16, handler: Selector) -> UIBarButtonItem {
+        return UIBarButtonItem(
+            image: UIImage(
+                systemName: image,
+                withConfiguration: UIImage.SymbolConfiguration(
+                    font: .systemFont(ofSize: size)
+                )
+            ),
+            style: .plain,
+            target: self,
+            action: handler
+        )
+    }
+    
+    func makeBarButtonItemWithTitle(_ title: String, handler: Selector) -> UIBarButtonItem {
+        return UIBarButtonItem(
+            title: title,
+            style: .plain,
+            target: self,
+            action: handler
+        )
+    }
 }

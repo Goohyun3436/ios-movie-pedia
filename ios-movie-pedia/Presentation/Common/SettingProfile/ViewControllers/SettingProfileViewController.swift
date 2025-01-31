@@ -57,18 +57,14 @@ final class SettingProfileViewController: UIViewController {
     }
     
     private func configureAction() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: isOnboarding ? "chevron.backward" : "xmark"),
-            style: .plain,
-            target: self,
-            action: #selector(backButtonTapped)
+        navigationItem.leftBarButtonItem = makeBarButtonItemWithImage(
+            isOnboarding ? "chevron.backward" : "xmark",
+            handler: #selector(backButtonTapped)
         )
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "저장",
-            style: .plain,
-            target: self,
-            action: #selector(saveButtonTapped)
+        navigationItem.rightBarButtonItem = makeBarButtonItemWithTitle(
+            "저장",
+            handler: #selector(saveButtonTapped)
         )
         
         mainView.isUserInteractionEnabled = true
