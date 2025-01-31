@@ -30,7 +30,7 @@ final class OverviewTableViewCell: BaseTableViewCell {
         
         guard let overview, !overview.isEmpty else {
             moreButton.isHidden = true
-            overviewLabel.text = NoneContent.overview.message
+            overviewLabel.text = ContentMessage.overview.none
             return
         }
         
@@ -78,6 +78,7 @@ final class OverviewTableViewCell: BaseTableViewCell {
         moreButton.setTitle("More", for: .normal)
         moreButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         
+        overviewLabel.text = ContentMessage.overview.loading
         overviewLabel.numberOfLines = 3
         overviewLabel.font = UIFont.systemFont(ofSize: 12)
     }

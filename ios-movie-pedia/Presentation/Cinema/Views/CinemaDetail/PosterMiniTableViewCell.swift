@@ -35,7 +35,14 @@ final class PosterMiniTableViewCell: BaseTableViewCell {
     func configureData(_ title: String, _ posters: [Image]) {
         titleLabel.text = title
         self.posters = posters
-        noneContentLabel.isHidden = !posters.isEmpty
+        
+        guard !posters.isEmpty else {
+            noneContentLabel.text = ContentMessage.poster.none
+            noneContentLabel.isHidden = false
+            return
+        }
+        
+        noneContentLabel.isHidden = true
     }
     
     //MARK: - Override Method
@@ -65,7 +72,7 @@ final class PosterMiniTableViewCell: BaseTableViewCell {
     
     override func configureView() {
         titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        noneContentLabel.text = NoneContent.poster.message
+        noneContentLabel.text = ContentMessage.poster.loading
         noneContentLabel.font = UIFont.systemFont(ofSize: 12)
     }
     

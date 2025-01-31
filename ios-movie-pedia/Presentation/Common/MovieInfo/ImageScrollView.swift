@@ -22,6 +22,7 @@ final class ImageScrollView: BaseView {
         didSet {
             guard !images.isEmpty else {
                 noneContentLabel.isHidden = false
+                noneContentLabel.text = ContentMessage.backdrops.none
                 return
             }
             
@@ -99,7 +100,7 @@ final class ImageScrollView: BaseView {
         pageControl.pageIndicatorTintColor = AppColor.darkgray
         pageControl.currentPageIndicatorTintColor = AppColor.white
         
-        noneContentLabel.text = NoneContent.backdrops.message
+        noneContentLabel.text = ContentMessage.backdrops.loading
         noneContentLabel.font = UIFont.systemFont(ofSize: 12)
     }
     
