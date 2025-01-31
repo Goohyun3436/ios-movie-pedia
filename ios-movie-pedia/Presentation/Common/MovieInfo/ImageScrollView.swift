@@ -75,7 +75,7 @@ final class ImageScrollView: BaseView {
         
         pageControl.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(8)
+            make.bottom.equalToSuperview().inset(4)
             make.height.equalTo(24)
         }
         
@@ -96,6 +96,7 @@ final class ImageScrollView: BaseView {
         pageControl.currentPage = 0
         pageControl.layer.cornerRadius = 12
         pageControl.allowsContinuousInteraction = false
+        pageControl.transform = CGAffineTransformMakeScale(0.8, 0.8)
         pageControl.backgroundColor = AppColor.deepgray
         pageControl.pageIndicatorTintColor = AppColor.darkgray
         pageControl.currentPageIndicatorTintColor = AppColor.white
