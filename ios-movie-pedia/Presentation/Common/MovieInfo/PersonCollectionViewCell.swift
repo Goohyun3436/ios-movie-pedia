@@ -56,7 +56,7 @@ final class PersonCollectionViewCell: BaseCollectionViewCell {
         nameLabel.snp.makeConstraints { make in
             make.leading.equalTo(imageView.snp.trailing).offset(8)
             make.trailing.bottom.lessThanOrEqualToSuperview().offset(-0)
-            make.top.equalTo(originNameLabel.snp.bottom).offset(2)
+            make.top.equalTo(originNameLabel.snp.bottom).offset(4)
         }
     }
     
@@ -68,7 +68,7 @@ final class PersonCollectionViewCell: BaseCollectionViewCell {
         imageView.tintColor = AppColor.darkgray
         originNameLabel.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         nameLabel.font = UIFont.systemFont(ofSize: 12)
-        nameLabel.textColor = AppColor.lightgray
+        nameLabel.textColor = AppColor.darkgray
     }
     
 }
