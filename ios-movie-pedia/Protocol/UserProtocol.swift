@@ -20,4 +20,5 @@ protocol LikeDelegate {
 protocol ProfileDelegate {
     func profileImageDidChange(_ image: String?)
     func nicknameDidChange(_ nickname: String?)
+    func didClickedProfileView()
 }

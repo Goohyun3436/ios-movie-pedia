@@ -14,8 +14,20 @@ final class UserProfileView: BaseView {
     private let profileImage = ProfileImageView(frame: CGRect(x: .zero, y: .zero, width: 50, height: 50), camera: false)
     private let nicknameLabel = UILabel()
     private let createdAtLabel = UILabel()
-    let rightButton = UIButton()
+    private let rightImageView = UIImageView()
     private let bottomButton = AccentFillButton()
+    
+    //MARK: - Property
+    var delegate: ProfileDelegate?
+    
+    //MARK: - Initializer Method
+    init() {
+        super.init(frame: .zero)
+        
+        let singleTap = UITapGestureRecognizer(target: self, action: #selector(userProfileViewTapped))
+        addGestureRecognizer(singleTap)
+        isUserInteractionEnabled = true
+    }
     
     //MARK: - Method
     func configureData(_ profile: Profile?, _ likes: [Int]) {
@@ -25,12 +37,17 @@ final class UserProfileView: BaseView {
         bottomButton.setTitle("\(likes.count)개의 무비박스 보관중", for: .normal)
     }
     
+    @objc
+    private func userProfileViewTapped() {
+        delegate?.didClickedProfileView()
+    }
+    
     //MARK: - Override Method
     override func configureHierarchy() {
         addSubview(profileImage)
         addSubview(nicknameLabel)
         addSubview(createdAtLabel)
-        addSubview(rightButton)
+        addSubview(rightImageView)
         addSubview(bottomButton)
     }
     
@@ -42,7 +59,7 @@ final class UserProfileView: BaseView {
         
         nicknameLabel.snp.makeConstraints { make in
             make.leading.equalTo(profileImage.snp.trailing).offset(12)
-            make.trailing.lessThanOrEqualTo(rightButton.snp.leading).offset(-12)
+            make.trailing.lessThanOrEqualTo(rightImageView.snp.leading).offset(-12)
             make.top.equalToSuperview().offset(18)
         }
         
@@ -51,12 +68,13 @@ final class UserProfileView: BaseView {
             make.top.equalTo(nicknameLabel.snp.bottom).offset(4)
         }
         
-        rightButton.snp.makeConstraints { make in
+        rightImageView.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(12)
-            make.top.equalToSuperview().offset(12)
+            make.top.greaterThanOrEqualToSuperview().offset(12)
             make.centerY.equalTo(profileImage.snp.centerY)
-            make.width.equalTo(30)
-            make.bottom.equalTo(bottomButton.snp.top).offset(-16)
+            make.bottom.lessThanOrEqualTo(bottomButton.snp.top).offset(0)
+            make.width.equalTo(14)
+            make.height.equalTo(24)
         }
         
         bottomButton.snp.makeConstraints { make in
@@ -78,9 +96,8 @@ final class UserProfileView: BaseView {
         createdAtLabel.font = UIFont.systemFont(ofSize: 12)
         createdAtLabel.textColor = AppColor.darkgray
         
-        rightButton.setImage(UIImage(systemName: "chevron.right"), for: .normal)
-        rightButton.contentHorizontalAlignment = .trailing
-        rightButton.tintColor = AppColor.darkgray
+        rightImageView.image = UIImage(systemName: "chevron.right")
+        rightImageView.tintColor = AppColor.darkgray
     }
     
 }

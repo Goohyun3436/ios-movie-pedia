@@ -27,9 +27,7 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        mainView.userProfileView.rightButton.addTarget(self, action: #selector(userRightButtonTapped), for: .touchUpInside)
-        
+        mainView.userProfileView.delegate = self
         mainView.tableView.delegate = self
         mainView.tableView.dataSource = self
     }
@@ -37,15 +35,6 @@ class ProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         profile = getUserProfile()
-    }
-    
-    //MARK: - Method
-    @objc
-    private func userRightButtonTapped() {
-        let vc = SettingProfileViewController()
-        vc.presentDelegate = self
-        vc.modalPresentationStyle = .pageSheet
-        presentVC(UINavigationController(rootViewController: vc))
     }
     
 }
@@ -90,6 +79,13 @@ extension ProfileViewController: ProfileDelegate {
     
     func nicknameDidChange(_ nickname: String?) {
         profile?.nickname = nickname
+    }
+    
+    func didClickedProfileView() {
+        let vc = SettingProfileViewController()
+        vc.presentDelegate = self
+        vc.modalPresentationStyle = .pageSheet
+        presentVC(UINavigationController(rootViewController: vc))
     }
     
 }

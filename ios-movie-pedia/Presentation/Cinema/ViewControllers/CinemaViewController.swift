@@ -35,7 +35,13 @@ final class CinemaViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.backButtonTitle = ""
-        configureAction()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 15))),
+            style: .plain,
+            target: self,
+            action: #selector(searchButtonTapped)
+        )
+        mainView.userProfileView.delegate = self
         configureTableView()
         callRequest()
     }
@@ -53,25 +59,6 @@ final class CinemaViewController: UIViewController {
         vc.likeDelegate = self
         vc.searchDelegate = self
         pushVC(vc)
-    }
-    
-    @objc
-    private func userRightButtonTapped() {
-        let vc = SettingProfileViewController()
-        vc.presentDelegate = self
-        vc.modalPresentationStyle = .pageSheet
-        presentVC(UINavigationController(rootViewController: vc))
-    }
-    
-    private func configureAction() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 15))),
-            style: .plain,
-            target: self,
-            action: #selector(searchButtonTapped)
-        )
-        
-        mainView.userProfileView.rightButton.addTarget(self, action: #selector(userRightButtonTapped), for: .touchUpInside)
     }
     
     private func configureTableView() {
@@ -101,6 +88,13 @@ extension CinemaViewController: ProfileDelegate {
     
     func nicknameDidChange(_ nickname: String?) {
         profile?.nickname = nickname
+    }
+    
+    func didClickedProfileView() {
+        let vc = SettingProfileViewController()
+        vc.presentDelegate = self
+        vc.modalPresentationStyle = .pageSheet
+        presentVC(UINavigationController(rootViewController: vc))
     }
     
 }

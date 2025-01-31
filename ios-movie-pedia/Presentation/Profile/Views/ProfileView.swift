@@ -10,13 +10,14 @@ import SnapKit
 
 final class ProfileView: BaseView {
     
-    //MARK: UI Property
-    let userProfileView = UserProfileView()
+    //MARK: - UI Property
+    lazy var userProfileView = UserProfileView()
     let tableView = {
         let view = UITableView()
         view.register(ProfileTableViewCell.self, forCellReuseIdentifier: ProfileTableViewCell.id)
         return view
     }()
+    
     
     //MARK: - Override Method
     override func configureHierarchy() {

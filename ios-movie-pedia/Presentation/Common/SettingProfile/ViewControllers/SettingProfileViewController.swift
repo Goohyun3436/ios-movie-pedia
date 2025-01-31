@@ -194,4 +194,6 @@ extension SettingProfileViewController: ProfileDelegate {
         }
     }
     
+    func didClickedProfileView() {}
+    
 }
