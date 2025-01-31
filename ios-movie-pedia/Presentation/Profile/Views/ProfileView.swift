@@ -37,4 +37,8 @@ final class ProfileView: BaseView {
         }
         tableView.separatorInset = UIEdgeInsets(top: 16, left: 20, bottom: 16, right: 20)
     }
+    
+    override func configureView() {
+        tableView.bounces = false
+    }
 }
