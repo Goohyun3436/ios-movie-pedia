@@ -103,6 +103,7 @@ final class ImageScrollView: BaseView {
         
         noneContentLabel.text = ContentMessage.backdrops.loading
         noneContentLabel.font = UIFont.systemFont(ofSize: 12)
+        noneContentLabel.textColor = AppColor.darkgray
     }
     
 }

@@ -92,6 +92,7 @@ final class CastTableViewCell: BaseTableViewCell {
         collectionView.showsHorizontalScrollIndicator = false
         noneContentLabel.text = ContentMessage.cast.loading
         noneContentLabel.font = UIFont.systemFont(ofSize: 12)
+        noneContentLabel.textColor = AppColor.darkgray
     }
     
 }

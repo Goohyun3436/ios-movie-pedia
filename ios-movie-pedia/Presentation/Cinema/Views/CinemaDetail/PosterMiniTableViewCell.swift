@@ -74,6 +74,7 @@ final class PosterMiniTableViewCell: BaseTableViewCell {
         titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         noneContentLabel.text = ContentMessage.poster.loading
         noneContentLabel.font = UIFont.systemFont(ofSize: 12)
+        noneContentLabel.textColor = AppColor.darkgray
     }
     
 }

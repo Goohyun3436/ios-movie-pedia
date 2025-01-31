@@ -36,6 +36,7 @@ final class OverviewTableViewCell: BaseTableViewCell {
         
         moreButton.isHidden = false
         overviewLabel.text = overview
+        overviewLabel.textColor = AppColor.white
     }
     
     @objc
@@ -82,6 +83,7 @@ final class OverviewTableViewCell: BaseTableViewCell {
         overviewLabel.numberOfLines = 3
         overviewLabel.lineBreakMode = .byCharWrapping
         overviewLabel.font = UIFont.systemFont(ofSize: 12)
+        overviewLabel.textColor = AppColor.darkgray
     }
     
 }
