@@ -62,6 +62,8 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         if indexPath.row == 3 {
             presentAlert("탈퇴하기", "탈퇴를 하면 데이터가 모두 초기화 됩니다. 탈퇴 하시겠습니까?") {
                 UserDefaults.standard.removeObject(forKey: "profile")
+                User.likes = []
+                User.searches = []
                 
                 self.configureRootVC(UINavigationController(rootViewController: OnboardingViewController()))
             }
