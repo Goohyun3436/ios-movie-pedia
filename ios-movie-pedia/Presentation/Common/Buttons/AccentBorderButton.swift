@@ -15,7 +15,7 @@ final class AccentBorderButton: UIButton {
         layer.cornerRadius = 20
         layer.borderWidth = 2
         layer.borderColor = AppColor.accent?.cgColor
-        titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        titleLabel?.font = AppFont.title2.font
     }
     
     func setEnabled() {

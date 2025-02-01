@@ -12,8 +12,8 @@ final class UserProfileView: BaseView {
     
     //MARK: - UI Property
     private let profileImage = ProfileImageView(frame: CGRect(x: .zero, y: .zero, width: 50, height: 50), camera: false)
-    private let nicknameLabel = UILabel()
-    private let createdAtLabel = UILabel()
+    private let nicknameLabel = AppLabel(.title1)
+    private let createdAtLabel = AppLabel(.text4, AppColor.darkgray)
     private let rightImageView = UIImageView()
     private let bottomButton = AccentFillButton()
     
@@ -89,13 +89,7 @@ final class UserProfileView: BaseView {
     override func configureView() {
         layer.cornerRadius = 16
         backgroundColor = AppColor.tertiaryBackgroundColor
-        
         nicknameLabel.numberOfLines = 0
-        nicknameLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        
-        createdAtLabel.font = UIFont.systemFont(ofSize: 12)
-        createdAtLabel.textColor = AppColor.darkgray
-        
         rightImageView.image = UIImage(systemName: "chevron.right")
         rightImageView.tintColor = AppColor.darkgray
     }

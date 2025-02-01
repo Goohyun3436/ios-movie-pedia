@@ -17,7 +17,7 @@ final class SearchView: BaseView {
         view.register(SearchTableViewCell.self, forCellReuseIdentifier: SearchTableViewCell.id)
         return view
     }()
-    let noneContentLabel = UILabel()
+    let noneContentLabel = AppLabel(.text3, AppColor.darkgray)
     
     //MARK: - Override Method
     override func configureHierarchy() {
@@ -57,8 +57,6 @@ final class SearchView: BaseView {
         
         noneContentLabel.isHidden = true
         noneContentLabel.text = "원하는 검색결과를 찾지 못했습니다"
-        noneContentLabel.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        noneContentLabel.textColor = AppColor.darkgray
     }
     
 }

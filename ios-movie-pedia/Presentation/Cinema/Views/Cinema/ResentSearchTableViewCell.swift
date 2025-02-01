@@ -11,10 +11,10 @@ import SnapKit
 final class ResentSearchTableViewCell: BaseTableViewCell {
     
     //MARK: - UI Property
-    let titleLabel = UILabel()
+    let titleLabel = AppLabel(.title1)
     let removeButton = UIButton()
     let collectionView = ResentSearchCollectionView()
-    let noneContentLabel = UILabel()
+    let noneContentLabel = AppLabel(.text3)
     
     //MARK: - Property
     static let id = "CinemaTableViewCell"
@@ -66,11 +66,9 @@ final class ResentSearchTableViewCell: BaseTableViewCell {
     
     override func configureView() {
         selectionStyle = .none
-        titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         removeButton.setTitle("전체 삭제", for: .normal)
-        removeButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .black)
+        removeButton.titleLabel?.font = AppFont.title2.font
         noneContentLabel.text = "최근 검색어 내역이 없습니다."
-        noneContentLabel.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
         noneContentLabel.textColor = AppColor.darkgray
     }
 }

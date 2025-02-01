@@ -11,7 +11,7 @@ import SnapKit
 final class PosterTableViewCell: BaseTableViewCell {
     
     //MARK: - UI Property
-    let titleLabel = UILabel()
+    let titleLabel = AppLabel(.title1)
     let collectionView = PosterCollectionView(CGSize(width: 200, height: 356), 16, 16)
     
     //MARK: - Property
@@ -39,6 +39,5 @@ final class PosterTableViewCell: BaseTableViewCell {
     
     override func configureView() {
         selectionStyle = .none
-        titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
     }
 }

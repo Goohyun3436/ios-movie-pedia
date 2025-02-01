@@ -13,8 +13,8 @@ final class PersonCollectionViewCell: BaseCollectionViewCell {
     
     //MARK: - UI Property
     private let imageView = UIImageView()
-    private let originNameLabel = UILabel()
-    private let nameLabel = UILabel()
+    private let originNameLabel = AppLabel(.title2)
+    private let nameLabel = AppLabel(.text4, AppColor.darkgray)
     
     //MARK: - Property
     static let id = "PersonCollectionViewCell"
@@ -66,9 +66,6 @@ final class PersonCollectionViewCell: BaseCollectionViewCell {
         imageView.layer.cornerRadius = 25
         imageView.backgroundColor = AppColor.deepgray
         imageView.tintColor = AppColor.darkgray
-        originNameLabel.font = UIFont.systemFont(ofSize: 14, weight: .bold)
-        nameLabel.font = UIFont.systemFont(ofSize: 12)
-        nameLabel.textColor = AppColor.darkgray
     }
     
 }

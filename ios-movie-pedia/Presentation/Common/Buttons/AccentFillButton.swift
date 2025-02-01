@@ -14,7 +14,7 @@ final class AccentFillButton: UIButton {
         setTitle(title, for: .normal)
         layer.cornerRadius = 8
         backgroundColor = AppColor.accent
-        titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        titleLabel?.font = AppFont.title2.font
         setTitleColor(AppColor.white, for: .normal)
     }
     

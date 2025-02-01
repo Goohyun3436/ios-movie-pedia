@@ -13,8 +13,8 @@ final class OnboardingView: BaseView {
     //MARK: - UI Property
     private let wrapView = UIView()
     let imageView = UIImageView()
-    private let titleLabel = UILabel()
-    private let introLabel = UILabel()
+    private let titleLabel = AppLabel(.logo)
+    private let introLabel = AppLabel(.text2, AppColor.secondaryLabel)
     let startButton = AccentBorderButton("시작하기")
     
     //MARK: - Configure Method
@@ -56,13 +56,8 @@ final class OnboardingView: BaseView {
     override func configureView() {
         imageView.image = UIImage(named: "onboarding")
         imageView.contentMode = .scaleAspectFit
-        
         titleLabel.text = "Onboarding"
-        titleLabel.font = UIFont.italicSystemFont(ofSize: 28)
-        
         introLabel.text = "당신만의 영화 세상,\nMoviePedia를 시작해보세요."
-        introLabel.font = UIFont.systemFont(ofSize: 14)
-        introLabel.textColor = AppColor.secondaryLabel
         introLabel.textAlignment = .center
         introLabel.numberOfLines = 0
     }

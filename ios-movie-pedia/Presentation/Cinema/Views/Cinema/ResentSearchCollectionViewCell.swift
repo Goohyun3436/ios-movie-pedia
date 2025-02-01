@@ -11,7 +11,7 @@ import SnapKit
 final class ResentSearchCollectionViewCell: BaseCollectionViewCell {
     
     //MARK: - UI Property
-    private let titleLabel = UILabel()
+    private let titleLabel = AppLabel(.text3, AppColor.black)
     private let removeButton = UIButton()
     
     //MARK: - Property
@@ -62,10 +62,6 @@ final class ResentSearchCollectionViewCell: BaseCollectionViewCell {
     override func configureView() {
         contentView.layer.cornerRadius = 15
         contentView.backgroundColor = AppColor.lightgray
-        
-        titleLabel.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        titleLabel.textColor = AppColor.black
-        
         removeButton.setImage(UIImage(systemName: "xmark", withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 12, weight: .semibold))), for: .normal)
         removeButton.tintColor = AppColor.black
     }

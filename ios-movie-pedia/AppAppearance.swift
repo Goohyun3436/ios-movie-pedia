@@ -19,6 +19,35 @@ enum AppColor {
     static let tertiaryBackgroundColor = UIColor(named: "TertiaryBackgroundColor")
 }
 
+enum AppFont {
+    case logo
+    case title1
+    case title2
+    case text1
+    case text2
+    case text3
+    case text4
+    
+    var font: UIFont {
+        switch self {
+        case .logo:
+            return UIFont.italicSystemFont(ofSize: 28)
+        case .title1:
+            return UIFont.systemFont(ofSize: 16, weight: .bold)
+        case .title2:
+            return UIFont.systemFont(ofSize: 14, weight: .bold)
+        case .text1:
+            return UIFont.systemFont(ofSize: 14, weight: .medium)
+        case .text2:
+            return UIFont.systemFont(ofSize: 14)
+        case .text3:
+            return UIFont.systemFont(ofSize: 12, weight: .semibold)
+        case .text4:
+            return UIFont.systemFont(ofSize: 12)
+        }
+    }
+}
+
 final class AppAppearance {
     static func setUpAppearance() {
         let appearanceT = UITabBarAppearance()
@@ -31,7 +60,7 @@ final class AppAppearance {
         let appearanceN = UINavigationBarAppearance()
         appearanceN.configureWithTransparentBackground()
         appearanceN.backgroundColor = AppColor.black
-        appearanceN.titleTextAttributes = [.foregroundColor: AppColor.white, .font: UIFont.systemFont(ofSize: 16, weight: .bold)]
+        appearanceN.titleTextAttributes = [.foregroundColor: AppColor.white, .font: AppFont.title1.font]
         appearanceN.largeTitleTextAttributes = [.foregroundColor: AppColor.white]
         UINavigationBar.appearance().standardAppearance = appearanceN
         UINavigationBar.appearance().scrollEdgeAppearance = appearanceN

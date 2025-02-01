@@ -11,7 +11,7 @@ import SnapKit
 final class CastTableViewCell: BaseTableViewCell {
     
     //MARK: - UI Property
-    private let titleLabel = UILabel()
+    private let titleLabel = AppLabel(.title1)
     lazy private var collectionView = {
         let view = UICollectionView(frame: .zero, collectionViewLayout: {
             let layout = UICollectionViewFlowLayout()
@@ -36,7 +36,7 @@ final class CastTableViewCell: BaseTableViewCell {
         
         return view
     }()
-    private let noneContentLabel = UILabel()
+    private let noneContentLabel = AppLabel(.text4, AppColor.darkgray)
     
     //MARK: - Property
     static let id = "CastTableViewCell"
@@ -87,12 +87,9 @@ final class CastTableViewCell: BaseTableViewCell {
     
     override func configureView() {
         selectionStyle = .none
-        titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         collectionView.bounces = false
         collectionView.showsHorizontalScrollIndicator = false
         noneContentLabel.text = ContentMessage.cast.loading
-        noneContentLabel.font = UIFont.systemFont(ofSize: 12)
-        noneContentLabel.textColor = AppColor.darkgray
     }
     
 }

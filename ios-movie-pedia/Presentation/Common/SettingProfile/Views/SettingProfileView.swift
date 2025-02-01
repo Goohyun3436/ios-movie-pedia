@@ -13,7 +13,7 @@ final class SettingProfileView: BaseView {
     //MARK: - UI Property
     let profileImageView = ProfileImageView(camera: true)
     let nicknameTextField = UITextField()
-    private let statusLabel = UILabel()
+    private let statusLabel = AppLabel(.text4, AppColor.accent)
     let submitButton = AccentBorderButton("완료")
     
     //MARK: - Method
@@ -61,12 +61,9 @@ final class SettingProfileView: BaseView {
     
     override func configureView() {
         nicknameTextField.placeholder = "닉네임"
-        nicknameTextField.font = UIFont.systemFont(ofSize: 14)
+        nicknameTextField.font = AppFont.text2.font
         nicknameTextField.addLeftPadding(16)
         nicknameTextField.configurePlaceholder(color: AppColor.secondaryLabel)
-        
-        statusLabel.font = UIFont.systemFont(ofSize: 12)
-        statusLabel.textColor = AppColor.accent
         
         DispatchQueue.main.async {
             self.nicknameTextField.configureBorderBottom(1)

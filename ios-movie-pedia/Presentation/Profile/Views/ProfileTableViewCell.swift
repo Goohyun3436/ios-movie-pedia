@@ -11,7 +11,7 @@ import SnapKit
 final class ProfileTableViewCell: BaseTableViewCell {
     
     //MARK: - UI Property
-    private let titleLabel = UILabel()
+    private let titleLabel = AppLabel(.text2)
     
     //MARK: - Property
     static let id = "ProfileTableViewCell"
@@ -32,10 +32,6 @@ final class ProfileTableViewCell: BaseTableViewCell {
             make.trailing.lessThanOrEqualTo(contentView).offset(-20)
             make.centerY.equalTo(contentView)
         }
-    }
-    
-    override func configureView() {
-        titleLabel.font = UIFont.systemFont(ofSize: 14)
     }
     
 }

@@ -42,7 +42,6 @@ final class NetworkManager {
                     let err = try JSONDecoder().decode(TMDBError.self, from: data)
                     failHandler(TMDBStatusCode(err.status_code))
                 } catch {
-                    print("catch")
                     failHandler(TMDBStatusCode(0))
                 }
             }

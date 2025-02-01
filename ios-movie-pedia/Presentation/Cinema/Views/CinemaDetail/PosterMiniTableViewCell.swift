@@ -11,7 +11,7 @@ import SnapKit
 final class PosterMiniTableViewCell: BaseTableViewCell {
     
     //MARK: - UI Property
-    private let titleLabel = UILabel()
+    private let titleLabel = AppLabel(.title1)
     private lazy var collectionView = {
         let view = PosterCollectionView(CGSize(width: 130, height: 200), 16, 8)
         
@@ -21,7 +21,7 @@ final class PosterMiniTableViewCell: BaseTableViewCell {
         
         return view
     }()
-    private let noneContentLabel = UILabel()
+    private let noneContentLabel = AppLabel(.text4, AppColor.darkgray)
     
     //MARK: - Property
     static let id = "PosterMiniTableViewCell"
@@ -71,10 +71,7 @@ final class PosterMiniTableViewCell: BaseTableViewCell {
     }
     
     override func configureView() {
-        titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         noneContentLabel.text = ContentMessage.poster.loading
-        noneContentLabel.font = UIFont.systemFont(ofSize: 12)
-        noneContentLabel.textColor = AppColor.darkgray
     }
     
 }

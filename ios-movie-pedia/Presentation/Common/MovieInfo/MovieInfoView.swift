@@ -40,7 +40,7 @@ final class MovieInfoView: BaseView {
     
     //MARK: - UI Property
     private let imageView = UIImageView()
-    private let label = UILabel()
+    private let label = AppLabel(.text4, AppColor.lightgray)
     
     //MARK: - Property
     private var info: MovieInfo?
@@ -96,10 +96,7 @@ final class MovieInfoView: BaseView {
     override func configureView() {
         imageView.backgroundColor = AppColor.black
         imageView.tintColor = AppColor.lightgray
-        
         label.backgroundColor = AppColor.black
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = AppColor.lightgray
     }
     
 }

@@ -13,12 +13,12 @@ final class SearchTableViewCell: BaseTableViewCell {
     
     //MARK: - UI Property
     private let posterImageView = UIImageView()
-    private let titleLabel = UILabel()
-    private let releaseDateLabel = UILabel()
+    private let titleLabel = AppLabel(.title1)
+    private let releaseDateLabel = AppLabel(.text4, AppColor.darkgray)
     private let genreWrapView = UIStackView()
     private let genreIdLabels = [
-        UILabel(),
-        UILabel()
+        AppLabel(.text1, AppColor.lightgray),
+        AppLabel(.text1, AppColor.lightgray)
     ]
     lazy private var likeButton = {
         let button = LikeButton()
@@ -131,17 +131,11 @@ final class SearchTableViewCell: BaseTableViewCell {
         posterImageView.layer.cornerRadius = 8
         
         titleLabel.numberOfLines = 2
-        titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        
-        releaseDateLabel.font = UIFont.systemFont(ofSize: 13)
-        releaseDateLabel.textColor = AppColor.darkgray
         
         for item in genreIdLabels {
             item.clipsToBounds = true
             item.layer.cornerRadius = 4
             item.backgroundColor = AppColor.deepgray
-            item.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-            item.textColor = AppColor.lightgray
         }
     }
     

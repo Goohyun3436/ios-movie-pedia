@@ -15,7 +15,7 @@ final class ImageScrollView: BaseView {
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
     private let pageControl = UIPageControl()
-    private let noneContentLabel = UILabel()
+    private let noneContentLabel = AppLabel(.text4, AppColor.darkgray)
     
     //MARK: - Property
     var images = [Image]() {
@@ -102,8 +102,6 @@ final class ImageScrollView: BaseView {
         pageControl.currentPageIndicatorTintColor = AppColor.white
         
         noneContentLabel.text = ContentMessage.backdrops.loading
-        noneContentLabel.font = UIFont.systemFont(ofSize: 12)
-        noneContentLabel.textColor = AppColor.darkgray
     }
     
 }

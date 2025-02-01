@@ -11,13 +11,13 @@ import SnapKit
 final class OverviewTableViewCell: BaseTableViewCell {
     
     //MARK: - UI Property
-    private let titleLabel = UILabel()
+    private let titleLabel = AppLabel(.title1)
     private lazy var moreButton = {
         let button = UIButton()
         button.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
         return button
     }()
-    private let overviewLabel = UILabel()
+    private let overviewLabel = AppLabel(.text4, AppColor.darkgray)
     
     //MARK: - Property
     static let id = "OverviewTableViewCell"
@@ -74,16 +74,11 @@ final class OverviewTableViewCell: BaseTableViewCell {
     
     override func configureView() {
         selectionStyle = .none
-        titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        
         moreButton.setTitle("More", for: .normal)
-        moreButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
-        
+        moreButton.titleLabel?.font = AppFont.title2.font
         overviewLabel.text = ContentMessage.overview.loading
         overviewLabel.numberOfLines = 3
         overviewLabel.lineBreakMode = .byCharWrapping
-        overviewLabel.font = UIFont.systemFont(ofSize: 12)
-        overviewLabel.textColor = AppColor.darkgray
     }
     
 }

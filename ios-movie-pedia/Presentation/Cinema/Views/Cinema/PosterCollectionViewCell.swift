@@ -13,13 +13,13 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
     
     //MARK: - UI Property
     private let imageView = UIImageView()
-    private let titleLabel = UILabel()
+    private let titleLabel = AppLabel(.title1)
     lazy private var likeButton = {
         let button = LikeButton()
         button.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         return button
     }()
-    private let overviewLabel = UILabel()
+    private let overviewLabel = AppLabel(.text4, AppColor.darkgray)
     
     //MARK: - Property
     static let id = "PosterCollectionViewCell"
@@ -99,12 +99,7 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 8
         imageView.contentMode = .scaleAspectFill
-        
-        titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        
         overviewLabel.numberOfLines = 2
-        overviewLabel.font = UIFont.systemFont(ofSize: 12)
-        overviewLabel.textColor = AppColor.darkgray
     }
     
 }
