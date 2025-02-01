@@ -14,7 +14,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-//        Thread.sleep(forTimeInterval: 2.0)
         
         DispatchQueue.global().async {
             User.likes = UserDefaults.standard.array(forKey: "likes") as? [Int] ?? []
@@ -22,6 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         AppAppearance.setUpAppearance()
+        
+        Thread.sleep(forTimeInterval: 2.0)
+        
         return true
     }
 
