@@ -52,6 +52,8 @@ final class SearchTableViewCell: BaseTableViewCell {
         for i in genres.indices {
             genreIdLabels[i].text = " \(genres[i]) "
         }
+        
+        likeButton.isEnabled = movie.release_date != nil
     }
     
     @objc

@@ -47,6 +47,7 @@ final class CinemaDetailViewController: UIViewController {
         
         navigationItem.title = movie.title
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: likeButton)
+        navigationItem.rightBarButtonItem?.isEnabled = movie.release_date != nil
         isLike = movie.is_like
         callRequest(movie.id)
     }
@@ -59,8 +60,8 @@ final class CinemaDetailViewController: UIViewController {
             self.backdrops = data.backdrops
             self.posters = data.posters
             group.leave()
-        } failHandler: {
-            print("실패")
+        } failHandler: { code in
+            self.presentErrorAlert(code)
             self.backdrops = []
             self.posters = []
             group.leave()
@@ -70,8 +71,8 @@ final class CinemaDetailViewController: UIViewController {
         NetworkManager.shared.tmdb(.credits(movieId, .en), TMDBCreditsResponse.self) { data in
             self.cast = data.cast
             group.leave()
-        } failHandler: {
-            print("실패")
+        } failHandler: { code in
+            self.presentErrorAlert(code)
             self.cast = []
             group.leave()
         }

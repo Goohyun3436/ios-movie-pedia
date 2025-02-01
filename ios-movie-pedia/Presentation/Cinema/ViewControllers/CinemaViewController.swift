@@ -72,8 +72,10 @@ final class CinemaViewController: UIViewController {
         NetworkManager.shared.tmdb(.trending(), TMDBResponse.self) { data in
             self.movies = data.results
             self.mainView.tableView.reloadData()
-        } failHandler: {
-            print("실패")
+        } failHandler: { code in
+            self.presentErrorAlert(code)
+            self.movies = []
+            self.mainView.tableView.reloadData()
         }
     }
     

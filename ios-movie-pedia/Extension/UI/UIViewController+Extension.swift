@@ -38,6 +38,16 @@ extension UIViewController {
         present(alert, animated: true)
     }
     
+    func presentErrorAlert(_ status: TMDBStatusCode) {
+        let alert = UIAlertController(title: "실패", message: "\(status.ko) (\(status.statusCode))", preferredStyle: .alert)
+        
+        let ok = UIAlertAction(title: "확인", style: .destructive)
+        
+        alert.addAction(ok)
+        
+        present(alert, animated: true)
+    }
+    
     func getUserProfile() -> Profile? {
         guard let saved = loadJsonData(type: Profile.self, forKey: "profile") else {
             return nil

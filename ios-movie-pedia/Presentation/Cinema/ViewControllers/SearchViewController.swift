@@ -95,8 +95,8 @@ final class SearchViewController: UIViewController {
             }
             
             self.mainView.tableView.reloadData()
-        } failHandler: {
-            print("실패")
+        } failHandler: { code in
+            self.presentErrorAlert(code)
             self.totalPages = 0
             self.totalResults = 0
             self.movies = []

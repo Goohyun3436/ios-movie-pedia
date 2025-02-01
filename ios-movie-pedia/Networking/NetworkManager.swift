@@ -18,22 +18,33 @@ final class NetworkManager {
         _ request: TMDBRequest,
         _ responseT: ResponseType.Type,
         completionHandler: @escaping (ResponseType) -> Void,
-        failHandler: @escaping () -> Void
+        failHandler: @escaping (TMDBStatusCode) -> Void
     ) {
         AF.request(
             request.endpoint,
             method: request.method,
             parameters: request.parameters,
             headers: request.header
-        ).responseDecodable(of: responseT) { response in
+        )
+        .validate(statusCode: 200...299)
+        .responseDecodable(of: responseT) { response in
             switch response.result {
             case .success(let data):
                 completionHandler(data)
                     
             case .failure(_):
-                print(response.response?.statusCode)
-                print(response.error?.errorDescription)
-                failHandler()
+                guard let data = response.data else {
+                    failHandler(TMDBStatusCode(0))
+                    return
+                }
+                
+                do {
+                    let err = try JSONDecoder().decode(TMDBError.self, from: data)
+                    failHandler(TMDBStatusCode(err.status_code))
+                } catch {
+                    print("catch")
+                    failHandler(TMDBStatusCode(0))
+                }
             }
         }
     }
