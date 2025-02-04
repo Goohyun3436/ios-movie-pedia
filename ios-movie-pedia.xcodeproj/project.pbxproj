@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F8237C612D520B8F003E2F77 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = F8237C602D520B8F003E2F77 /* README.md */; };
 		F8B65AF92D435D03004BEFD3 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = F8B65AF82D435D03004BEFD3 /* .gitignore */; };
 		F8B65AFE2D435E96004BEFD3 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F8B65AFD2D435E96004BEFD3 /* Kingfisher */; };
 		F8B65B012D435EA5004BEFD3 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F8B65B002D435EA5004BEFD3 /* Alamofire */; };
@@ -14,6 +15,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F8237C602D520B8F003E2F77 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F8B65AAE2D4358A0004BEFD3 /* ios-movie-pedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ios-movie-pedia.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8B65AF82D435D03004BEFD3 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -56,6 +58,7 @@
 		F8B65AA52D4358A0004BEFD3 = {
 			isa = PBXGroup;
 			children = (
+				F8237C602D520B8F003E2F77 /* README.md */,
 				F8B65AF82D435D03004BEFD3 /* .gitignore */,
 				F8B65AB02D4358A0004BEFD3 /* ios-movie-pedia */,
 				F8B65AAF2D4358A0004BEFD3 /* Products */,
@@ -143,6 +146,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F8B65AF92D435D03004BEFD3 /* .gitignore in Resources */,
+				F8237C612D520B8F003E2F77 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -172,7 +176,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "구현";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
@@ -207,7 +211,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "구현";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
