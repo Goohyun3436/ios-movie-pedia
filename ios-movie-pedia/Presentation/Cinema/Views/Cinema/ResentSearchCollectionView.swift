@@ -28,6 +28,7 @@ final class ResentSearchCollectionView: UICollectionView {
         }())
         
         showsHorizontalScrollIndicator = false
+        showsVerticalScrollIndicator = false
         
         register(ResentSearchCollectionViewCell.self, forCellWithReuseIdentifier: ResentSearchCollectionViewCell.id)
     }
