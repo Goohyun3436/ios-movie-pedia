@@ -65,6 +65,7 @@ final class ProfileImageView: BaseView {
         isUserInteractionEnabled = true
         backgroundColor = UIColor.clear
         
+        imageView.clipsToBounds = true
         imageView.layer.borderWidth = 3
         imageView.layer.borderColor = AppColor.accent?.cgColor
         imageView.contentMode = .scaleAspectFit
@@ -77,11 +78,8 @@ final class ProfileImageView: BaseView {
         cameraImageView.tintColor = AppColor.white
         
         if self.frame.width == 0 {
-            DispatchQueue.main.async {
-                self.imageView.configureCircle()
-            }
+            imageView.layer.cornerRadius = 50
         } else {
-            imageView.clipsToBounds = true
             imageView.layer.cornerRadius = self.frame.width / 2
         }
     }
