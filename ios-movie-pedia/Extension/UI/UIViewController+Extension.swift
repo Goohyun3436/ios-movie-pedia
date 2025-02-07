@@ -35,6 +35,8 @@ extension UIViewController {
         alert.addAction(cancel)
         alert.addAction(ok)
         
+        alert.overrideUserInterfaceStyle = UIUserInterfaceStyle.dark
+        
         present(alert, animated: true)
     }
     
@@ -44,6 +46,8 @@ extension UIViewController {
         let ok = UIAlertAction(title: "확인", style: .destructive)
         
         alert.addAction(ok)
+        
+        alert.overrideUserInterfaceStyle = UIUserInterfaceStyle.dark
         
         present(alert, animated: true)
     }
