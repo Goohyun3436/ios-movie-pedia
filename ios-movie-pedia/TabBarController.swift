@@ -56,6 +56,8 @@ final class TabBarController: UITabBarController {
     
     //MARK: - Method
     private func configureTBC() {
+        view.backgroundColor = AppColor.black
+        
         let tabs = TabBar.allCases
         var navs = [UINavigationController]()
         
