@@ -7,16 +7,7 @@
 
 import UIKit
 
-extension UIViewController {
-    func saveJsonData<T: Codable>(_ data: Any?, type: T.Type, forKey: String) {
-        let encoder = JSONEncoder()
-        let data = data as? T
-        
-        if let encoded = try? encoder.encode(data) {
-            UserDefaults.standard.setValue(encoded, forKey: forKey)
-        }
-    }
-    
+extension UIViewController {    
     func getToday() -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -53,7 +44,7 @@ extension UIViewController {
     }
     
     func getUserProfile() -> Profile? {
-        guard let saved = loadJsonData(type: Profile.self, forKey: "profile") else {
+        guard let saved = UserDefaultManager.shared.loadJsonData(type: Profile.self, forKey: "profile") else {
             return nil
         }
         

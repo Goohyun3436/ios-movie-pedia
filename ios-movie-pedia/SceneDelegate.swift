@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
         
-        let profile = loadJsonData(type: Profile.self, forKey: "profile")
+        let profile = UserDefaultManager.shared.loadJsonData(type: Profile.self, forKey: "profile")
         
         window?.rootViewController = profile == nil
             ? UINavigationController(rootViewController: OnboardingViewController())
