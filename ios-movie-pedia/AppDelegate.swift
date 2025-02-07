@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         AppAppearance.setUpAppearance()
         
-        Thread.sleep(forTimeInterval: 2.0)
+//        Thread.sleep(forTimeInterval: 2.0)
         
         return true
     }
