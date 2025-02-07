@@ -18,14 +18,9 @@ final class AccentBorderButton: UIButton {
         titleLabel?.font = AppFont.title2.font
     }
     
-    func setEnabled() {
-        isEnabled = true
-        layer.borderColor = AppColor.accent?.cgColor
-    }
-    
-    func setDisabled() {
-        isEnabled = false
-        layer.borderColor = AppColor.darkgray?.cgColor
+    func setAbled(_ isEnabled: Bool) {
+        self.isEnabled = isEnabled
+        layer.borderColor = isEnabled ? AppColor.accent?.cgColor : AppColor.darkgray?.cgColor
     }
     
     required init?(coder: NSCoder) {

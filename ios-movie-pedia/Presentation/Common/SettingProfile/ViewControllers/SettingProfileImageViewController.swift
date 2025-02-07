@@ -13,7 +13,7 @@ final class SettingProfileImageViewController: UIViewController {
     private lazy var mainView = SettingProfileImageView()
     
     //MARK: - Property
-    var profile = Profile()
+    var profileImage: String?
     let profilesImages: [String] = [Int](0...11).map { "profile_\($0)" }
     var delegate: ProfileDelegate?
     
@@ -30,7 +30,7 @@ final class SettingProfileImageViewController: UIViewController {
         mainView.collectionView.dataSource = self
         mainView.collectionView.register(ProfileImageCollectionViewCell.self, forCellWithReuseIdentifier: ProfileImageCollectionViewCell.id)
         
-        mainView.configureData(profile)
+        mainView.configureData(profileImage)
     }
     
 }
@@ -44,7 +44,7 @@ extension SettingProfileImageViewController: UICollectionViewDelegate, UICollect
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = mainView.collectionView.dequeueReusableCell(withReuseIdentifier: ProfileImageCollectionViewCell.id, for: indexPath) as! ProfileImageCollectionViewCell
         
-        guard let selectedImage = profile.image else {
+        guard let selectedImage = profileImage else {
             return cell
         }
         
@@ -62,17 +62,17 @@ extension SettingProfileImageViewController: UICollectionViewDelegate, UICollect
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let image = profile.image else {
+        guard let profileImage else {
             return
         }
         
-        guard let beforeItem = profilesImages.firstIndex(of: image) else {
+        guard let beforeItem = profilesImages.firstIndex(of: profileImage) else {
             return
         }
         
-        profile.image = profilesImages[indexPath.item]
-        mainView.configureData(profile)
-        delegate?.profileImageDidChange(profile.image)
+        self.profileImage = profilesImages[indexPath.item]
+        mainView.configureData(self.profileImage)
+        delegate?.profileImageDidChange(self.profileImage)
         collectionView.reloadItems(at: [indexPath, IndexPath(item: beforeItem, section: 0)])
     }
     

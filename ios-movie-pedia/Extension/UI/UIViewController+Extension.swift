@@ -8,13 +8,6 @@
 import UIKit
 
 extension UIViewController {    
-    func getToday() -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let today = formatter.string(from: Date())
-        return today
-    }
-    
     func presentAlert(_ title: String?, _ message: String?, completionHandler: @escaping () -> Void) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
@@ -44,7 +37,7 @@ extension UIViewController {
     }
     
     func getUserProfile() -> Profile? {
-        guard let saved = UserDefaultManager.shared.loadJsonData(type: Profile.self, forKey: "profile") else {
+        guard let saved = UserDefaultManager.shared.loadJsonData(type: Profile.self, forKey: .profile) else {
             return nil
         }
         

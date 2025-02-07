@@ -13,17 +13,17 @@ final class UserDefaultManager {
     
     static let shared = UserDefaultManager()
     
-    func saveJsonData<T: Codable>(_ data: Any?, type: T.Type, forKey: String) {
+    func saveJsonData<T: Codable>(_ data: Any?, type: T.Type, forKey: UserDefaultKey) {
         let encoder = JSONEncoder()
         let data = data as? T
         
         if let encoded = try? encoder.encode(data) {
-            UserDefaults.standard.setValue(encoded, forKey: forKey)
+            UserDefaults.standard.setValue(encoded, forKey: forKey.rawValue)
         }
     }
     
-    func loadJsonData<T: Codable>(type: T.Type, forKey: String) -> T? {
-        guard let savedData = UserDefaults.standard.object(forKey: forKey) as? Data else {
+    func loadJsonData<T: Codable>(type: T.Type, forKey: UserDefaultKey) -> T? {
+        guard let savedData = UserDefaults.standard.object(forKey: forKey.rawValue) as? Data else {
             return nil
         }
         
@@ -34,6 +34,10 @@ final class UserDefaultManager {
         }
         
         return savedObject
+    }
+    
+    func removeObject(forKey: UserDefaultKey) {
+        UserDefaults.standard.removeObject(forKey: forKey.rawValue)
     }
     
 }

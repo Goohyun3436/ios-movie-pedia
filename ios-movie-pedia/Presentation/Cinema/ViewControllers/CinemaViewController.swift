@@ -93,8 +93,7 @@ extension CinemaViewController: ProfileDelegate {
     }
     
     func didClickedProfileView() {
-        let vc = SettingProfileViewController()
-        vc.presentDelegate = self
+        let vc = SettingProfileViewController(delegate: self)
         vc.modalPresentationStyle = .pageSheet
         presentVC(UINavigationController(rootViewController: vc))
     }

@@ -31,8 +31,6 @@ final class OnboardingViewController: UIViewController {
     //MARK: - Method
     @objc
     private func startButtonTapped() {
-        let vc = SettingProfileViewController()
-        vc.isOnboarding = true
-        pushVC(vc)
+        pushVC(SettingProfileViewController(isOnboarding: true))
     }
 }

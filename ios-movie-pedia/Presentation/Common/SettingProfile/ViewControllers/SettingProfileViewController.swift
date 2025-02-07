@@ -13,9 +13,18 @@ final class SettingProfileViewController: UIViewController {
     private let mainView = SettingProfileView()
     
     //MARK: - Property
-    private var profile = Profile()
-    var presentDelegate: ProfileDelegate?
-    var isOnboarding: Bool = false
+    private let viewModel = SettingProfileViewModel()
+    
+    //MARK: - Initializer Method
+    init(isOnboarding: Bool = false, delegate: ProfileDelegate? = nil) {
+        super.init(nibName: nil, bundle: nil)
+        viewModel.isOnboarding.value = isOnboarding
+        viewModel.profileDelegate = delegate
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     //MARK: - Override Method
     override func loadView() {
@@ -24,41 +33,26 @@ final class SettingProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "프로필 설정"
-        navigationItem.backButtonTitle = ""
         mainView.nicknameTextField.delegate = self
-        configureProfile()
-        configureAction()
-        configureView()
+        setupActions()
+        setupBinds()
+        viewModel.viewDidLoad.value = ()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        mainView.nicknameTextField.becomeFirstResponder()
+        viewModel.viewDidAppear.value = ()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        mainView.nicknameTextField.resignFirstResponder()
+        viewModel.viewWillDisappear.value = ()
     }
     
-    //MARK: - Method
-    private func configureProfile() {
-        if let savedProfile = loadJsonData(type: Profile.self, forKey: "profile") {
-            profile = savedProfile
-        } else {
-            let randomImage = "profile_\(Int.random(in: 0...11))"
-            profileImageDidChange(randomImage)
-            profile = Profile(image: randomImage, nickname: nil)
-        }
-        
-        mainView.configureData(profile)
-        mainView.configureStatus(nicknameCondition(profile.nickname))
-    }
-    
-    private func configureAction() {
+    //MARK: - Setup Method
+    private func setupActions() {
         navigationItem.leftBarButtonItem = makeBarButtonItemWithImage(
-            isOnboarding ? "chevron.backward" : "xmark",
+            viewModel.isOnboarding.value ? "chevron.backward" : "xmark",
             handler: #selector(backButtonTapped)
         )
         
@@ -81,77 +75,80 @@ final class SettingProfileViewController: UIViewController {
         mainView.submitButton.addTarget(self, action: #selector(submitButtonTapped), for: .touchUpInside)
     }
     
-    private func configureView() {
-        mainView.submitButton.setDisabled()
-        navigationItem.rightBarButtonItem?.isEnabled = false
+    private func setupBinds() {
+        viewModel.showsRightBarButtonItem.bind { [weak self] show in
+            self?.navigationItem.rightBarButtonItem?.isHidden = show
+        }
         
-        if isOnboarding {
-            navigationItem.rightBarButtonItem?.isHidden = true
-        } else {
-            mainView.submitButton.isHidden = true
+        viewModel.showsSubmitButton.bind { [weak self] show in
+            self?.mainView.submitButton.isHidden = show
+        }
+        
+        viewModel.navTitle.bind { [weak self] title in
+            self?.navigationItem.title = title
+            self?.navigationItem.backButtonTitle = ""
+        }
+        
+        viewModel.profile.lazyBind { [weak self] profile in
+            self?.mainView.configureData(profile)
+        }
+        
+        viewModel.nicknameValidation.lazyBind { [weak self] validation in
+            self?.mainView.configureStatus(validation)
+        }
+        
+        viewModel.submitValidation.lazyBind { [weak self] validation in
+            self?.mainView.submitButton.setAbled(validation)
+            self?.navigationItem.rightBarButtonItem?.isEnabled = validation
+        }
+        
+        viewModel.outputProfileImageTapped.lazyBind { [weak self] image in
+            let vc = SettingProfileImageViewController()
+            vc.delegate = self
+            vc.profileImage = image
+            self?.pushVC(vc)
+        }
+        
+        viewModel.popVC.lazyBind { [weak self] _ in
+            UserDefaultManager.shared.removeObject(forKey: .profile)
+            self?.popVC()
+        }
+        
+        viewModel.dismissVC.lazyBind { [weak self] _ in
+            self?.dismissVC()
+        }
+        
+        viewModel.outputSubmitButtonTapped.lazyBind { [weak self] _ in
+            self?.configureRootVC(TabBarController())
+        }
+        
+        viewModel.showsKeyboard.lazyBind { [weak self] show in
+            if show {
+                self?.mainView.nicknameTextField.becomeFirstResponder()
+            } else {
+                self?.mainView.nicknameTextField.resignFirstResponder()
+            }
         }
     }
     
-    @objc
-    private func mainViewTapped() {
-        mainView.nicknameTextField.resignFirstResponder()
+    @objc private func mainViewTapped() {
+        viewModel.inputMainViewTapped.value = ()
     }
     
-    @objc
-    private func backButtonTapped() {
-        if isOnboarding {
-            UserDefaults.standard.removeObject(forKey: "profile")
-            popVC()
-        } else {
-            dismissVC()
-        }
+    @objc private func backButtonTapped() {
+        viewModel.inputBackButtonTapped.value = ()
     }
     
-    @objc
-    private func profileImageViewTapped() {
-        let vc = SettingProfileImageViewController()
-        vc.delegate = self
-        vc.profile = profile
-        pushVC(vc)
+    @objc private func profileImageViewTapped() {
+        viewModel.inputProfileImageTapped.value = ()
     }
     
-    @objc
-    private func submitButtonTapped() {
-        profile.created_at = getToday()
-        
-        saveJsonData(profile, type: Profile.self, forKey: "profile")
-        
-        configureRootVC(TabBarController())
+    @objc private func submitButtonTapped() {
+        viewModel.inputSubmitButtonTapped.value = ()
     }
     
-    @objc
-    private func saveButtonTapped() {
-        saveJsonData(profile, type: Profile.self, forKey: "profile")
-        presentDelegate?.profileImageDidChange(profile.image)
-        presentDelegate?.nicknameDidChange(profile.nickname)
-        dismissVC()
-    }
-    
-    private func nicknameCondition(_ nickname: String?) -> NicknameCondition {
-        guard var nickname else {
-            return .length
-        }
-        
-        nickname = nickname.trimmingCharacters(in: .whitespaces)
-        
-        guard !nickname.matches("[0-9]") else {
-            return .number
-        }
-        
-        guard !nickname.matches("[@#$%]") else {
-            return .symbol
-        }
-        
-        guard 2 <= nickname.count && nickname.count < 10 else {
-            return .length
-        }
-        
-        return .satisfied
+    @objc private func saveButtonTapped() {
+        viewModel.inputSaveButtonTapped.value = ()
     }
     
 }
@@ -160,11 +157,11 @@ final class SettingProfileViewController: UIViewController {
 extension SettingProfileViewController: UITextFieldDelegate {
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
-        nicknameDidChange(textField.text)
+        viewModel.profileNickname.value = textField.text
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+        viewModel.inputTextFieldShouldReturn.value = ()
         return true
     }
     
@@ -174,23 +171,11 @@ extension SettingProfileViewController: UITextFieldDelegate {
 extension SettingProfileViewController: ProfileDelegate {
     
     func profileImageDidChange(_ image: String?) {
-        profile.image = image
-        mainView.configureData(profile)
+        viewModel.profileImage.value = image
     }
     
     func nicknameDidChange(_ nickname: String?) {
-        profile.nickname = nickname
-        
-        let condition = nicknameCondition(nickname)
-        mainView.configureStatus(condition)
-        
-        if condition == .satisfied {
-            mainView.submitButton.setEnabled()
-            navigationItem.rightBarButtonItem?.isEnabled = true
-        } else {
-            mainView.submitButton.setDisabled()
-            navigationItem.rightBarButtonItem?.isEnabled = false
-        }
+        viewModel.profileNickname.value = nickname
     }
     
     func didClickedProfileView() {}
