@@ -82,6 +82,9 @@ final class SettingProfileViewController: UIViewController {
     }
     
     private func configureView() {
+        mainView.submitButton.setDisabled()
+        navigationItem.rightBarButtonItem?.isEnabled = false
+        
         if isOnboarding {
             navigationItem.rightBarButtonItem?.isHidden = true
         } else {
