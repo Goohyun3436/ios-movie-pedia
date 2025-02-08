@@ -17,6 +17,9 @@ final class MbtiSelectorViewModel {
     let mbtiList = [ "E", "I", "S", "N", "T", "F", "J", "P"]
     let selectedMbti: Observable<[String?]> = Observable([nil, nil, nil, nil])
     
+    //MARK: - Property
+    var delegate: MbtiDelegate?
+    
     //MARK: - Initializer Method
     init() {
         didSelectItemAt.lazyBind { [weak self] indexPath in
@@ -33,6 +36,10 @@ final class MbtiSelectorViewModel {
                 self?.selectedMbti.value[sectionIndex] = nil
             } else {
                 self?.selectedMbti.value[sectionIndex] = character
+            }
+            
+            if let selectedMbti = self?.selectedMbti.value {
+                self?.delegate?.didChange(selectedMbti)
             }
         }
     }

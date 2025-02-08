@@ -13,9 +13,16 @@ final class SettingProfileView: BaseView {
     //MARK: - UI Property
     let profileImageView = ProfileImageView(camera: true)
     let nicknameTextField = UITextField()
-    private let statusLabel = AppLabel(.text4, AppColor.accent)
-    private let mbtiSelectorView = MbtiSelectorView()
+    private let nicknameStatusLabel = AppLabel(.text4, AppColor.accent)
+    private lazy var mbtiSelectorView = MbtiSelectorView()
+    private let mbtiStatusLabel = AppLabel(.text4, AppColor.accent)
     let submitButton = AccentBorderButton("완료")
+    
+    //MARK: - Initializer Method
+    init(delegate: MbtiDelegate) {
+        super.init(frame: .zero)
+        mbtiSelectorView.viewModel.delegate = delegate
+    }
     
     //MARK: - Method
     func configureData(_ profile: Profile) {
@@ -23,17 +30,30 @@ final class SettingProfileView: BaseView {
         nicknameTextField.text = profile.nickname
     }
     
-    func configureStatus(_ condition: ProfileNicknameValidation) {
-        statusLabel.text = condition.message
-        statusLabel.textColor = condition.validation ? AppColor.accent : AppColor.red
+    func configureStatus(
+        nicknameValidation: ProfileNicknameValidation? = nil,
+        mbtiValidation: ProfileMbtiValidation? = nil
+    ) {
+        if let nicknameValidation {
+            nicknameStatusLabel.text = nicknameValidation.message
+            nicknameStatusLabel.textColor = nicknameValidation.validation ? AppColor.accent : AppColor.red
+            return
+        }
+        
+        if let mbtiValidation {
+            mbtiStatusLabel.text = mbtiValidation.message
+            mbtiStatusLabel.textColor = mbtiValidation.validation ? AppColor.accent : AppColor.red
+            return
+        }
     }
     
     //MARK: - Override Method
     override func configureHierarchy() {
         addSubview(profileImageView)
         addSubview(nicknameTextField)
-        addSubview(statusLabel)
+        addSubview(nicknameStatusLabel)
         addSubview(mbtiSelectorView)
+        addSubview(mbtiStatusLabel)
         addSubview(submitButton)
     }
     
@@ -49,7 +69,7 @@ final class SettingProfileView: BaseView {
             make.height.equalTo(40)
         }
         
-        statusLabel.snp.makeConstraints { make in
+        nicknameStatusLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(32)
             make.trailing.equalToSuperview().inset(16)
             make.top.equalTo(nicknameTextField.snp.bottom).offset(16)
@@ -57,7 +77,13 @@ final class SettingProfileView: BaseView {
         
         mbtiSelectorView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview().inset(16)
-            make.top.equalTo(statusLabel.snp.bottom).offset(32)
+            make.top.equalTo(nicknameStatusLabel.snp.bottom).offset(32)
+        }
+        
+        mbtiStatusLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(32)
+            make.trailing.equalToSuperview().inset(16)
+            make.top.equalTo(mbtiSelectorView.snp.bottom).offset(16)
         }
         
         submitButton.snp.makeConstraints { make in

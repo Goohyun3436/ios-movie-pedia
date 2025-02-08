@@ -30,10 +30,10 @@ final class MbtiSelectorView: BaseView {
     }())
     
     //MARK: - Property
-    private let viewModel = MbtiSelectorViewModel()
+    let viewModel = MbtiSelectorViewModel()
     
     //MARK: - Initializer Method
-    override init(frame: CGRect) {
+    init() {
         super.init(frame: .zero)
         setupBinds()
     }

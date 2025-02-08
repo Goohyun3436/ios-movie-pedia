@@ -65,3 +65,49 @@ enum ProfileNicknameValidation {
         }
     }
 }
+
+enum ProfileMbtiValidation {
+    case satisfied, empty, short
+    
+    init(_ mbti: [String?]) {
+        var emptyCount = 0
+        
+        for character in mbti {
+            if character == nil {
+                emptyCount += 1
+            }
+        }
+        
+        guard emptyCount != mbti.count else {
+            self = .empty
+            return
+        }
+        
+        guard emptyCount <= 0 else {
+            self = .short
+            return
+        }
+        
+        self = .satisfied
+    }
+    
+    var message: String {
+        switch self {
+        case .satisfied:
+            return "사용할 수 있는 MBTI 유형입니다."
+        case .empty:
+            return " "
+        case .short:
+            return "올바르지 않은 MBTI 유형입니다."
+        }
+    }
+    
+    var validation: Bool {
+        switch self {
+        case .satisfied:
+            return true
+        case .empty, .short:
+            return false
+        }
+    }
+}

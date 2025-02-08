@@ -16,6 +16,7 @@ final class SettingProfileViewModel {
     let viewWillDisappear: Observable<Void?> = Observable(nil)
     let profileImage: Observable<String?> = Observable(nil)
     let profileNickname: Observable<String?> = Observable(nil)
+    let profileMbti: Observable<[String?]> = Observable([])
     let inputMainViewTapped: Observable<Void?> = Observable(nil)
     let inputTextFieldShouldReturn: Observable<Void?> = Observable(nil)
     let inputProfileImageTapped: Observable<Void?> = Observable(nil)
@@ -29,6 +30,7 @@ final class SettingProfileViewModel {
     let navTitle = Observable("프로필 설정")
     let profile = Observable(Profile())
     let nicknameValidation: Observable<ProfileNicknameValidation> = Observable(.out_of_range)
+    let mbtiValidation: Observable<ProfileMbtiValidation> = Observable(.empty)
     let submitValidation: Observable<Bool> = Observable(false)
     let popVC: Observable<Void?> = Observable(nil)
     let dismissVC: Observable<Void?> = Observable(nil)
@@ -47,10 +49,8 @@ final class SettingProfileViewModel {
         }
         
         viewDidLoad.lazyBind { [weak self] _ in
-            if let profile = self?.getProfile() {
-                self?.profile.value = profile
-                self?.validation(of: profile.nickname)
-            }
+            guard let profile = self?.getProfile() else { return }
+            self?.profile.value = profile
         }
         
         viewDidAppear.lazyBind { [weak self] _ in
@@ -68,6 +68,10 @@ final class SettingProfileViewModel {
         profileNickname.lazyBind { [weak self] nickname in
             self?.profile.value.nickname = nickname
             self?.validation(of: nickname)
+        }
+        
+        profileMbti.lazyBind { [weak self] mbti in
+            self?.validation(of: mbti)
         }
         
         inputMainViewTapped.lazyBind { [weak self] _ in
@@ -123,6 +127,15 @@ final class SettingProfileViewModel {
     
     private func validation(of nickname: String?) {
         nicknameValidation.value = ProfileNicknameValidation(nickname)
-        submitValidation.value = nicknameValidation.value.validation
+        saveValidation()
+    }
+    
+    private func validation(of mbti: [String?]) {
+        mbtiValidation.value = ProfileMbtiValidation(mbti)
+        saveValidation()
+    }
+    
+    private func saveValidation() {
+        submitValidation.value = nicknameValidation.value.validation && mbtiValidation.value.validation
     }
 }

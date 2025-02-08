@@ -10,7 +10,7 @@ import UIKit
 final class SettingProfileViewController: UIViewController {
     
     //MARK: - UI Property
-    private let mainView = SettingProfileView()
+    private lazy var mainView = SettingProfileView(delegate: self)
     
     //MARK: - Property
     private let viewModel = SettingProfileViewModel()
@@ -96,7 +96,11 @@ final class SettingProfileViewController: UIViewController {
         }
         
         viewModel.nicknameValidation.lazyBind { [weak self] validation in
-            self?.mainView.configureStatus(validation)
+            self?.mainView.configureStatus(nicknameValidation: validation)
+        }
+        
+        viewModel.mbtiValidation.lazyBind { [weak self] validation in
+            self?.mainView.configureStatus(mbtiValidation: validation)
         }
         
         viewModel.submitValidation.lazyBind { [weak self] validation in
@@ -181,5 +185,14 @@ extension SettingProfileViewController: ProfileDelegate {
     }
     
     func didClickedProfileView() {}
+    
+}
+
+//MARK: - MbtiDelegate
+extension SettingProfileViewController: MbtiDelegate {
+    
+    func didChange(_ mbti: [String?]) {
+        viewModel.profileMbti.value = mbti
+    }
     
 }
