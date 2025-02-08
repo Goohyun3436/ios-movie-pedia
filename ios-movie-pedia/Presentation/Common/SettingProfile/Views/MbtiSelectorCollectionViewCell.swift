@@ -17,8 +17,8 @@ class MbtiSelectorCollectionViewCell: BaseCollectionViewCell {
     static let id = "MbtiSelectorCollectionViewCell"
     
     //MARK: - Method
-    func configureData(_ mbti: String, _ isSelected: Bool) {
-        mbtiLabel.text = mbti
+    func configureData(_ character: String?, _ isSelected: Bool) {
+        mbtiLabel.text = character
         setActive(isSelected)
     }
     

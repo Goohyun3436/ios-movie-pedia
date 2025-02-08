@@ -30,8 +30,24 @@ final class MbtiSelectorView: BaseView {
     }())
     
     //MARK: - Property
-    private let mbtiList = [ "E", "I", "S", "N", "T", "F", "J", "P"]
-    private var selectedMbti: [String?] = [nil, nil, nil, nil]
+    private let viewModel = MbtiSelectorViewModel()
+    
+    //MARK: - Initializer Method
+    override init(frame: CGRect) {
+        super.init(frame: .zero)
+        setupBinds()
+    }
+    
+    //MARK: - Method
+    private func setupBinds() {
+        viewModel.titleText.bind { [weak self] title in
+            self?.titleLabel.text = title
+        }
+        
+        viewModel.selectedMbti.lazyBind { [weak self] _ in
+            self?.collectionView.reloadData()
+        }
+    }
     
     //MARK: - Override Method
     override func configureHierarchy() {
@@ -56,7 +72,6 @@ final class MbtiSelectorView: BaseView {
     }
     
     override func configureView() {
-        titleLabel.text = "MBTI"
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(MbtiSelectorCollectionViewCell.self, forCellWithReuseIdentifier: MbtiSelectorCollectionViewCell.id)
@@ -67,32 +82,21 @@ final class MbtiSelectorView: BaseView {
 extension MbtiSelectorView: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return mbtiList.count
+        return viewModel.mbtiList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MbtiSelectorCollectionViewCell.id, for: indexPath) as! MbtiSelectorCollectionViewCell
         
-        let mbti = mbtiList[indexPath.item]
-        let isSelected = selectedMbti.contains(mbti)
-        cell.configureData(mbti, isSelected)
+        let character = viewModel.mbtiList[indexPath.item]
+        let isSelected = viewModel.selectedMbti.value.contains(character)
+        cell.configureData(character, isSelected)
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let mbti = mbtiList[indexPath.item]
-        let sectionIndex = indexPath.item / 2
-        
-        if selectedMbti.contains(mbti) {
-            selectedMbti[sectionIndex] = nil
-        } else {
-            selectedMbti[sectionIndex] = mbti
-        }
-        
-        print(selectedMbti)
-        
-        collectionView.reloadData()
+        viewModel.didSelectItemAt.value = indexPath
     }
     
 }
