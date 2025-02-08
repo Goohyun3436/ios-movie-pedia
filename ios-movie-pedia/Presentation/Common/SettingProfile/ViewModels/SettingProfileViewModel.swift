@@ -42,7 +42,6 @@ final class SettingProfileViewModel {
     //MARK: - Initializer Method
     init() {
         isOnboarding.lazyBind { [weak self] isOnboarding in
-            print("isOnboarding.lazyBind", isOnboarding)
             self?.showsRightBarButtonItem.value = isOnboarding
             self?.showsSubmitButton.value = !isOnboarding
         }
@@ -124,6 +123,6 @@ final class SettingProfileViewModel {
     
     private func validation(of nickname: String?) {
         nicknameValidation.value = ProfileNicknameValidation(nickname)
-        submitValidation.value = nicknameValidation.value == .satisfied
+        submitValidation.value = nicknameValidation.value.validation
     }
 }

@@ -18,13 +18,13 @@ final class SettingProfileView: BaseView {
     
     //MARK: - Method
     func configureData(_ profile: Profile) {
-//        print(profile)
         profileImageView.configureData(profile.image)
         nicknameTextField.text = profile.nickname
     }
     
     func configureStatus(_ condition: ProfileNicknameValidation) {
         statusLabel.text = condition.message
+        statusLabel.textColor = condition.validation ? AppColor.accent : AppColor.red
     }
     
     //MARK: - Override Method
