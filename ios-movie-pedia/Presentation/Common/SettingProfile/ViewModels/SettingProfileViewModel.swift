@@ -14,11 +14,15 @@ final class SettingProfileViewModel {
     let viewDidLoad: Observable<Void?> = Observable(nil)
     let viewDidAppear: Observable<Void?> = Observable(nil)
     let viewWillDisappear: Observable<Void?> = Observable(nil)
+    
     let profileImage: Observable<String?> = Observable(nil)
     let profileNickname: Observable<String?> = Observable(nil)
-    let profileMbti: Observable<[String?]> = Observable([])
+    let profileMbti: Observable<[String?]> = Observable([nil, nil, nil, nil])
+    
+    let textFieldShouldReturn: Observable<Void?> = Observable(nil)
+    let didSelectItemAt: Observable<IndexPath?> = Observable(nil)
+    
     let inputMainViewTapped: Observable<Void?> = Observable(nil)
-    let inputTextFieldShouldReturn: Observable<Void?> = Observable(nil)
     let inputProfileImageTapped: Observable<Void?> = Observable(nil)
     let inputBackButtonTapped: Observable<Void?> = Observable(nil)
     let inputSubmitButtonTapped: Observable<Void?> = Observable(nil)
@@ -28,18 +32,24 @@ final class SettingProfileViewModel {
     let showsRightBarButtonItem: Observable<Bool> = Observable(false)
     let showsSubmitButton: Observable<Bool> = Observable(false)
     let navTitle = Observable("프로필 설정")
+    
     let profile = Observable(Profile())
+    
     let nicknameValidation: Observable<ProfileNicknameValidation> = Observable(.out_of_range)
     let mbtiValidation: Observable<ProfileMbtiValidation> = Observable(.empty)
     let submitValidation: Observable<Bool> = Observable(false)
+    
     let popVC: Observable<Void?> = Observable(nil)
     let dismissVC: Observable<Void?> = Observable(nil)
+    
     let outputProfileImageTapped: Observable<String?> = Observable(nil)
     let outputSubmitButtonTapped: Observable<Void?> = Observable(nil)
+    
     let showsKeyboard: Observable<Bool> = Observable(false)
     
     //MARK: - Property
     var profileDelegate: ProfileDelegate?
+    let mbtiList = [ "E", "I", "S", "N", "T", "F", "J", "P"]
     
     //MARK: - Initializer Method
     init() {
@@ -52,6 +62,10 @@ final class SettingProfileViewModel {
             guard let profile = self?.getProfile() else { return }
             print("viewDidLoad")
             self?.profile.value = profile
+            
+            guard let mbti = profile.mbti else { return }
+            self?.profileMbti.value = mbti
+            self?.validation(of: profile.mbti)
         }
         
         viewDidAppear.lazyBind { [weak self] _ in
@@ -74,14 +88,19 @@ final class SettingProfileViewModel {
         }
         
         profileMbti.lazyBind { [weak self] mbti in
+            print("profileMbti")
             self?.validation(of: mbti)
         }
         
-        inputMainViewTapped.lazyBind { [weak self] _ in
+        textFieldShouldReturn.lazyBind { [weak self] _ in
             self?.showsKeyboard.value = false
         }
         
-        inputTextFieldShouldReturn.lazyBind { [weak self] _ in
+        didSelectItemAt.lazyBind { [weak self] indexPath in
+            self?.updateSelectedMbti(indexPath)
+        }
+        
+        inputMainViewTapped.lazyBind { [weak self] _ in
             self?.showsKeyboard.value = false
         }
         
@@ -133,12 +152,27 @@ final class SettingProfileViewModel {
         return today
     }
     
+    private func updateSelectedMbti(_ indexPath: IndexPath?) {
+        guard let indexPath else { return }
+        
+        let character = mbtiList[indexPath.item]
+        let sectionIndex = indexPath.item / 2
+        
+        let isSelected = profileMbti.value.contains(character)
+        
+        if isSelected {
+            profileMbti.value[sectionIndex] = nil
+        } else {
+            profileMbti.value[sectionIndex] = character
+        }
+    }
+    
     private func validation(of nickname: String?) {
         nicknameValidation.value = ProfileNicknameValidation(nickname)
         saveValidation()
     }
     
-    private func validation(of mbti: [String?]) {
+    private func validation(of mbti: [String?]?) {
         mbtiValidation.value = ProfileMbtiValidation(mbti)
         saveValidation()
     }

@@ -69,7 +69,12 @@ enum ProfileNicknameValidation {
 enum ProfileMbtiValidation {
     case satisfied, empty, short
     
-    init(_ mbti: [String?]) {
+    init(_ mbti: [String?]?) {
+        guard let mbti else {
+            self = .empty
+            return
+        }
+        
         var emptyCount = 0
         
         for character in mbti {

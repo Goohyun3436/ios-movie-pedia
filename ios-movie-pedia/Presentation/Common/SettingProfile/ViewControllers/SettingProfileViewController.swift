@@ -10,7 +10,7 @@ import UIKit
 final class SettingProfileViewController: UIViewController {
     
     //MARK: - UI Property
-    private lazy var mainView = SettingProfileView(delegate: self)
+    private lazy var mainView = SettingProfileView()
     
     //MARK: - Property
     private let viewModel = SettingProfileViewModel()
@@ -34,6 +34,8 @@ final class SettingProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         mainView.nicknameTextField.delegate = self
+        mainView.mbtiSelectorView.collectionView.delegate = self
+        mainView.mbtiSelectorView.collectionView.dataSource = self
         setupActions()
         setupBinds()
         viewModel.viewDidLoad.value = ()
@@ -93,8 +95,11 @@ final class SettingProfileViewController: UIViewController {
         
         viewModel.profile.lazyBind { [weak self] profile in
             print("profile")
-            dump(profile)
             self?.mainView.configureData(profile)
+        }
+        
+        viewModel.profileMbti.lazyBind { [weak self] _ in
+            self?.mainView.mbtiSelectorView.collectionView.reloadData()
         }
         
         viewModel.nicknameValidation.lazyBind { [weak self] validation in
@@ -169,8 +174,31 @@ extension SettingProfileViewController: UITextFieldDelegate {
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        viewModel.inputTextFieldShouldReturn.value = ()
+        viewModel.textFieldShouldReturn.value = ()
         return true
+    }
+    
+}
+
+//MARK: - UI
+extension SettingProfileViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return viewModel.mbtiList.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MbtiSelectorCollectionViewCell.id, for: indexPath) as! MbtiSelectorCollectionViewCell
+        
+        let character = viewModel.mbtiList[indexPath.item]
+        let isSelected = viewModel.profileMbti.value.contains(character)
+        cell.configureData(character, isSelected)
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.didSelectItemAt.value = indexPath
     }
     
 }

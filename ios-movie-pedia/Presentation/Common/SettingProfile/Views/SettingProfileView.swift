@@ -14,15 +14,9 @@ final class SettingProfileView: BaseView {
     let profileImageView = ProfileImageView(camera: true)
     let nicknameTextField = UITextField()
     private let nicknameStatusLabel = AppLabel(.text4, AppColor.accent)
-    private lazy var mbtiSelectorView = MbtiSelectorView()
+    lazy var mbtiSelectorView = MbtiSelectorView()
     private let mbtiStatusLabel = AppLabel(.text4, AppColor.accent)
     let submitButton = AccentBorderButton("완료")
-    
-    //MARK: - Initializer Method
-    init(delegate: MbtiDelegate) {
-        super.init(frame: .zero)
-        mbtiSelectorView.viewModel.delegate = delegate
-    }
     
     //MARK: - Method
     func configureData(_ profile: Profile) {
