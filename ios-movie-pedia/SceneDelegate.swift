@@ -21,9 +21,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let profile = UserDefaultManager.shared.loadJsonData(type: Profile.self, forKey: .profile)
         
-        window?.rootViewController = profile == nil
-            ? UINavigationController(rootViewController: OnboardingViewController())
-            : TabBarController()
+//        window?.rootViewController = profile == nil
+//            ? UINavigationController(rootViewController: OnboardingViewController())
+//            : TabBarController()
+        
+        window?.rootViewController = UINavigationController(rootViewController: SettingProfileViewController(isOnboarding: true))
         
         window?.makeKeyAndVisible()
     }

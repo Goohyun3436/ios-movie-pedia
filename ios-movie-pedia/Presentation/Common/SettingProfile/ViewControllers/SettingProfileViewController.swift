@@ -61,11 +61,13 @@ final class SettingProfileViewController: UIViewController {
             handler: #selector(saveButtonTapped)
         )
         
-        mainView.isUserInteractionEnabled = true
-        mainView.addGestureRecognizer(UITapGestureRecognizer(
+        let singleTap = UITapGestureRecognizer(
             target: self,
             action: #selector(mainViewTapped)
-        ))
+        )
+        singleTap.cancelsTouchesInView = false
+        mainView.isUserInteractionEnabled = true
+        mainView.addGestureRecognizer(singleTap)
         
         mainView.profileImageView.addGestureRecognizer(UITapGestureRecognizer(
             target: self,

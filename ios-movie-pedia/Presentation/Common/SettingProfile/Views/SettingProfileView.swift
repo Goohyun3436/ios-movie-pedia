@@ -14,6 +14,7 @@ final class SettingProfileView: BaseView {
     let profileImageView = ProfileImageView(camera: true)
     let nicknameTextField = UITextField()
     private let statusLabel = AppLabel(.text4, AppColor.accent)
+    private let mbtiSelectorView = MbtiSelectorView()
     let submitButton = AccentBorderButton("완료")
     
     //MARK: - Method
@@ -32,6 +33,7 @@ final class SettingProfileView: BaseView {
         addSubview(profileImageView)
         addSubview(nicknameTextField)
         addSubview(statusLabel)
+        addSubview(mbtiSelectorView)
         addSubview(submitButton)
     }
     
@@ -53,9 +55,14 @@ final class SettingProfileView: BaseView {
             make.top.equalTo(nicknameTextField.snp.bottom).offset(16)
         }
         
-        submitButton.snp.makeConstraints { make in
+        mbtiSelectorView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview().inset(16)
             make.top.equalTo(statusLabel.snp.bottom).offset(32)
+        }
+        
+        submitButton.snp.makeConstraints { make in
+            make.horizontalEdges.equalToSuperview().inset(16)
+            make.bottom.equalTo(safeAreaLayoutGuide).inset(32)
             make.height.equalTo(40)
         }
     }
