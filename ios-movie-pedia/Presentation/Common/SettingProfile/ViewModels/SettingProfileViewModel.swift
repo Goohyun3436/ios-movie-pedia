@@ -50,6 +50,7 @@ final class SettingProfileViewModel {
         
         viewDidLoad.lazyBind { [weak self] _ in
             guard let profile = self?.getProfile() else { return }
+            print("viewDidLoad")
             self?.profile.value = profile
         }
         
@@ -62,10 +63,12 @@ final class SettingProfileViewModel {
         }
         
         profileImage.lazyBind { [weak self] image in
+            print("profileImage")
             self?.profile.value.image = image
         }
         
         profileNickname.lazyBind { [weak self] nickname in
+            print("profileNickname")
             self?.profile.value.nickname = nickname
             self?.validation(of: nickname)
         }
@@ -97,19 +100,24 @@ final class SettingProfileViewModel {
         }
         
         inputSubmitButtonTapped.lazyBind { [weak self] _ in
-            self?.profile.value.created_at = self?.getToday()
-            UserDefaultManager.shared.saveJsonData(self?.profile.value, type: Profile.self, forKey: .profile)
+            var copyProfile = self?.profile.value
+            copyProfile?.mbti = self?.profileMbti.value
+            copyProfile?.created_at = self?.getToday()
+            UserDefaultManager.shared.saveJsonData(copyProfile, type: Profile.self, forKey: .profile)
             self?.outputSubmitButtonTapped.value = ()
         }
         
         inputSaveButtonTapped.lazyBind { [weak self] _ in
-            UserDefaultManager.shared.saveJsonData(self?.profile.value, type: Profile.self, forKey: .profile)
+            var copyProfile = self?.profile.value
+            copyProfile?.mbti = self?.profileMbti.value
+            UserDefaultManager.shared.saveJsonData(copyProfile, type: Profile.self, forKey: .profile)
             self?.profileDelegate?.profileImageDidChange(self?.profile.value.image)
             self?.profileDelegate?.nicknameDidChange(self?.profile.value.nickname)
             self?.dismissVC.value = ()
         }
     }
     
+    //refactor point: load 여부 상관 없이 새로운 Profile 객체를 반환하는데, 메모리 누수 확인 필요
     private func getProfile() -> Profile {
         guard let savedProfile = UserDefaultManager.shared.loadJsonData(type: Profile.self, forKey: .profile) else {
             return Profile(image: Profile.randomImage, nickname: nil)

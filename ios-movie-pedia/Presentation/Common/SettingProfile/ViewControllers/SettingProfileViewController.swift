@@ -92,6 +92,8 @@ final class SettingProfileViewController: UIViewController {
         }
         
         viewModel.profile.lazyBind { [weak self] profile in
+            print("profile")
+            dump(profile)
             self?.mainView.configureData(profile)
         }
         

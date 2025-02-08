@@ -26,7 +26,19 @@ struct Profile: Codable {
     
     var image: String?
     var nickname: String?
+    var mbti: [String?]?
     var created_at: String?
+    var mbtiString: String? {
+        guard let mbti else {
+            return ""
+        }
+        
+        guard ProfileMbtiValidation(mbti).validation else {
+            return ""
+        }
+        
+        return mbti.map { $0! }.joined(separator: "")
+    }
     var createdAtFormat: String {
         guard let created_at else {
             return ""
