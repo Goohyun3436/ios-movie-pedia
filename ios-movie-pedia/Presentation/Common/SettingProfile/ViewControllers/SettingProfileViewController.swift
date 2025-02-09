@@ -120,9 +120,9 @@ final class SettingProfileViewController: UIViewController {
         }
         
         viewModel.outputProfileImageTapped.lazyBind { [weak self] image in
-            let vc = SettingProfileImageViewController()
-            vc.delegate = self
-            vc.profileImage = image
+            let vc = SettingProfileImageViewController(delegate: self)
+            print("push", image)
+            vc.viewModel.profileImageDidChange.value = image
             self?.pushVC(vc)
         }
         

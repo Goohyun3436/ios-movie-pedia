@@ -13,9 +13,18 @@ final class SettingProfileImageViewController: UIViewController {
     private lazy var mainView = SettingProfileImageView()
     
     //MARK: - Property
-    var profileImage: String?
-    let profilesImages: [String] = [Int](0...11).map { "profile_\($0)" }
-    var delegate: ProfileDelegate?
+    let viewModel = SettingProfileImageViewModel()
+    
+    //MARK: - Initializer Method
+    init(delegate: ProfileDelegate? = nil) {
+        super.init(nibName: nil, bundle: nil)
+        viewModel.delegate = delegate
+        setupBinds()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     //MARK: - Override Method
     override func loadView() {
@@ -24,13 +33,24 @@ final class SettingProfileImageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "프로필 이미지 설정"
-        
         mainView.collectionView.delegate = self
         mainView.collectionView.dataSource = self
         mainView.collectionView.register(ProfileImageCollectionViewCell.self, forCellWithReuseIdentifier: ProfileImageCollectionViewCell.id)
+    }
+    
+    private func setupBinds() {
+        viewModel.navTitle.bind { [weak self] title in
+            self?.navigationItem.title = title
+        }
         
-        mainView.configureData(profileImage)
+        viewModel.profileImage.lazyBind { [weak self] image in
+            self?.mainView.configureData(image)
+        }
+        
+        viewModel.collectionViewReloadItems.lazyBind { [weak self] indexPaths in
+            guard let indexPaths else { return }
+            self?.mainView.collectionView.reloadItems(at: indexPaths)
+        }
     }
     
 }
@@ -38,17 +58,17 @@ final class SettingProfileImageViewController: UIViewController {
 extension SettingProfileImageViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return profilesImages.count
+        return viewModel.profilesImages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = mainView.collectionView.dequeueReusableCell(withReuseIdentifier: ProfileImageCollectionViewCell.id, for: indexPath) as! ProfileImageCollectionViewCell
         
-        guard let selectedImage = profileImage else {
+        guard let selectedImage = viewModel.profileImage.value else {
             return cell
         }
         
-        let image = profilesImages[indexPath.item]
+        let image = viewModel.profilesImages[indexPath.item]
         
         if image == selectedImage {
             cell.profileImageView.setEnable()
@@ -62,18 +82,7 @@ extension SettingProfileImageViewController: UICollectionViewDelegate, UICollect
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let profileImage else {
-            return
-        }
-        
-        guard let beforeItem = profilesImages.firstIndex(of: profileImage) else {
-            return
-        }
-        
-        self.profileImage = profilesImages[indexPath.item]
-        mainView.configureData(self.profileImage)
-        delegate?.profileImageDidChange(self.profileImage)
-        collectionView.reloadItems(at: [indexPath, IndexPath(item: beforeItem, section: 0)])
+        viewModel.profileImageDidSelect.value = indexPath
     }
     
 }
