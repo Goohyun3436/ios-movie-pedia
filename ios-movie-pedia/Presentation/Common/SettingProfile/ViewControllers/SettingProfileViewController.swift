@@ -93,9 +93,12 @@ final class SettingProfileViewController: UIViewController {
             self?.navigationItem.backButtonTitle = ""
         }
         
-        viewModel.profile.lazyBind { [weak self] profile in
-            print("profile")
-            self?.mainView.configureData(profile)
+        viewModel.profileImage.lazyBind { [weak self] image in
+            self?.mainView.configureData(image: image)
+        }
+        
+        viewModel.profileNickname.lazyBind { [weak self] nickname in
+            self?.mainView.configureData(nickname: nickname)
         }
         
         viewModel.profileMbti.lazyBind { [weak self] _ in
@@ -170,8 +173,9 @@ final class SettingProfileViewController: UIViewController {
 extension SettingProfileViewController: UITextFieldDelegate {
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
-        viewModel.profileNickname.value = textField.text
+        viewModel.profileNicknameDidChange.value = textField.text
     }
+    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         viewModel.textFieldShouldReturn.value = ()
@@ -180,7 +184,7 @@ extension SettingProfileViewController: UITextFieldDelegate {
     
 }
 
-//MARK: - UI
+//MARK: - UICollectionViewDelegate
 extension SettingProfileViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -198,7 +202,7 @@ extension SettingProfileViewController: UICollectionViewDelegate, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel.didSelectItemAt.value = indexPath
+        viewModel.profileMbtiDidChange.value = indexPath
     }
     
 }
@@ -207,22 +211,11 @@ extension SettingProfileViewController: UICollectionViewDelegate, UICollectionVi
 extension SettingProfileViewController: ProfileDelegate {
     
     func profileImageDidChange(_ image: String?) {
-        viewModel.profileImage.value = image
+        viewModel.profileImageDidChange.value = image
     }
     
-    func nicknameDidChange(_ nickname: String?) {
-        viewModel.profileNickname.value = nickname
-    }
+    func nicknameDidChange(_ nickname: String?) {}
     
     func didClickedProfileView() {}
-    
-}
-
-//MARK: - MbtiDelegate
-extension SettingProfileViewController: MbtiDelegate {
-    
-    func didChange(_ mbti: [String?]) {
-        viewModel.profileMbti.value = mbti
-    }
     
 }

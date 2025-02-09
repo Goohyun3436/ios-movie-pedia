@@ -15,15 +15,13 @@ final class SettingProfileViewModel {
     let viewDidAppear: Observable<Void?> = Observable(nil)
     let viewWillDisappear: Observable<Void?> = Observable(nil)
     
-    let profileImage: Observable<String?> = Observable(nil)
-    let profileNickname: Observable<String?> = Observable(nil)
-    let profileMbti: Observable<[String?]> = Observable([nil, nil, nil, nil])
-    
-    let textFieldShouldReturn: Observable<Void?> = Observable(nil)
-    let didSelectItemAt: Observable<IndexPath?> = Observable(nil)
+    let profileImageDidChange: Observable<String?> = Observable(nil)
+    let profileNicknameDidChange: Observable<String?> = Observable(nil)
+    let profileMbtiDidChange: Observable<IndexPath?> = Observable(nil)
     
     let inputMainViewTapped: Observable<Void?> = Observable(nil)
     let inputProfileImageTapped: Observable<Void?> = Observable(nil)
+    let textFieldShouldReturn: Observable<Void?> = Observable(nil)
     let inputBackButtonTapped: Observable<Void?> = Observable(nil)
     let inputSubmitButtonTapped: Observable<Void?> = Observable(nil)
     let inputSaveButtonTapped: Observable<Void?> = Observable(nil)
@@ -33,7 +31,9 @@ final class SettingProfileViewModel {
     let showsSubmitButton: Observable<Bool> = Observable(false)
     let navTitle = Observable("프로필 설정")
     
-    let profile = Observable(Profile())
+    let profileImage: Observable<String?> = Observable(nil)
+    let profileNickname: Observable<String?> = Observable(nil)
+    let profileMbti: Observable<[String?]> = Observable([nil, nil, nil, nil])
     
     let nicknameValidation: Observable<ProfileNicknameValidation> = Observable(.out_of_range)
     let mbtiValidation: Observable<ProfileMbtiValidation> = Observable(.empty)
@@ -50,6 +50,7 @@ final class SettingProfileViewModel {
     //MARK: - Property
     var profileDelegate: ProfileDelegate?
     let mbtiList = [ "E", "I", "S", "N", "T", "F", "J", "P"]
+    private var profile = Profile()
     
     //MARK: - Initializer Method
     init() {
@@ -60,8 +61,10 @@ final class SettingProfileViewModel {
         
         viewDidLoad.lazyBind { [weak self] _ in
             guard let profile = self?.getProfile() else { return }
-            print("viewDidLoad")
-            self?.profile.value = profile
+            self?.profile = profile
+            
+            self?.profileImageDidChange.value = profile.image
+            self?.profileNicknameDidChange.value = profile.nickname
             
             guard let mbti = profile.mbti else { return }
             self?.profileMbti.value = mbti
@@ -76,28 +79,23 @@ final class SettingProfileViewModel {
             self?.showsKeyboard.value = false
         }
         
-        profileImage.lazyBind { [weak self] image in
-            print("profileImage")
-            self?.profile.value.image = image
+        profileImageDidChange.lazyBind { [weak self] image in
+            self?.profileImage.value = image
+            self?.profile.image = image
         }
         
-        profileNickname.lazyBind { [weak self] nickname in
-            print("profileNickname")
-            self?.profile.value.nickname = nickname
+        profileNicknameDidChange.lazyBind { [weak self] nickname in
+            self?.profileNickname.value = nickname
             self?.validation(of: nickname)
+            self?.profile.nickname = nickname
         }
         
-        profileMbti.lazyBind { [weak self] mbti in
-            print("profileMbti")
+        profileMbtiDidChange.lazyBind { [weak self] indexPath in
+            guard let mbti = self?.updateSelectedMbti(indexPath) else { return }
+            
+            self?.profileMbti.value = mbti
             self?.validation(of: mbti)
-        }
-        
-        textFieldShouldReturn.lazyBind { [weak self] _ in
-            self?.showsKeyboard.value = false
-        }
-        
-        didSelectItemAt.lazyBind { [weak self] indexPath in
-            self?.updateSelectedMbti(indexPath)
+            self?.profile.mbti = mbti
         }
         
         inputMainViewTapped.lazyBind { [weak self] _ in
@@ -105,7 +103,11 @@ final class SettingProfileViewModel {
         }
         
         inputProfileImageTapped.lazyBind { [weak self] _ in
-            self?.outputProfileImageTapped.value = self?.profile.value.image
+            self?.outputProfileImageTapped.value = self?.profile.image
+        }
+        
+        textFieldShouldReturn.lazyBind { [weak self] _ in
+            self?.showsKeyboard.value = false
         }
         
         inputBackButtonTapped.lazyBind { [weak self] _ in
@@ -119,19 +121,16 @@ final class SettingProfileViewModel {
         }
         
         inputSubmitButtonTapped.lazyBind { [weak self] _ in
-            var copyProfile = self?.profile.value
-            copyProfile?.mbti = self?.profileMbti.value
+            var copyProfile = self?.profile
             copyProfile?.created_at = self?.getToday()
             UserDefaultManager.shared.saveJsonData(copyProfile, type: Profile.self, forKey: .profile)
             self?.outputSubmitButtonTapped.value = ()
         }
         
         inputSaveButtonTapped.lazyBind { [weak self] _ in
-            var copyProfile = self?.profile.value
-            copyProfile?.mbti = self?.profileMbti.value
-            UserDefaultManager.shared.saveJsonData(copyProfile, type: Profile.self, forKey: .profile)
-            self?.profileDelegate?.profileImageDidChange(self?.profile.value.image)
-            self?.profileDelegate?.nicknameDidChange(self?.profile.value.nickname)
+            UserDefaultManager.shared.saveJsonData(self?.profile, type: Profile.self, forKey: .profile)
+            self?.profileDelegate?.profileImageDidChange(self?.profile.image)
+            self?.profileDelegate?.nicknameDidChange(self?.profile.nickname)
             self?.dismissVC.value = ()
         }
     }
@@ -152,19 +151,23 @@ final class SettingProfileViewModel {
         return today
     }
     
-    private func updateSelectedMbti(_ indexPath: IndexPath?) {
-        guard let indexPath else { return }
+    private func updateSelectedMbti(_ indexPath: IndexPath?) -> [String?] {
+        guard let indexPath else {
+            return self.profileMbti.value
+        }
         
+        var updatedProfileMbti = self.profileMbti.value
         let character = mbtiList[indexPath.item]
         let sectionIndex = indexPath.item / 2
-        
         let isSelected = profileMbti.value.contains(character)
         
         if isSelected {
-            profileMbti.value[sectionIndex] = nil
+            updatedProfileMbti[sectionIndex] = nil
         } else {
-            profileMbti.value[sectionIndex] = character
+            updatedProfileMbti[sectionIndex] = character
         }
+        
+        return updatedProfileMbti
     }
     
     private func validation(of nickname: String?) {

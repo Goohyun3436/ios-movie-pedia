@@ -22,7 +22,3 @@ protocol ProfileDelegate {
     func nicknameDidChange(_ nickname: String?)
     func didClickedProfileView()
 }
-
-protocol MbtiDelegate {
-    func didChange(_ mbti: [String?])
-}
