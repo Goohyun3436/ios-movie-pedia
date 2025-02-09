@@ -30,7 +30,7 @@ final class UserProfileView: BaseView {
     }
     
     //MARK: - Method
-    func configureData(_ profile: Profile?, _ likes: [Int]) {
+    func setData(_ profile: Profile?, _ likes: [Int]) {
         profileImage.configureData(profile?.image)
         nicknameLabel.text = profile?.nickname
         createdAtLabel.text = profile?.createdAtFormat

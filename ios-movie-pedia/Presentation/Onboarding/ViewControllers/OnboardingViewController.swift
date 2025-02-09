@@ -37,7 +37,7 @@ final class OnboardingViewController: BaseViewController {
     
     override func setupBinds() {
         viewModel.onboardingModel.lazyBind { [weak self] onboardingModel in
-            self?.mainView.setupData(onboardingModel)
+            self?.mainView.setData(onboardingModel)
         }
         
         viewModel.pushVC.lazyBind { [weak self] _ in

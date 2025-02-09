@@ -11,10 +11,18 @@ class BaseTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        setupUI()
+        setupConstraints()
+        setupAttributes()
+        
         configureHierarchy()
         configureLayout()
         configureView()
     }
+    
+    func setupUI() {}
+    func setupConstraints() {}
+    func setupAttributes() {}
     
     func configureHierarchy() {}
     

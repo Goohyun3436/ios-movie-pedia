@@ -18,7 +18,7 @@ final class OnboardingView: BaseView {
     let startButton = AccentBorderButton("시작하기")
     
     //MARK: - Method
-    func setupData(_ onboardingModel: OnboardingModel?) {
+    func setData(_ onboardingModel: OnboardingModel?) {
         guard let onboardingModel else {
             imageView.image = UIImage(named: "onboarding")
             return

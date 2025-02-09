@@ -17,16 +17,16 @@ final class ProfileTableViewCell: BaseTableViewCell {
     static let id = "ProfileTableViewCell"
     
     //MARK: - Method
-    func configureData(_ title: String) {
-        titleLabel.text = title
+    func setData(_ menu: ProfileMenu) {
+        titleLabel.text = menu.title
     }
     
     //MARK: - Override Method
-    override func configureHierarchy() {
+    override func setupUI() {
         contentView.addSubview(titleLabel)
     }
     
-    override func configureLayout() {
+    override func setupConstraints() {
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(contentView).offset(20)
             make.trailing.lessThanOrEqualTo(contentView).offset(-20)

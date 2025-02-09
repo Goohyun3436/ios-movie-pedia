@@ -7,18 +7,13 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: BaseViewController {
     
     //MARK: UI Property
     private let mainView = ProfileView()
     
     //MARK: - Property
-    private var profile: Profile? {
-        didSet {
-            mainView.userProfileView.configureData(profile, User.likes)
-        }
-    }
-    private let menu = ["자주 묻는 질문", "1:1 문의", "알림 설정", "탈퇴하기"]
+    private let viewModel = ProfileViewModel()
     
     //MARK: - Override Method
     override func loadView() {
@@ -34,7 +29,29 @@ class ProfileViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        profile = getUserProfile()
+        viewModel.viewWillAppear.value = ()
+    }
+    
+    override func setupBinds() {
+        viewModel.profile.lazyBind { [weak self] profile in
+            self?.mainView.userProfileView.setData(profile, User.likes)
+        }
+        
+        viewModel.resignTapped.lazyBind { [weak self] _ in
+            self?.presentAlert("탈퇴하기", "탈퇴를 하면 데이터가 모두 초기화 됩니다. 탈퇴 하시겠습니까?") {
+                self?.viewModel.confirmResign.value = ()
+            }
+        }
+        
+        viewModel.pushVC.lazyBind { [weak self] _ in
+            let vc = SettingProfileViewController(delegate: self)
+            vc.modalPresentationStyle = .pageSheet
+            self?.presentVC(UINavigationController(rootViewController: vc))
+        }
+        
+        viewModel.rootVC.lazyBind { [weak self] _ in
+            self?.configureRootVC(UINavigationController(rootViewController: OnboardingViewController()))
+        }
     }
     
 }
@@ -43,13 +60,13 @@ class ProfileViewController: UIViewController {
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        menu.count
+        viewModel.menu.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ProfileTableViewCell.id, for: indexPath) as! ProfileTableViewCell
         
-        cell.configureData(menu[indexPath.row])
+        cell.setData(viewModel.menu[indexPath.row])
         
         return cell
     }
@@ -59,15 +76,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 3 {
-            presentAlert("탈퇴하기", "탈퇴를 하면 데이터가 모두 초기화 됩니다. 탈퇴 하시겠습니까?") {
-                UserDefaults.standard.removeObject(forKey: "profile")
-                User.likes = []
-                User.searches = []
-                
-                self.configureRootVC(UINavigationController(rootViewController: OnboardingViewController()))
-            }
-        }
+        viewModel.didSelectRowAt.value = indexPath
     }
     
 }
@@ -76,17 +85,15 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
 extension ProfileViewController: ProfileDelegate {
     
     func profileImageDidChange(_ image: String?) {
-        profile?.image = image
+        viewModel.profileImageDidChange.value = image
     }
     
     func nicknameDidChange(_ nickname: String?) {
-        profile?.nickname = nickname
+        viewModel.profileNicknameDidChange.value = nickname
     }
     
     func didClickedProfileView() {
-        let vc = SettingProfileViewController(delegate: self)
-        vc.modalPresentationStyle = .pageSheet
-        presentVC(UINavigationController(rootViewController: vc))
+        viewModel.profileViewTapped.value = ()
     }
     
 }

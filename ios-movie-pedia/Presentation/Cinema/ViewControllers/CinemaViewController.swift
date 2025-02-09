@@ -15,12 +15,12 @@ final class CinemaViewController: UIViewController {
     //MARK: - Property
     private var profile: Profile? {
         didSet {
-            mainView.userProfileView.configureData(profile, likes)
+            mainView.userProfileView.setData(profile, likes)
         }
     }
     private var likes = User.likes {
         didSet {
-            mainView.userProfileView.configureData(profile, likes)
+            mainView.userProfileView.setData(profile, likes)
         }
     }
     private let titles = ["최근검색어", "오늘의 영화"]
@@ -48,7 +48,7 @@ final class CinemaViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        profile = getUserProfile()
+        profile = UserStorage.shared.getProfile()
         likes = User.likes
     }
     

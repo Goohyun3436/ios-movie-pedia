@@ -18,7 +18,6 @@ final class ProfileView: BaseView {
         return view
     }()
     
-    
     //MARK: - Override Method
     override func configureHierarchy() {
         addSubview(userProfileView)
