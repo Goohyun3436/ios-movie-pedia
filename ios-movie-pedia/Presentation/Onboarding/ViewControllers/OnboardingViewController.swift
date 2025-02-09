@@ -7,19 +7,22 @@
 
 import UIKit
 
-final class OnboardingViewController: UIViewController {
+final class OnboardingViewController: BaseViewController {
     
     //MARK: - UI Property
     private let mainView = OnboardingView()
     
+    //MARK: - UI Property
+    private let viewModel = OnboardingViewModel()
+    
     //MARK: - Override Method
     override func loadView() {
         view = mainView
+        viewModel.loadView.value = ()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        mainView.startButton.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
     }
     
     override func viewDidLayoutSubviews() {
@@ -28,8 +31,23 @@ final class OnboardingViewController: UIViewController {
     }
     
     //MARK: - Method
+    override func setupActions() {
+        mainView.startButton.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
+    }
+    
+    override func setupBinds() {
+        viewModel.onboardingModel.lazyBind { [weak self] onboardingModel in
+            self?.mainView.setupData(onboardingModel)
+        }
+        
+        viewModel.pushVC.lazyBind { [weak self] _ in
+            self?.pushVC(SettingProfileViewController(isOnboarding: true))
+        }
+    }
+    
     @objc
     private func startButtonTapped() {
-        pushVC(SettingProfileViewController(isOnboarding: true))
+        viewModel.startButtonTapped.value = ()
     }
+    
 }

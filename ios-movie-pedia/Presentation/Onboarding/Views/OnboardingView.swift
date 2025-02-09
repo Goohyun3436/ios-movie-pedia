@@ -13,20 +13,32 @@ final class OnboardingView: BaseView {
     //MARK: - UI Property
     private let wrapView = UIView()
     let imageView = UIImageView()
-    private let titleLabel = AppLabel(.logo)
+    private let logoLabel = AppLabel(.logo)
     private let introLabel = AppLabel(.text2, AppColor.secondaryLabel)
     let startButton = AccentBorderButton("시작하기")
     
-    //MARK: - Configure Method
-    override func configureHierarchy() {
-        addSubview(wrapView)
-        wrapView.addSubview(imageView)
-        wrapView.addSubview(titleLabel)
-        wrapView.addSubview(introLabel)
-        wrapView.addSubview(startButton)
+    //MARK: - Method
+    func setupData(_ onboardingModel: OnboardingModel?) {
+        guard let onboardingModel else {
+            imageView.image = UIImage(named: "onboarding")
+            return
+        }
+        
+        imageView.image = UIImage(named: onboardingModel.image ?? "")
+        logoLabel.text = onboardingModel.logo
+        introLabel.text = onboardingModel.intro
     }
     
-    override func configureLayout() {
+    //MARK: - Setup Method
+    override func setupUI() {
+        addSubview(wrapView)
+        
+        [imageView, logoLabel, introLabel, startButton].forEach {
+            wrapView.addSubview($0)
+        }
+    }
+    
+    override func setupConstraints() {
         wrapView.snp.makeConstraints { make in
             make.center.equalToSuperview()
         }
@@ -35,14 +47,14 @@ final class OnboardingView: BaseView {
             make.horizontalEdges.top.equalToSuperview()
         }
         
-        titleLabel.snp.makeConstraints { make in
+        logoLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(imageView.snp.bottom).offset(-16)
         }
         
         introLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(titleLabel.snp.bottom).offset(16)
+            make.top.equalTo(logoLabel.snp.bottom).offset(16)
         }
         
         startButton.snp.makeConstraints { make in
@@ -53,11 +65,8 @@ final class OnboardingView: BaseView {
         }
     }
     
-    override func configureView() {
-        imageView.image = UIImage(named: "onboarding")
+    override func setupAttributes() {
         imageView.contentMode = .scaleAspectFit
-        titleLabel.text = "Onboarding"
-        introLabel.text = "당신만의 영화 세상,\nMoviePedia를 시작해보세요."
         introLabel.textAlignment = .center
         introLabel.numberOfLines = 0
     }

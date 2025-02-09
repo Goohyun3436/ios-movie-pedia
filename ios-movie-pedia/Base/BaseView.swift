@@ -12,10 +12,18 @@ class BaseView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        setupUI()
+        setupConstraints()
+        setupAttributes()
+        
         configureHierarchy()
         configureLayout()
         configureView()
     }
+    
+    func setupUI() {}
+    func setupConstraints() {}
+    func setupAttributes() {}
     
     func configureHierarchy() {}
     
