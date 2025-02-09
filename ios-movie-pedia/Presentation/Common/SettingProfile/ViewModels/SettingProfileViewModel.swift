@@ -12,16 +12,12 @@ final class SettingProfileViewModel {
     //MARK: - Input
     var isOnboarding: Observable<Bool> = Observable(false)
     let viewDidLoad: Observable<Void?> = Observable(nil)
-    let viewDidAppear: Observable<Void?> = Observable(nil)
-    let viewWillDisappear: Observable<Void?> = Observable(nil)
     
     let profileImageDidChange: Observable<String?> = Observable(nil)
     let profileNicknameDidChange: Observable<String?> = Observable(nil)
     let profileMbtiDidChange: Observable<IndexPath?> = Observable(nil)
     
-    let inputMainViewTapped: Observable<Void?> = Observable(nil)
     let inputProfileImageTapped: Observable<Void?> = Observable(nil)
-    let textFieldShouldReturn: Observable<Void?> = Observable(nil)
     let inputBackButtonTapped: Observable<Void?> = Observable(nil)
     let inputSubmitButtonTapped: Observable<Void?> = Observable(nil)
     let inputSaveButtonTapped: Observable<Void?> = Observable(nil)
@@ -45,14 +41,12 @@ final class SettingProfileViewModel {
     let outputProfileImageTapped: Observable<String?> = Observable(nil)
     let outputSubmitButtonTapped: Observable<Void?> = Observable(nil)
     
-    let showsKeyboard: Observable<Bool> = Observable(false)
-    
     //MARK: - Property
     var profileDelegate: ProfileDelegate?
     let mbtiList = [ "E", "I", "S", "N", "T", "F", "J", "P"]
     private var profile = Profile()
     
-    //MARK: - Initializer Method
+    //MARK: - Bind
     init() {
         isOnboarding.lazyBind { [weak self] isOnboarding in
             self?.showsRightBarButtonItem.value = isOnboarding
@@ -69,14 +63,6 @@ final class SettingProfileViewModel {
             guard let mbti = profile.mbti else { return }
             self?.profileMbti.value = mbti
             self?.validation(of: profile.mbti)
-        }
-        
-        viewDidAppear.lazyBind { [weak self] _ in
-            self?.showsKeyboard.value = true
-        }
-        
-        viewWillDisappear.lazyBind { [weak self] _ in
-            self?.showsKeyboard.value = false
         }
         
         profileImageDidChange.lazyBind { [weak self] image in
@@ -98,16 +84,8 @@ final class SettingProfileViewModel {
             self?.profile.mbti = mbti
         }
         
-        inputMainViewTapped.lazyBind { [weak self] _ in
-            self?.showsKeyboard.value = false
-        }
-        
         inputProfileImageTapped.lazyBind { [weak self] _ in
             self?.outputProfileImageTapped.value = self?.profile.image
-        }
-        
-        textFieldShouldReturn.lazyBind { [weak self] _ in
-            self?.showsKeyboard.value = false
         }
         
         inputBackButtonTapped.lazyBind { [weak self] _ in
@@ -135,6 +113,7 @@ final class SettingProfileViewModel {
         }
     }
     
+    //MARK: - Method
     //refactor point: load 여부 상관 없이 새로운 Profile 객체를 반환하는데, 메모리 누수 확인 필요
     private func getProfile() -> Profile {
         guard let savedProfile = UserDefaultManager.shared.loadJsonData(type: Profile.self, forKey: .profile) else {

@@ -14,6 +14,7 @@ final class SettingProfileViewController: UIViewController {
     
     //MARK: - Property
     private let viewModel = SettingProfileViewModel()
+    private let keyboardViewModel = KeyboardViewModel()
     
     //MARK: - Initializer Method
     init(isOnboarding: Bool = false, delegate: ProfileDelegate? = nil) {
@@ -43,12 +44,12 @@ final class SettingProfileViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        viewModel.viewDidAppear.value = ()
+        keyboardViewModel.viewDidAppear.value = ()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        viewModel.viewWillDisappear.value = ()
+        keyboardViewModel.viewWillDisappear.value = ()
     }
     
     //MARK: - Setup Method
@@ -138,7 +139,7 @@ final class SettingProfileViewController: UIViewController {
             self?.configureRootVC(TabBarController())
         }
         
-        viewModel.showsKeyboard.lazyBind { [weak self] show in
+        keyboardViewModel.showsKeyboard.lazyBind { [weak self] show in
             if show {
                 self?.mainView.nicknameTextField.becomeFirstResponder()
             } else {
@@ -148,7 +149,7 @@ final class SettingProfileViewController: UIViewController {
     }
     
     @objc private func mainViewTapped() {
-        viewModel.inputMainViewTapped.value = ()
+        keyboardViewModel.inputMainViewTapped.value = ()
     }
     
     @objc private func backButtonTapped() {
@@ -176,9 +177,8 @@ extension SettingProfileViewController: UITextFieldDelegate {
         viewModel.profileNicknameDidChange.value = textField.text
     }
     
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        viewModel.textFieldShouldReturn.value = ()
+        keyboardViewModel.textFieldShouldReturn.value = ()
         return true
     }
     
