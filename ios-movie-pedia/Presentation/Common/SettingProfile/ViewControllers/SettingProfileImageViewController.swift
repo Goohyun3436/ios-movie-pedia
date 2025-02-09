@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class SettingProfileImageViewController: UIViewController {
+final class SettingProfileImageViewController: BaseViewController {
     
     //MARK: - UI Property
     private lazy var mainView = SettingProfileImageView()
@@ -19,11 +19,6 @@ final class SettingProfileImageViewController: UIViewController {
     init(delegate: ProfileDelegate? = nil) {
         super.init(nibName: nil, bundle: nil)
         viewModel.delegate = delegate
-        setupBinds()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     //MARK: - Override Method
@@ -38,7 +33,7 @@ final class SettingProfileImageViewController: UIViewController {
         mainView.collectionView.register(ProfileImageCollectionViewCell.self, forCellWithReuseIdentifier: ProfileImageCollectionViewCell.id)
     }
     
-    private func setupBinds() {
+    override func setupBinds() {
         viewModel.navTitle.bind { [weak self] title in
             self?.navigationItem.title = title
         }

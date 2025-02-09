@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class SettingProfileViewController: UIViewController {
+final class SettingProfileViewController: BaseViewController {
     
     //MARK: - UI Property
     private lazy var mainView = SettingProfileView()
@@ -23,10 +23,6 @@ final class SettingProfileViewController: UIViewController {
         viewModel.profileDelegate = delegate
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     //MARK: - Override Method
     override func loadView() {
         view = mainView
@@ -37,8 +33,6 @@ final class SettingProfileViewController: UIViewController {
         mainView.nicknameTextField.delegate = self
         mainView.mbtiSelectorView.collectionView.delegate = self
         mainView.mbtiSelectorView.collectionView.dataSource = self
-        setupActions()
-        setupBinds()
         viewModel.viewDidLoad.value = ()
     }
     
@@ -53,9 +47,9 @@ final class SettingProfileViewController: UIViewController {
     }
     
     //MARK: - Setup Method
-    private func setupActions() {
+    override func setupActions() {
         navigationItem.leftBarButtonItem = makeBarButtonItemWithImage(
-            viewModel.isOnboarding.value ? "chevron.backward" : "xmark",
+            "",
             handler: #selector(backButtonTapped)
         )
         
@@ -80,7 +74,7 @@ final class SettingProfileViewController: UIViewController {
         mainView.submitButton.addTarget(self, action: #selector(submitButtonTapped), for: .touchUpInside)
     }
     
-    private func setupBinds() {
+    override func setupBinds() {
         viewModel.showsRightBarButtonItem.bind { [weak self] show in
             self?.navigationItem.rightBarButtonItem?.isHidden = show
         }
@@ -92,6 +86,10 @@ final class SettingProfileViewController: UIViewController {
         viewModel.navTitle.bind { [weak self] title in
             self?.navigationItem.title = title
             self?.navigationItem.backButtonTitle = ""
+        }
+        
+        viewModel.leftBarButtonImage.lazyBind { [weak self] image in
+            self?.navigationItem.leftBarButtonItem?.image = UIImage(systemName: image)
         }
         
         viewModel.profileImage.lazyBind { [weak self] image in

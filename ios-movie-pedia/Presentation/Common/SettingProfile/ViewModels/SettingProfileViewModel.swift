@@ -25,6 +25,7 @@ final class SettingProfileViewModel {
     //MARK: - Output
     let showsRightBarButtonItem: Observable<Bool> = Observable(false)
     let showsSubmitButton: Observable<Bool> = Observable(false)
+    let leftBarButtonImage: Observable<String> = Observable("xmark")
     let navTitle = Observable("프로필 설정")
     
     let profileImage: Observable<String?> = Observable(nil)
@@ -51,6 +52,7 @@ final class SettingProfileViewModel {
         isOnboarding.lazyBind { [weak self] isOnboarding in
             self?.showsRightBarButtonItem.value = isOnboarding
             self?.showsSubmitButton.value = !isOnboarding
+            self?.leftBarButtonImage.value = isOnboarding ? "chevron.backward" : "xmark"
         }
         
         viewDidLoad.lazyBind { [weak self] _ in
