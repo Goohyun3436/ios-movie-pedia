@@ -100,7 +100,7 @@ final class SettingProfileViewModel {
         
         inputSubmitButtonTapped.lazyBind { [weak self] _ in
             var copyProfile = self?.profile
-            copyProfile?.created_at = self?.getToday()
+            copyProfile?.created_at = DateFormatterManager.shared.getToday()
             UserDefaultManager.shared.saveJsonData(copyProfile, type: Profile.self, forKey: .profile)
             self?.outputSubmitButtonTapped.value = ()
         }
@@ -121,13 +121,6 @@ final class SettingProfileViewModel {
         }
         
         return savedProfile
-    }
-    
-    private func getToday() -> String {
-        let formatter = DateFormatter()  //refactor point: DateFormatter 싱글톤 적용
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let today = formatter.string(from: Date())
-        return today
     }
     
     private func updateSelectedMbti(_ indexPath: IndexPath?) -> [String?] {

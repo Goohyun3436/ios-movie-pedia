@@ -40,19 +40,7 @@ struct Profile: Codable {
         return mbti.map { $0! }.joined(separator: "")
     }
     var createdAtFormat: String {
-        guard let created_at else {
-            return ""
-        }
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        
-        guard let convertDate = formatter.date(from: created_at) else {
-            return ""
-        }
-        
-        formatter.dateFormat = "yy.MM.dd 가입"
-        let date = formatter.string(from: convertDate)
-        return date
+        let formatDate =  DateFormatterManager.shared.string(created_at, from: "yyyy-MM-dd HH:mm:ss", to: "yy.MM.dd 가입")
+        return formatDate
     }
 }
