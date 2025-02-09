@@ -31,7 +31,7 @@ final class SettingProfileViewModel {
     let profileNickname: Observable<String?> = Observable(nil)
     let profileMbti: Observable<[String?]> = Observable([nil, nil, nil, nil])
     
-    let nicknameValidation: Observable<ProfileNicknameValidation> = Observable(.out_of_range)
+    let nicknameValidation: Observable<ProfileNicknameValidation> = Observable(.empty)
     let mbtiValidation: Observable<ProfileMbtiValidation> = Observable(.empty)
     let submitValidation: Observable<Bool> = Observable(false)
     
@@ -43,7 +43,7 @@ final class SettingProfileViewModel {
     
     //MARK: - Property
     var profileDelegate: ProfileDelegate?
-    let mbtiList = [ "E", "I", "S", "N", "T", "F", "J", "P"]
+    let mbtiList = ["E", "I", "S", "N", "T", "F", "J", "P"]
     private var profile = Profile()
     
     //MARK: - Bind
