@@ -85,7 +85,7 @@ extension PosterMiniTableViewCell: UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionViewCell.id, for: indexPath) as! ImageCollectionViewCell
         
-        cell.configureData(posters[indexPath.item].file_path)
+        cell.setData(posters[indexPath.item].file_path)
         
         return cell
     }

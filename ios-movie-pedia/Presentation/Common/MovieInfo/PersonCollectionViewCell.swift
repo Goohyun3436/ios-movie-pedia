@@ -20,7 +20,7 @@ final class PersonCollectionViewCell: BaseCollectionViewCell {
     static let id = "PersonCollectionViewCell"
     
     //MARK: - Override Method
-    func configureData(_ person: Person) {
+    func setData(_ person: Person) {
         if let profile = person.profile_path, let url = URL(string: TMDBImageRequest.w500(profile).endpoint) {
             imageView.kf.setImage(with: url)
             imageView.contentMode = .scaleAspectFill
@@ -34,13 +34,13 @@ final class PersonCollectionViewCell: BaseCollectionViewCell {
     }
     
     //MARK: - Override Method
-    override func configureHierarchy() {
+    override func setupUI() {
         contentView.addSubview(imageView)
         contentView.addSubview(originNameLabel)
         contentView.addSubview(nameLabel)
     }
     
-    override func configureLayout() {
+    override func setupConstraints() {
         imageView.snp.makeConstraints { make in
             make.leading.top.equalToSuperview()
             make.bottom.lessThanOrEqualToSuperview().offset(-0)
@@ -60,7 +60,7 @@ final class PersonCollectionViewCell: BaseCollectionViewCell {
         }
     }
     
-    override func configureView() {
+    override func setupAttributes() {
         imageView.adjustsImageSizeForAccessibilityContentSizeCategory = false
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 25

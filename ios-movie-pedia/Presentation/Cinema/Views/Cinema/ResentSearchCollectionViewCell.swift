@@ -26,7 +26,7 @@ final class ResentSearchCollectionViewCell: BaseCollectionViewCell {
     }
     
     //MARK: - Method
-    func configureData(_ title: String) {
+    func setData(_ title: String) {
         titleLabel.text = title
     }
     
@@ -40,12 +40,12 @@ final class ResentSearchCollectionViewCell: BaseCollectionViewCell {
     }
     
     //MARK: - Override Method
-    override func configureHierarchy() {
+    override func setupUI() {
         contentView.addSubview(titleLabel)
         contentView.addSubview(removeButton)
     }
     
-    override func configureLayout() {
+    override func setupConstraints() {
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(contentView).offset(12)
             make.centerY.equalTo(contentView)
@@ -59,7 +59,7 @@ final class ResentSearchCollectionViewCell: BaseCollectionViewCell {
         }
     }
     
-    override func configureView() {
+    override func setupAttributes() {
         contentView.layer.cornerRadius = 15
         contentView.backgroundColor = AppColor.lightgray
         removeButton.setImage(UIImage(systemName: "xmark", withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 12, weight: .semibold))), for: .normal)

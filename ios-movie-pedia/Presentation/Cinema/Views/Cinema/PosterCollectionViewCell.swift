@@ -32,7 +32,7 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
     }
     
     //MARK: - Method
-    func configureData(_ movie: Movie) {
+    func setData(_ movie: Movie) {
         if let poster = movie.poster_path, let url = URL(string: TMDBImageRequest.w500(poster).endpoint) {
             imageView.kf.setImage(with: url)
         }
@@ -61,14 +61,13 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
         overviewLabel.text = ""
     }
     
-    override func configureHierarchy() {
-        contentView.addSubview(imageView)
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(likeButton)
-        contentView.addSubview(overviewLabel)
+    override func setupUI() {
+        [imageView, titleLabel, likeButton, overviewLabel].forEach {
+            contentView.addSubview($0)
+        }
     }
     
-    override func configureLayout() {
+    override func setupConstraints() {
         imageView.snp.makeConstraints { make in
             make.horizontalEdges.top.equalTo(contentView)
             make.height.equalTo(286)
@@ -95,7 +94,7 @@ final class PosterCollectionViewCell: BaseCollectionViewCell {
         
     }
     
-    override func configureView() {
+    override func setupAttributes() {
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 8
         imageView.contentMode = .scaleAspectFill

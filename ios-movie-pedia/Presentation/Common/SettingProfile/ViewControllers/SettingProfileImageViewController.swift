@@ -39,7 +39,7 @@ final class SettingProfileImageViewController: BaseViewController {
         }
         
         viewModel.profileImage.lazyBind { [weak self] image in
-            self?.mainView.configureData(image)
+            self?.mainView.setData(image)
         }
         
         viewModel.collectionViewReloadItems.lazyBind { [weak self] indexPaths in
@@ -71,7 +71,7 @@ extension SettingProfileImageViewController: UICollectionViewDelegate, UICollect
             cell.profileImageView.setDisable()
         }
         
-        cell.profileImageView.configureData(image)
+        cell.profileImageView.setData(image)
         
         return cell
     }

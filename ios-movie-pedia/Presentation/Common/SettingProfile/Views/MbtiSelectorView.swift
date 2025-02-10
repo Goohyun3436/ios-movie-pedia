@@ -36,7 +36,7 @@ final class MbtiSelectorView: BaseView {
     }()
     
     //MARK: - Override Method
-    override func configureHierarchy() {
+    override func setupUI() {
         addSubview(wrap)
         
         [titleLabel, collectionView].forEach {
@@ -44,7 +44,7 @@ final class MbtiSelectorView: BaseView {
         }
     }
     
-    override func configureLayout() {
+    override func setupConstraints() {
         wrap.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
@@ -57,7 +57,7 @@ final class MbtiSelectorView: BaseView {
         }
     }
     
-    override func configureView() {
+    override func setupAttributes() {
         titleLabel.text = "MBTI"
     }
     

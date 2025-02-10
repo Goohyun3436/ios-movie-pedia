@@ -31,17 +31,18 @@ final class SettingProfileImageView: BaseView {
     }())
     
     //MARK: - Method
-    func configureData(_ profileImage: String?) {
-        profileImageView.configureData(profileImage)
+    func setData(_ profileImage: String?) {
+        profileImageView.setData(profileImage)
     }
     
     //MARK: - Override Method
-    override func configureHierarchy() {
-        addSubview(profileImageView)
-        addSubview(collectionView)
+    override func setupUI() {
+        [profileImageView, collectionView].forEach {
+            addSubview($0)
+        }
     }
     
-    override func configureLayout() {
+    override func setupConstraints() {
         profileImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(safeAreaLayoutGuide).offset(50)
@@ -54,6 +55,4 @@ final class SettingProfileImageView: BaseView {
         }
     }
     
-    override func configureView() {
-    }
 }

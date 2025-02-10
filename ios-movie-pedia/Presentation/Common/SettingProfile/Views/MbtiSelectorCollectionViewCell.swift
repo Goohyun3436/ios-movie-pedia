@@ -17,7 +17,7 @@ class MbtiSelectorCollectionViewCell: BaseCollectionViewCell {
     static let id = "MbtiSelectorCollectionViewCell"
     
     //MARK: - Method
-    func configureData(_ character: String?, _ isSelected: Bool) {
+    func setData(_ character: String?, _ isSelected: Bool) {
         mbtiLabel.text = character
         setActive(isSelected)
     }
@@ -29,17 +29,17 @@ class MbtiSelectorCollectionViewCell: BaseCollectionViewCell {
     }
     
     //MARK: - Override Method
-    override func configureHierarchy() {
+    override func setupUI() {
         contentView.addSubview(mbtiLabel)
     }
     
-    override func configureLayout() {
+    override func setupConstraints() {
         mbtiLabel.snp.makeConstraints { make in
             make.center.equalTo(contentView)
         }
     }
     
-    override func configureView() {
+    override func setupAttributes() {
         clipsToBounds = true
         layer.cornerRadius = 25
         self.layer.borderWidth = 1

@@ -104,7 +104,7 @@ extension CastTableViewCell: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PersonCollectionViewCell.id, for: indexPath) as! PersonCollectionViewCell
         
-        cell.configureData(cast[indexPath.item])
+        cell.setData(cast[indexPath.item])
         
         return cell
     }

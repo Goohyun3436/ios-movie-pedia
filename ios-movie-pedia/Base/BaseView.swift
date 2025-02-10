@@ -7,6 +7,7 @@
 
 import UIKit
 
+//MVVM 구조 전환 및 메서드명 변경중
 class BaseView: UIView {
     
     override init(frame: CGRect) {

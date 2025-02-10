@@ -7,6 +7,7 @@
 
 import UIKit
 
+//MVVM 구조 전환 및 메서드명 변경중
 class BaseTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

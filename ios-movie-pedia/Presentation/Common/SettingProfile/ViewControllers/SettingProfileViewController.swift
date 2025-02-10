@@ -93,11 +93,11 @@ final class SettingProfileViewController: BaseViewController {
         }
         
         viewModel.profileImage.lazyBind { [weak self] image in
-            self?.mainView.configureData(image: image)
+            self?.mainView.setData(image: image)
         }
         
         viewModel.profileNickname.lazyBind { [weak self] nickname in
-            self?.mainView.configureData(nickname: nickname)
+            self?.mainView.setData(nickname: nickname)
         }
         
         viewModel.profileMbti.lazyBind { [weak self] _ in
@@ -105,11 +105,11 @@ final class SettingProfileViewController: BaseViewController {
         }
         
         viewModel.nicknameValidation.lazyBind { [weak self] validation in
-            self?.mainView.configureStatus(nicknameValidation: validation)
+            self?.mainView.setStatus(nicknameValidation: validation)
         }
         
         viewModel.mbtiValidation.lazyBind { [weak self] validation in
-            self?.mainView.configureStatus(mbtiValidation: validation)
+            self?.mainView.setStatus(mbtiValidation: validation)
         }
         
         viewModel.submitValidation.lazyBind { [weak self] validation in
@@ -193,7 +193,7 @@ extension SettingProfileViewController: UICollectionViewDelegate, UICollectionVi
         
         let character = viewModel.mbtiList[indexPath.item]
         let isSelected = viewModel.profileMbti.value.contains(character)
-        cell.configureData(character, isSelected)
+        cell.setData(character, isSelected)
         
         return cell
     }

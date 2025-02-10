@@ -18,24 +18,24 @@ final class ImageCollectionViewCell: BaseCollectionViewCell {
     static let id = "ImageCollectionViewCell"
     
     //MARK: - Method
-    func configureData(_ image: String?) {
+    func setData(_ image: String?) {
         if let image, let url = URL(string: TMDBImageRequest.w500(image).endpoint) {
             imageView.kf.setImage(with: url)
         }
     }
     
     //MARK: - Override Method
-    override func configureHierarchy() {
+    override func setupUI() {
         contentView.addSubview(imageView)
     }
     
-    override func configureLayout() {
+    override func setupConstraints() {
         imageView.snp.makeConstraints { make in
             make.edges.equalTo(contentView)
         }
     }
     
-    override func configureView() {
+    override func setupAttributes() {
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
     }

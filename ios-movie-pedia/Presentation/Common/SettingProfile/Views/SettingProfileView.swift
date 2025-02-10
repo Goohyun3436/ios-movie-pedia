@@ -19,15 +19,15 @@ final class SettingProfileView: BaseView {
     let submitButton = AccentBorderButton("완료")
     
     //MARK: - Method
-    func configureData(image: String?) {
-        profileImageView.configureData(image)
+    func setData(image: String?) {
+        profileImageView.setData(image)
     }
     
-    func configureData(nickname: String?) {
+    func setData(nickname: String?) {
         nicknameTextField.text = nickname
     }
     
-    func configureStatus(
+    func setStatus(
         nicknameValidation: ProfileNicknameValidation? = nil,
         mbtiValidation: ProfileMbtiValidation? = nil
     ) {
@@ -45,16 +45,13 @@ final class SettingProfileView: BaseView {
     }
     
     //MARK: - Override Method
-    override func configureHierarchy() {
-        addSubview(profileImageView)
-        addSubview(nicknameTextField)
-        addSubview(nicknameStatusLabel)
-        addSubview(mbtiSelectorView)
-        addSubview(mbtiStatusLabel)
-        addSubview(submitButton)
+    override func setupUI() {
+        [profileImageView, nicknameTextField, nicknameStatusLabel, mbtiSelectorView, mbtiStatusLabel, submitButton].forEach {
+            addSubview($0)
+        }
     }
     
-    override func configureLayout() {
+    override func setupConstraints() {
         profileImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(safeAreaLayoutGuide).offset(50)
@@ -90,7 +87,7 @@ final class SettingProfileView: BaseView {
         }
     }
     
-    override func configureView() {
+    override func setupAttributes() {
         nicknameTextField.placeholder = "닉네임"
         nicknameTextField.font = AppFont.text2.font
         nicknameTextField.addLeftPadding(16)

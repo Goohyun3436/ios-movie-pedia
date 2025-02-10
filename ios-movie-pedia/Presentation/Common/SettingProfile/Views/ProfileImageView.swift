@@ -21,7 +21,7 @@ final class ProfileImageView: BaseView {
     }
     
     //MARK: - Method
-    func configureData(_ image: String?) {
+    func setData(_ image: String?) {
         guard let image else {
             return
         }
@@ -42,12 +42,13 @@ final class ProfileImageView: BaseView {
     }
     
     //MARK: - Override Method
-    override func configureHierarchy() {
-        addSubview(imageView)
-        addSubview(cameraImageView)
+    override func setupUI() {
+        [imageView, cameraImageView].forEach {
+            addSubview($0)
+        }
     }
     
-    override func configureLayout() {
+    override func setupConstraints() {
         let diameter: CGFloat = self.frame.width == 0 ? 100 : self.frame.width
         
         imageView.snp.makeConstraints { make in
@@ -61,7 +62,7 @@ final class ProfileImageView: BaseView {
         }
     }
     
-    override func configureView() {
+    override func setupAttributes() {
         isUserInteractionEnabled = true
         backgroundColor = UIColor.clear
         

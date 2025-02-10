@@ -17,11 +17,11 @@ class ProfileImageCollectionViewCell: BaseCollectionViewCell {
     static let id = "ProfileImageCollectionViewCell"
     
     //MARK: - Override Method
-    override func configureHierarchy() {
+    override func setupUI() {
         contentView.addSubview(profileImageView)
     }
     
-    override func configureLayout() {
+    override func setupConstraints() {
         profileImageView.snp.makeConstraints { make in
             make.edges.equalTo(contentView)
         }

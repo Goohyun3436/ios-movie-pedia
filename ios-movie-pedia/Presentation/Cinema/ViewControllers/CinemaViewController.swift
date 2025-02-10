@@ -165,7 +165,7 @@ extension CinemaViewController: UICollectionViewDelegate, UICollectionViewDataSo
             cell.delegate = self
             
             let row = searches[indexPath.item]
-            cell.configureData(row)
+            cell.setData(row)
             
             return cell
         } else {
@@ -174,7 +174,7 @@ extension CinemaViewController: UICollectionViewDelegate, UICollectionViewDataSo
             cell.delegate = self
             
             let row = movies[indexPath.item]
-            cell.configureData(row)
+            cell.setData(row)
             
             return cell
         }

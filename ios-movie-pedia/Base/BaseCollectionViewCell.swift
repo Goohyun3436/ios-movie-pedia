@@ -10,17 +10,15 @@ import UIKit
 class BaseCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
-    
-        configureHierarchy()
-        configureLayout()
-        configureView()
+        
+        setupUI()
+        setupConstraints()
+        setupAttributes()
     }
     
-    func configureHierarchy() {}
-    
-    func configureLayout() {}
-    
-    func configureView() {}
+    func setupUI() {}
+    func setupConstraints() {}
+    func setupAttributes() {}
     
     @available(*, unavailable)
     required init?(coder: NSCoder) {
