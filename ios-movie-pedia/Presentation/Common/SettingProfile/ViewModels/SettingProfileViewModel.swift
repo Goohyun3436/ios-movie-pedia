@@ -111,19 +111,12 @@ final class SettingProfileViewModel: BaseViewModel {
         }
         
         input.submitButtonTapped.lazyBind { [weak self] _ in
-            guard var copyProfile = self?.profile else { return }
-            
-            copyProfile.created_at = DateFormatterManager.shared.getToday()
-            UserStorage.shared.saveProfile(copyProfile)
+            self?.createUser()
             self?.output.submitButtonTapped.value = ()
         }
         
         input.saveButtonTapped.lazyBind { [weak self] _ in
-            guard let profile = self?.profile else { return }
-            
-            UserStorage.shared.saveProfile(profile)
-            self?.profileDelegate?.profileImageDidChange(self?.profile.image)
-            self?.profileDelegate?.nicknameDidChange(self?.profile.nickname)
+            self?.updateUser()
             self?.output.dismissVC.value = ()
         }
     }
@@ -161,4 +154,16 @@ final class SettingProfileViewModel: BaseViewModel {
     private func saveValidation() {
         output.submitValidation.value = output.nicknameValidation.value.validation && output.mbtiValidation.value.validation
     }
+    
+    private func createUser() {
+        profile.created_at = DateFormatterManager.shared.getToday()
+        UserStorage.shared.saveProfile(profile)
+    }
+    
+    private func updateUser() {
+        UserStorage.shared.saveProfile(profile)
+        profileDelegate?.profileImageDidChange(profile.image)
+        profileDelegate?.nicknameDidChange(profile.nickname)
+    }
+    
 }
