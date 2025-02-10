@@ -14,7 +14,6 @@ final class SettingProfileImageViewModel: BaseViewModel {
     
     //MARK: - Input
     struct Input {
-        var delegate: ProfileDelegate?
         let profileImageDidChange: Observable<String?> = Observable(nil)
         let profileImageDidSelect: Observable<IndexPath?> = Observable(nil)
     }
@@ -22,9 +21,9 @@ final class SettingProfileImageViewModel: BaseViewModel {
     //MARK: - Output
     struct Output {
         let navTitle = Observable("프로필 이미지 설정")
-        let collectionViewReloadItems: Observable<[IndexPath]?> = Observable(nil)
-        let profileImage: Observable<String?> = Observable(nil)
         let profilesImages: [String] = [Int](0...11).map { "profile_\($0)" }
+        let profileImage: Observable<String?> = Observable(nil)
+        let collectionViewReloadItems: Observable<[IndexPath]?> = Observable(nil)
     }
     
     //MARK: - Property

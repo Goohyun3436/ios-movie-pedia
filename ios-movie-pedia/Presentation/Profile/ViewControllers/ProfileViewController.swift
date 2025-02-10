@@ -34,7 +34,8 @@ class ProfileViewController: BaseViewController {
     
     override func setupBinds() {
         viewModel.profile.lazyBind { [weak self] profile in
-            self?.mainView.userProfileView.setData(profile, User.likes)
+            self?.mainView.userProfileView.setData(profile)
+            self?.mainView.userProfileView.setData(User.likes)
         }
         
         viewModel.resignTapped.lazyBind { [weak self] _ in

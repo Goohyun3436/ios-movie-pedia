@@ -30,10 +30,13 @@ final class UserProfileView: BaseView {
     }
     
     //MARK: - Method
-    func setData(_ profile: Profile?, _ likes: [Int]) {
+    func setData(_ profile: Profile?) {
         profileImage.setData(profile?.image)
         nicknameLabel.text = profile?.nickname
         createdAtLabel.text = profile?.createdAtFormat
+    }
+    
+    func setData(_ likes: [Int]) {
         bottomButton.setTitle("\(likes.count)개의 무비박스 보관중", for: .normal)
     }
     

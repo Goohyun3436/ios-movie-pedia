@@ -7,25 +7,13 @@
 
 import UIKit
 
-final class CinemaViewController: UIViewController {
+final class CinemaViewController: BaseViewController {
     
     //MARK: - UI Property
     private let mainView = CinemaView()
     
     //MARK: - Property
-    private var profile: Profile? {
-        didSet {
-            mainView.userProfileView.setData(profile, likes)
-        }
-    }
-    private var likes = User.likes {
-        didSet {
-            mainView.userProfileView.setData(profile, likes)
-        }
-    }
-    private let titles = ["최근검색어", "오늘의 영화"]
-    private var searches: [String] = User.searches
-    private var movies = [Movie]()
+    private let viewModel = CinemaViewModel()
     
     //MARK: - Override Method
     override func loadView() {
@@ -34,49 +22,82 @@ final class CinemaViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.backButtonTitle = ""
-        navigationItem.rightBarButtonItem = makeBarButtonItemWithImage(
-            "magnifyingglass",
-            size: 15,
-            handler: #selector(searchButtonTapped)
-        )
-        
         mainView.userProfileView.delegate = self
-        configureTableView()
-        callRequest()
+        mainView.tableView.delegate = self
+        mainView.tableView.dataSource = self
+        setupTableView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        profile = UserStorage.shared.getProfile()
-        likes = User.likes
+        viewModel.input.viewWillAppear.value = ()
     }
     
-    //MARK: - Method
-    @objc
-    private func searchButtonTapped() {
-        let vc = SearchViewController()
-        vc.likeDelegate = self
-        vc.searchDelegate = self
-        pushVC(vc)
+    //MARK: - Setup Method
+    override func setupActions() {
+        navigationItem.rightBarButtonItem = makeBarButtonItemWithImage(
+            "",
+            size: 15,
+            handler: #selector(searchButtonTapped)
+        )
     }
     
-    private func configureTableView() {
-        mainView.tableView.delegate = self
-        mainView.tableView.dataSource = self
+    override func setupBinds() {
+        viewModel.output.backButtonTitle.bind { [weak self] title in
+            self?.navigationItem.backButtonTitle = title
+        }
+        
+        viewModel.output.rightBarButtonImage.bind { [weak self] image in
+            self?.navigationItem.rightBarButtonItem?.image = UIImage(systemName: image)
+        }
+        
+        viewModel.output.profile.lazyBind { [weak self] profile in
+            self?.mainView.userProfileView.setData(profile)
+        }
+        
+        viewModel.output.likes.lazyBind { [weak self] likes in
+            self?.mainView.userProfileView.setData(likes)
+        }
+        
+        viewModel.output.searches.lazyBind { [weak self] searches in
+            self?.mainView.tableView.reloadData()
+        }
+        
+        viewModel.output.movies.lazyBind { [weak self] movies in
+            self?.mainView.tableView.reloadData()
+        }
+        
+        viewModel.output.error.lazyBind { [weak self] errCode in
+            self?.presentErrorAlert(errCode)
+        }
+        
+        viewModel.output.resentSearchTapped.lazyBind { [weak self] query in
+            let vc = SearchViewController()
+            vc.searchDelegate = self
+            vc.likeDelegate = self
+            vc.query = query
+            self?.pushVC(vc)
+        }
+        
+        viewModel.output.movieTapped.lazyBind { [weak self] movie in
+            let vc = CinemaDetailViewController()
+            vc.delegate = self
+            vc.movie = movie
+            self?.pushVC(vc)
+        }
+    }
+    
+    private func setupTableView() {
         mainView.tableView.register(ResentSearchTableViewCell.self, forCellReuseIdentifier: ResentSearchTableViewCell.id)
         mainView.tableView.register(PosterTableViewCell.self, forCellReuseIdentifier: PosterTableViewCell.id)
     }
     
-    private func callRequest() {
-        NetworkManager.shared.tmdb(.trending(), TMDBResponse.self) { data in
-            self.movies = data.results
-            self.mainView.tableView.reloadData()
-        } failHandler: { code in
-            self.presentErrorAlert(code)
-            self.movies = []
-            self.mainView.tableView.reloadData()
-        }
+    //MARK: - Method
+    @objc private func searchButtonTapped() {
+        let vc = SearchViewController()
+        vc.likeDelegate = self
+        vc.searchDelegate = self
+        pushVC(vc)
     }
     
 }
@@ -85,11 +106,11 @@ final class CinemaViewController: UIViewController {
 extension CinemaViewController: ProfileDelegate {
     
     func profileImageDidChange(_ image: String?) {
-        profile?.image = image
+        viewModel.output.profile.value?.image = image
     }
     
     func nicknameDidChange(_ nickname: String?) {
-        profile?.nickname = nickname
+        viewModel.output.profile.value?.nickname = nickname
     }
     
     func didClickedProfileView() {
@@ -104,7 +125,7 @@ extension CinemaViewController: ProfileDelegate {
 extension CinemaViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return titles.count
+        return viewModel.output.titles.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -120,10 +141,10 @@ extension CinemaViewController: UITableViewDelegate, UITableViewDataSource {
             cell.collectionView.dataSource = self
             
             cell.collectionView.tag = row
-            cell.titleLabel.text = titles[row]
+            cell.titleLabel.text = viewModel.output.titles[row].title
             
-            cell.removeButton.isHidden = searches.isEmpty
-            cell.noneContentLabel.isHidden = !searches.isEmpty
+            cell.removeButton.isHidden = viewModel.output.searches.value.isEmpty
+            cell.noneContentLabel.isHidden = !viewModel.output.searches.value.isEmpty
             
             return cell
         } else {
@@ -135,7 +156,7 @@ extension CinemaViewController: UITableViewDelegate, UITableViewDataSource {
             cell.collectionView.dataSource = self
             
             cell.collectionView.tag = row
-            cell.titleLabel.text = titles[row]
+            cell.titleLabel.text = viewModel.output.titles[row].title
             
             return cell
         }
@@ -152,9 +173,9 @@ extension CinemaViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.tag == 0 {
-            return searches.count
+            return viewModel.output.searches.value.count
         } else {
-            return movies.count
+            return viewModel.output.movies.value.count
         }
     }
     
@@ -164,7 +185,7 @@ extension CinemaViewController: UICollectionViewDelegate, UICollectionViewDataSo
             
             cell.delegate = self
             
-            let row = searches[indexPath.item]
+            let row = viewModel.output.searches.value[indexPath.item]
             cell.setData(row)
             
             return cell
@@ -173,7 +194,7 @@ extension CinemaViewController: UICollectionViewDelegate, UICollectionViewDataSo
             
             cell.delegate = self
             
-            let row = movies[indexPath.item]
+            let row = viewModel.output.movies.value[indexPath.item]
             cell.setData(row)
             
             return cell
@@ -181,18 +202,7 @@ extension CinemaViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if collectionView.tag == 0 {
-            let vc = SearchViewController()
-            vc.searchDelegate = self
-            vc.likeDelegate = self
-            vc.query = searches[indexPath.item]
-            pushVC(vc)
-        } else {
-            let vc = CinemaDetailViewController()
-            vc.delegate = self
-            vc.movie = movies[indexPath.item]
-            pushVC(vc)
-        }
+        viewModel.input.didSelectItemAt.value = (collectionView.tag, indexPath)
     }
     
 }
@@ -201,55 +211,19 @@ extension CinemaViewController: UICollectionViewDelegate, UICollectionViewDataSo
 extension CinemaViewController: SearchDelegate, LikeDelegate {
     
     func searchAdd(_ text: String) {
-        if let index = User.searches.lastIndex(of: text) {
-            User.searches.remove(at: index)
-        }
-        
-        User.searches.insert(text, at: 0)
-        searches = User.searches
-        mainView.tableView.reloadData()
+        viewModel.input.searchAdd.value = text
     }
     
     func searchesRemoveAll() {
-        User.searches.removeAll()
-        searches = User.searches
-        mainView.tableView.reloadData()
+        viewModel.input.searchesRemoveAll.value = ()
     }
     
     func searchRemove(_ title: String) {
-        if let index = User.searches.firstIndex(of: title) {
-            User.searches.remove(at: index)
-        }
-        
-        searches = User.searches
-        mainView.tableView.reloadData()
+        viewModel.input.searchRemove.value = title
     }
     
     func likesDidChange(_ movieId: Int, onlyCellReload: Bool) {
-        if onlyCellReload {
-            for i in movies.indices {
-                if movies[i].id == movieId {
-                    movies[i].is_like.toggle()
-                }
-            }
-            mainView.tableView.reloadData()
-            return
-        }
-        
-        if let index = User.likes.firstIndex(of: movieId) {
-            User.likes.remove(at: index)
-        } else {
-            User.likes.append(movieId)
-        }
-        
-        for i in movies.indices {
-            if movies[i].id == movieId {
-                movies[i].is_like.toggle()
-            }
-        }
-        
-        mainView.tableView.reloadData()
-        likes = User.likes
+        viewModel.input.likesDidChange.value = (movieId, onlyCellReload)
     }
     
 }
