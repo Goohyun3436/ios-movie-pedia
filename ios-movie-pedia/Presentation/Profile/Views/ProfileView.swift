@@ -19,12 +19,13 @@ final class ProfileView: BaseView {
     }()
     
     //MARK: - Override Method
-    override func configureHierarchy() {
-        addSubview(userProfileView)
-        addSubview(tableView)
+    override func setupUI() {
+        [userProfileView, tableView].forEach {
+            addSubview($0)
+        }
     }
     
-    override func configureLayout() {
+    override func setupConstraints() {
         userProfileView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview().inset(16)
             make.top.equalTo(safeAreaLayoutGuide).offset(16)
@@ -38,7 +39,7 @@ final class ProfileView: BaseView {
         tableView.separatorInset = UIEdgeInsets(top: 16, left: 20, bottom: 16, right: 20)
     }
     
-    override func configureView() {
+    override func setupAttributes() {
         tableView.bounces = false
     }
 }

@@ -43,15 +43,13 @@ final class UserProfileView: BaseView {
     }
     
     //MARK: - Override Method
-    override func configureHierarchy() {
-        addSubview(profileImage)
-        addSubview(nicknameLabel)
-        addSubview(createdAtLabel)
-        addSubview(rightImageView)
-        addSubview(bottomButton)
+    override func setupUI() {
+        [profileImage, nicknameLabel, createdAtLabel, rightImageView, bottomButton].forEach {
+            addSubview($0)
+        }
     }
     
-    override func configureLayout() {
+    override func setupConstraints() {
         profileImage.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(12)
             make.top.equalToSuperview().offset(12)
@@ -86,7 +84,7 @@ final class UserProfileView: BaseView {
         }
     }
     
-    override func configureView() {
+    override func setupAttributes() {
         layer.cornerRadius = 16
         backgroundColor = AppColor.tertiaryBackgroundColor
         nicknameLabel.numberOfLines = 0
