@@ -34,15 +34,15 @@ final class SettingProfileImageViewController: BaseViewController {
     }
     
     override func setupBinds() {
-        viewModel.navTitle.bind { [weak self] title in
+        viewModel.output.navTitle.bind { [weak self] title in
             self?.navigationItem.title = title
         }
         
-        viewModel.profileImage.lazyBind { [weak self] image in
+        viewModel.output.profileImage.lazyBind { [weak self] image in
             self?.mainView.setData(image)
         }
         
-        viewModel.collectionViewReloadItems.lazyBind { [weak self] indexPaths in
+        viewModel.output.collectionViewReloadItems.lazyBind { [weak self] indexPaths in
             guard let indexPaths else { return }
             self?.mainView.collectionView.reloadItems(at: indexPaths)
         }
@@ -53,17 +53,17 @@ final class SettingProfileImageViewController: BaseViewController {
 extension SettingProfileImageViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.profilesImages.count
+        return viewModel.output.profilesImages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = mainView.collectionView.dequeueReusableCell(withReuseIdentifier: ProfileImageCollectionViewCell.id, for: indexPath) as! ProfileImageCollectionViewCell
         
-        guard let selectedImage = viewModel.profileImage.value else {
+        guard let selectedImage = viewModel.output.profileImage.value else {
             return cell
         }
         
-        let image = viewModel.profilesImages[indexPath.item]
+        let image = viewModel.output.profilesImages[indexPath.item]
         
         if image == selectedImage {
             cell.profileImageView.setEnable()
@@ -77,7 +77,7 @@ extension SettingProfileImageViewController: UICollectionViewDelegate, UICollect
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel.profileImageDidSelect.value = indexPath
+        viewModel.input.profileImageDidSelect.value = indexPath
     }
     
 }

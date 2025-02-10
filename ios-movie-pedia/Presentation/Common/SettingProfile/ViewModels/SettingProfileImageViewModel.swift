@@ -7,30 +7,41 @@
 
 import Foundation
 
-final class SettingProfileImageViewModel {
+final class SettingProfileImageViewModel: BaseViewModel {
+    
+    private(set) var input: Input
+    private(set) var output: Output
     
     //MARK: - Input
-    let profileImageDidChange: Observable<String?> = Observable(nil)
-    let profileImageDidSelect: Observable<IndexPath?> = Observable(nil)
+    struct Input {
+        var delegate: ProfileDelegate?
+        let profileImageDidChange: Observable<String?> = Observable(nil)
+        let profileImageDidSelect: Observable<IndexPath?> = Observable(nil)
+    }
     
     //MARK: - Output
-    let navTitle = Observable("프로필 이미지 설정")
-    let collectionViewReloadItems: Observable<[IndexPath]?> = Observable(nil)
-    let profileImage: Observable<String?> = Observable(nil)
+    struct Output {
+        let navTitle = Observable("프로필 이미지 설정")
+        let collectionViewReloadItems: Observable<[IndexPath]?> = Observable(nil)
+        let profileImage: Observable<String?> = Observable(nil)
+        let profilesImages: [String] = [Int](0...11).map { "profile_\($0)" }
+    }
     
     //MARK: - Property
     var delegate: ProfileDelegate?
-    let profilesImages: [String] = [Int](0...11).map { "profile_\($0)" }
     
     //MARK: - Bind
     init() {
-        profileImageDidChange.lazyBind { [weak self] image in
-            self?.profileImage.value = image
+        input = Input()
+        output = Output()
+        
+        input.profileImageDidChange.lazyBind { [weak self] image in
+            self?.output.profileImage.value = image
         }
         
-        profileImageDidSelect.lazyBind { [weak self] indexPath in
+        input.profileImageDidSelect.lazyBind { [weak self] indexPath in
             self?.updateProfileImage(indexPath)
-            self?.delegate?.profileImageDidChange(self?.profileImage.value)
+            self?.delegate?.profileImageDidChange(self?.output.profileImage.value)
         }
     }
     
@@ -40,16 +51,16 @@ final class SettingProfileImageViewModel {
             return
         }
         
-        guard let profileImage = profileImage.value else {
+        guard let profileImage = output.profileImage.value else {
             return
         }
         
-        guard let beforeItem = profilesImages.firstIndex(of: profileImage) else {
+        guard let beforeItem = output.profilesImages.firstIndex(of: profileImage) else {
             return
         }
         
-        self.profileImage.value = profilesImages[indexPath.item]
-        collectionViewReloadItems.value = [indexPath, IndexPath(item: beforeItem, section: 0)]
+        output.profileImage.value = output.profilesImages[indexPath.item]
+        output.collectionViewReloadItems.value = [indexPath, IndexPath(item: beforeItem, section: 0)]
     }
     
 }

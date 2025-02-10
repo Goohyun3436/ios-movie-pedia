@@ -19,7 +19,7 @@ final class SettingProfileViewController: BaseViewController {
     //MARK: - Initializer Method
     init(isOnboarding: Bool = false, delegate: ProfileDelegate? = nil) {
         super.init(nibName: nil, bundle: nil)
-        viewModel.isOnboarding.value = isOnboarding
+        viewModel.input.isOnboarding.value = isOnboarding
         viewModel.profileDelegate = delegate
     }
     
@@ -33,7 +33,7 @@ final class SettingProfileViewController: BaseViewController {
         mainView.nicknameTextField.delegate = self
         mainView.mbtiSelectorView.collectionView.delegate = self
         mainView.mbtiSelectorView.collectionView.dataSource = self
-        viewModel.viewDidLoad.value = ()
+        viewModel.input.viewDidLoad.value = ()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -75,64 +75,64 @@ final class SettingProfileViewController: BaseViewController {
     }
     
     override func setupBinds() {
-        viewModel.showsRightBarButtonItem.bind { [weak self] show in
+        viewModel.output.showsRightBarButtonItem.bind { [weak self] show in
             self?.navigationItem.rightBarButtonItem?.isHidden = show
         }
         
-        viewModel.showsSubmitButton.bind { [weak self] show in
+        viewModel.output.showsSubmitButton.bind { [weak self] show in
             self?.mainView.submitButton.isHidden = show
         }
         
-        viewModel.navTitle.bind { [weak self] title in
+        viewModel.output.navTitle.bind { [weak self] title in
             self?.navigationItem.title = title
             self?.navigationItem.backButtonTitle = ""
         }
         
-        viewModel.leftBarButtonImage.lazyBind { [weak self] image in
+        viewModel.output.leftBarButtonImage.lazyBind { [weak self] image in
             self?.navigationItem.leftBarButtonItem?.image = UIImage(systemName: image)
         }
         
-        viewModel.profileImage.lazyBind { [weak self] image in
+        viewModel.output.profileImage.lazyBind { [weak self] image in
             self?.mainView.setData(image: image)
         }
         
-        viewModel.profileNickname.lazyBind { [weak self] nickname in
+        viewModel.output.profileNickname.lazyBind { [weak self] nickname in
             self?.mainView.setData(nickname: nickname)
         }
         
-        viewModel.profileMbti.lazyBind { [weak self] _ in
+        viewModel.output.profileMbti.lazyBind { [weak self] _ in
             self?.mainView.mbtiSelectorView.collectionView.reloadData()
         }
         
-        viewModel.nicknameValidation.lazyBind { [weak self] validation in
+        viewModel.output.nicknameValidation.lazyBind { [weak self] validation in
             self?.mainView.setStatus(nicknameValidation: validation)
         }
         
-        viewModel.mbtiValidation.lazyBind { [weak self] validation in
+        viewModel.output.mbtiValidation.lazyBind { [weak self] validation in
             self?.mainView.setStatus(mbtiValidation: validation)
         }
         
-        viewModel.submitValidation.lazyBind { [weak self] validation in
+        viewModel.output.submitValidation.lazyBind { [weak self] validation in
             self?.mainView.submitButton.setAbled(validation)
             self?.navigationItem.rightBarButtonItem?.isEnabled = validation
         }
         
-        viewModel.outputProfileImageTapped.lazyBind { [weak self] image in
+        viewModel.output.profileImageTapped.lazyBind { [weak self] image in
             let vc = SettingProfileImageViewController(delegate: self)
-            vc.viewModel.profileImageDidChange.value = image
+            vc.viewModel.input.profileImageDidChange.value = image
             self?.pushVC(vc)
         }
         
-        viewModel.popVC.lazyBind { [weak self] _ in
+        viewModel.output.popVC.lazyBind { [weak self] _ in
             UserDefaultManager.shared.removeObject(forKey: .profile)
             self?.popVC()
         }
         
-        viewModel.dismissVC.lazyBind { [weak self] _ in
+        viewModel.output.dismissVC.lazyBind { [weak self] _ in
             self?.dismissVC()
         }
         
-        viewModel.outputSubmitButtonTapped.lazyBind { [weak self] _ in
+        viewModel.output.submitButtonTapped.lazyBind { [weak self] _ in
             self?.configureRootVC(TabBarController())
         }
         
@@ -150,19 +150,19 @@ final class SettingProfileViewController: BaseViewController {
     }
     
     @objc private func backButtonTapped() {
-        viewModel.inputBackButtonTapped.value = ()
+        viewModel.input.backButtonTapped.value = ()
     }
     
     @objc private func profileImageViewTapped() {
-        viewModel.inputProfileImageTapped.value = ()
+        viewModel.input.profileImageTapped.value = ()
     }
     
     @objc private func submitButtonTapped() {
-        viewModel.inputSubmitButtonTapped.value = ()
+        viewModel.input.submitButtonTapped.value = ()
     }
     
     @objc private func saveButtonTapped() {
-        viewModel.inputSaveButtonTapped.value = ()
+        viewModel.input.saveButtonTapped.value = ()
     }
     
 }
@@ -171,7 +171,7 @@ final class SettingProfileViewController: BaseViewController {
 extension SettingProfileViewController: UITextFieldDelegate {
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
-        viewModel.profileNicknameDidChange.value = textField.text
+        viewModel.input.profileNicknameDidChange.value = textField.text
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -192,14 +192,14 @@ extension SettingProfileViewController: UICollectionViewDelegate, UICollectionVi
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MbtiSelectorCollectionViewCell.id, for: indexPath) as! MbtiSelectorCollectionViewCell
         
         let character = viewModel.mbtiList[indexPath.item]
-        let isSelected = viewModel.profileMbti.value.contains(character)
+        let isSelected = viewModel.output.profileMbti.value.contains(character)
         cell.setData(character, isSelected)
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel.profileMbtiDidChange.value = indexPath
+        viewModel.input.profileMbtiDidChange.value = indexPath
     }
     
 }
@@ -208,7 +208,7 @@ extension SettingProfileViewController: UICollectionViewDelegate, UICollectionVi
 extension SettingProfileViewController: ProfileDelegate {
     
     func profileImageDidChange(_ image: String?) {
-        viewModel.profileImageDidChange.value = image
+        viewModel.input.profileImageDidChange.value = image
     }
     
     func nicknameDidChange(_ nickname: String?) {}
