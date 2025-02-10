@@ -10,12 +10,12 @@ import Foundation
 struct User {
     static var likes = [Int]() {
         didSet {
-            UserDefaults.standard.set(User.likes, forKey: "likes")
+            UserStorage.shared.saveLikes()
         }
     }
     static var searches = [String]() {
         didSet {
-            UserDefaults.standard.set(User.searches, forKey: "searches")
+            UserStorage.shared.saveSearches()
         }
     }
 }

@@ -13,6 +13,14 @@ final class UserDefaultManager {
     
     static let shared = UserDefaultManager()
     
+    func getArrayData<T>(forKey: UserDefaultKey) -> [T] {
+        return UserDefaults.standard.array(forKey: forKey.rawValue) as? [T] ?? []
+    }
+    
+    func saveData(_ data: Any?, forKey: UserDefaultKey) {
+        UserDefaults.standard.set(data, forKey: forKey.rawValue)
+    }
+    
     func saveJsonData<T: Codable>(_ data: Any?, type: T.Type, forKey: UserDefaultKey) {
         let encoder = JSONEncoder()
         let data = data as? T

@@ -124,7 +124,7 @@ final class SettingProfileViewController: BaseViewController {
         }
         
         viewModel.output.popVC.lazyBind { [weak self] _ in
-            UserDefaultManager.shared.removeObject(forKey: .profile)
+            UserStorage.shared.removeProfile()
             self?.popVC()
         }
         

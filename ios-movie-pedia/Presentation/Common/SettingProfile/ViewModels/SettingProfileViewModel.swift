@@ -66,7 +66,7 @@ final class SettingProfileViewModel: BaseViewModel {
         }
         
         input.viewDidLoad.lazyBind { [weak self] _ in
-            guard let profile = self?.getProfile() else { return }
+            let profile = UserStorage.shared.getProfile()
             self?.profile = profile
             
             self?.input.profileImageDidChange.value = profile.image
@@ -111,14 +111,17 @@ final class SettingProfileViewModel: BaseViewModel {
         }
         
         input.submitButtonTapped.lazyBind { [weak self] _ in
-            var copyProfile = self?.profile
-            copyProfile?.created_at = DateFormatterManager.shared.getToday()
-            UserDefaultManager.shared.saveJsonData(copyProfile, type: Profile.self, forKey: .profile)
+            guard var copyProfile = self?.profile else { return }
+            
+            copyProfile.created_at = DateFormatterManager.shared.getToday()
+            UserStorage.shared.saveProfile(copyProfile)
             self?.output.submitButtonTapped.value = ()
         }
         
         input.saveButtonTapped.lazyBind { [weak self] _ in
-            UserDefaultManager.shared.saveJsonData(self?.profile, type: Profile.self, forKey: .profile)
+            guard let profile = self?.profile else { return }
+            
+            UserStorage.shared.saveProfile(profile)
             self?.profileDelegate?.profileImageDidChange(self?.profile.image)
             self?.profileDelegate?.nicknameDidChange(self?.profile.nickname)
             self?.output.dismissVC.value = ()
@@ -126,15 +129,6 @@ final class SettingProfileViewModel: BaseViewModel {
     }
     
     //MARK: - Method
-    //refactor point: load 여부 상관 없이 새로운 Profile 객체를 반환하는데, 메모리 누수 확인 필요
-    private func getProfile() -> Profile {
-        guard let savedProfile = UserDefaultManager.shared.loadJsonData(type: Profile.self, forKey: .profile) else {
-            return Profile(image: Profile.randomImage, nickname: nil)
-        }
-        
-        return savedProfile
-    }
-    
     private func updateSelectedMbti(_ indexPath: IndexPath?) -> [String?] {
         guard let indexPath else {
             return self.output.profileMbti.value

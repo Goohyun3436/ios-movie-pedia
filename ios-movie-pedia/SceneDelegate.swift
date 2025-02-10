@@ -19,9 +19,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
         
-        let profile = UserDefaultManager.shared.loadJsonData(type: Profile.self, forKey: .profile)
+        let profile = UserStorage.shared.getProfile()
         
-        window?.rootViewController = profile == nil
+        window?.rootViewController = profile.nickname == nil
             ? UINavigationController(rootViewController: OnboardingViewController())
             : TabBarController()
         

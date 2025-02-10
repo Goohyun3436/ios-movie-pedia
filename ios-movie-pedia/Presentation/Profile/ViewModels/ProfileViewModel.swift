@@ -76,7 +76,7 @@ final class ProfileViewModel {
     }
     
     private func resign() {
-        UserStorage.shared.remove()
+        UserStorage.shared.resign()
     }
     
 }
