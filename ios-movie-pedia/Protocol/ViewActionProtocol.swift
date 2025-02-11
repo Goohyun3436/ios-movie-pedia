@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol MoreDelegate {
+protocol MoreDelegate: AnyObject {
     func didChange(_ isMore: Bool)
 }

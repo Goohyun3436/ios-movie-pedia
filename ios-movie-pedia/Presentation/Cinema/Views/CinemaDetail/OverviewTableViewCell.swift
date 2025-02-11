@@ -21,7 +21,7 @@ final class OverviewTableViewCell: BaseTableViewCell {
     
     //MARK: - Property
     static let id = "OverviewTableViewCell"
-    var delegate: MoreDelegate?
+    weak var delegate: MoreDelegate?
     private var isMore: Bool = false
     
     //MARK: - Method

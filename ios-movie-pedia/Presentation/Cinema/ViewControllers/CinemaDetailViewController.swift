@@ -18,14 +18,9 @@ final class CinemaDetailViewController: BaseViewController {
     
     //MARK: - Initializer Method
     init(delegate: LikeDelegate?, movie: Movie?) {
-        print("CinemaDetailViewController", "init")
         super.init(nibName: nil, bundle: nil)
         viewModel.delegate = delegate
         viewModel.input.movieDidChange.value = movie
-    }
-    
-    deinit {
-        print("CinemaDetailViewController", "deinit")
     }
     
     //MARK: - Override Method
@@ -46,19 +41,15 @@ final class CinemaDetailViewController: BaseViewController {
     }
     
     override func setupBinds() {
-        print("setbind")
         viewModel.output.navigationTitle.lazyBind { [weak self] title in
-            print("navigationTitle")
             self?.navigationItem.title = title
         }
         
         viewModel.output.likeButtonValidation.lazyBind { [weak self] isEnabled in
-            print("likeButtonValidation")
             self?.navigationItem.rightBarButtonItem?.isEnabled = isEnabled
         }
         
         viewModel.output.movie.lazyBind { [weak self] movie in
-            print("movie")
             self?.mainView.infoStackView.configureData([
                 MovieInfoValue(movieInfo: .genre_ids, value: movie?.genre_ids),
                 MovieInfoValue(movieInfo: .release_date, value: movie?.release_date),
@@ -67,22 +58,18 @@ final class CinemaDetailViewController: BaseViewController {
         }
         
         viewModel.output.isLike.lazyBind { [weak self] isLike in
-            print("isLike")
             self?.likeButton.setLikeButton(isLike)
         }
         
         viewModel.output.backdrops.lazyBind { [weak self] backdrops in
-            print("backdrops")
             self?.mainView.backdropScrollView.images = backdrops
         }
         
         viewModel.output.tableViewReloadData.lazyBind { [weak self] _ in
-            print("tableViewReloadData")
             self?.mainView.configureTableViewHeight()  //refactor point: 좀 더 명확한 호출 시점 필요
         }
         
         viewModel.output.error.lazyBind { [weak self] code in
-            print("error")
             self?.presentErrorAlert(code)
         }
         
@@ -110,7 +97,7 @@ extension CinemaDetailViewController: UITableViewDelegate, UITableViewDataSource
         case .overview:
             let cell = mainView.tableView.dequeueReusableCell(withIdentifier: OverviewTableViewCell.id, for: indexPath) as! OverviewTableViewCell
             
-//            cell.delegate = self
+            cell.delegate = self
             
             let data = viewModel.output.movie.value?.overview
             cell.configureData(content.title, data)

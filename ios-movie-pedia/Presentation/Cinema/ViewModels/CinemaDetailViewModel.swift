@@ -38,13 +38,10 @@ final class CinemaDetailViewModel: BaseViewModel {
     
     //MARK: - Bind
     init() {
-        print("CinemaDetailViewModel", "init")
-        
         input = Input()
         output = Output()
         
         input.movieDidChange.lazyBind { [weak self] movie in
-            print("movieDidChange")
             self?.getMovieDetail(of: movie?.id)
             self?.output.movie.value = movie
             self?.output.navigationTitle.value = movie?.title ?? ""
@@ -53,16 +50,11 @@ final class CinemaDetailViewModel: BaseViewModel {
         }
         
         input.likeButtonTapped.lazyBind { [weak self] _ in
-            print("likeButtonTapped")
             guard let movieId = self?.output.movie.value?.id else { return }
             
             self?.output.isLike.value.toggle()
             self?.delegate?.likesDidChange(movieId, onlyCellReload: false)
         }
-    }
-    
-    deinit {
-        print("CinemaDetailViewModel", "deinit")
     }
     
     //MARK: - Method
@@ -96,7 +88,6 @@ final class CinemaDetailViewModel: BaseViewModel {
         group.notify(queue: .main) {
             self.output.tableViewReloadData.value = ()
         }
-        
     }
     
 }
