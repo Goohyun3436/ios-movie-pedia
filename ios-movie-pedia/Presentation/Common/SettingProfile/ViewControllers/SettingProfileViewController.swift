@@ -83,9 +83,12 @@ final class SettingProfileViewController: BaseViewController {
             self?.mainView.submitButton.isHidden = show
         }
         
-        viewModel.output.navTitle.bind { [weak self] title in
+        viewModel.output.navigationTitle.bind { [weak self] title in
             self?.navigationItem.title = title
-            self?.navigationItem.backButtonTitle = ""
+        }
+        
+        viewModel.output.backButtonTitle.bind { [weak self] title in
+            self?.navigationItem.backButtonTitle = title
         }
         
         viewModel.output.leftBarButtonImage.lazyBind { [weak self] image in

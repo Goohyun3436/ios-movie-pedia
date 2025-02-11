@@ -7,46 +7,25 @@
 
 import UIKit
 
-final class SearchViewController: UIViewController {
+final class SearchViewController: BaseViewController {
     
     //MARK: - UI Property
     private let mainView = SearchView()
     
     //MARK: - Property
-    var searchDelegate: SearchDelegate?
-    var likeDelegate: LikeDelegate?
-    var query: String? {
-        didSet {
-            guard let query else {
-                mainView.searchBar.text = ""
-                movies = []
-                totalPages = 0
-                totalResults = 0
-                isEnd = false
-                mainView.tableView.reloadData()
-                return
-            }
-            
-            guard oldValue != query else {
-                return
-            }
-            
-            mainView.searchBar.text = query
-            totalPages = 0
-            totalResults = 0
-            isEnd = false
-            page = 1
-        }
+    private let viewModel = SearchViewModel()
+    
+    //MARK: - Initializer Method
+    init(
+        searchDelegate: SearchDelegate?,
+        likeDelegate: LikeDelegate?,
+        query: String?
+    ) {
+        super.init(nibName: nil, bundle: nil)
+        viewModel.searchDelegate = searchDelegate
+        viewModel.likeDelegate = likeDelegate
+        viewModel.input.query.value = query
     }
-    private var page: Int = 0 {
-        didSet {
-            callRequest()
-        }
-    }
-    private var totalPages: Int = 0
-    private var totalResults: Int = 0
-    private var movies = [Movie]()
-    private var isEnd: Bool = false
     
     //MARK: - Override Method
     override func loadView() {
@@ -55,8 +34,6 @@ final class SearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "영화 검색"
-        navigationItem.backButtonTitle = ""
         mainView.searchBar.delegate = self
         mainView.tableView.delegate = self
         mainView.tableView.dataSource = self
@@ -65,44 +42,49 @@ final class SearchViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if query == nil {
-            mainView.searchBar.becomeFirstResponder()
-        } else {
-            mainView.searchBar.setShowsCancelButton(true, animated: true)
-        }
+        viewModel.input.viewDidAppear.value = ()
     }
     
-    //MARK: - Method
-    private func callRequest() {
-        guard let query else {
-            return
+    //MARK: - Setup Method
+    override func setupBinds() {
+        viewModel.output.navigationTitle.bind { [weak self] title in
+            self?.navigationItem.title = title
         }
         
-        searchDelegate?.searchAdd(query)
+        viewModel.output.backButtonTitle.bind { [weak self] title in
+            self?.navigationItem.backButtonTitle = title
+        }
         
-        NetworkManager.shared.tmdb(.search(query, page), TMDBSearchResponse.self) { data in
-            if self.page == 1 {
-                self.totalPages = data.total_pages
-                self.totalResults = data.total_results
-                self.movies = data.results
-                self.mainView.noneContentLabel.isHidden = !self.movies.isEmpty
+        viewModel.output.showsKeyboard.lazyBind { [weak self] shows in
+            if shows {
+                self?.mainView.searchBar.becomeFirstResponder()
             } else {
-                self.movies.append(contentsOf: data.results)
+                self?.mainView.searchBar.resignFirstResponder()
             }
-            
-            if self.page == self.totalPages {
-                self.isEnd = true
-            }
-            
-            self.mainView.tableView.reloadData()
-        } failHandler: { code in
-            self.presentErrorAlert(code)
-            self.totalPages = 0
-            self.totalResults = 0
-            self.movies = []
-            self.mainView.tableView.reloadData()
         }
-
+        
+        viewModel.output.showsCancelButton.lazyBind { [weak self] shows in
+            self?.mainView.searchBar.setShowsCancelButton(shows, animated: true)
+        }
+        
+        viewModel.output.showsNoneContentLabel.lazyBind { [weak self] isHidden in
+            self?.mainView.noneContentLabel.isHidden = isHidden
+        }
+        
+        viewModel.output.searchBarText.lazyBind { [weak self] text in
+            self?.mainView.searchBar.text = text
+        }
+        
+        viewModel.output.movies.lazyBind { [weak self] movies in
+            self?.mainView.tableView.reloadData()
+        }
+        
+        viewModel.output.pushVC.lazyBind { [weak self] movie in
+            self?.pushVC(CinemaDetailViewController(
+                delegate: self,
+                movie: movie
+            ))
+        }
     }
     
 }
@@ -111,31 +93,16 @@ final class SearchViewController: UIViewController {
 extension SearchViewController: UISearchBarDelegate {
     
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        searchBar.setShowsCancelButton(true, animated: true)
+        viewModel.input.searchBarShouldBeginEditing.value = ()
         return true
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
-        searchBar.setShowsCancelButton(false, animated: true)
-        query = nil
+        viewModel.input.searchBarCancelButtonClicked.value = ()
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
-        searchBar.setShowsCancelButton(false, animated: true)
-        
-        guard var query = searchBar.text else {
-            return
-        }
-        
-        query = query.trimmingCharacters(in: .whitespaces)
-        
-        guard !query.isEmpty else {
-            return
-        }
-        
-        self.query = query
+        viewModel.input.searchBarSearchButtonClicked.value = searchBar.text
     }
     
 }
@@ -144,7 +111,7 @@ extension SearchViewController: UISearchBarDelegate {
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return movies.count
+        return viewModel.output.movies.value.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -152,7 +119,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
         
         cell.delegate = self
         
-        let row = movies[indexPath.row]
+        let row = viewModel.output.movies.value[indexPath.row]
         cell.configureData(movie: row)
         
         return cell
@@ -163,22 +130,11 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
     }
     
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        guard !isEnd else {
-            return
-        }
-        
-        for item in indexPaths {
-            if movies.count - 2 == item.row {
-                page += 1
-            }
-        }
+        viewModel.input.prefetchRowsAt.value = indexPaths
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        pushVC(CinemaDetailViewController(
-            delegate: self,
-            movie: movies[indexPath.row]
-        ))
+        viewModel.input.didSelectRowAt.value = indexPath
     }
     
 }
@@ -192,20 +148,7 @@ extension SearchViewController: SearchDelegate, LikeDelegate {
     func searchRemove(_ text: String) {}
     
     func likesDidChange(_ movieId: Int, onlyCellReload: Bool) {
-        if let index = User.likes.firstIndex(of: movieId) {
-            User.likes.remove(at: index)
-        } else {
-            User.likes.append(movieId)
-        }
-        
-        for i in movies.indices {
-            if movies[i].id == movieId {
-                movies[i].is_like.toggle()
-            }
-        }
-        
-        mainView.tableView.reloadData()
-        likeDelegate?.likesDidChange(movieId, onlyCellReload: true)
+        viewModel.input.likesDidChange.value = (movieId, onlyCellReload)
     }
     
 }

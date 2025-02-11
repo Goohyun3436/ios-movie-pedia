@@ -32,7 +32,8 @@ final class SettingProfileViewModel: BaseViewModel {
         let showsRightBarButtonItem: Observable<Bool> = Observable(false)
         let showsSubmitButton: Observable<Bool> = Observable(false)
         let leftBarButtonImage: Observable<String> = Observable("xmark")
-        let navTitle = Observable("프로필 설정")
+        let navigationTitle = Observable("프로필 설정")
+        let backButtonTitle = Observable("")
         
         let profileImage: Observable<String?> = Observable(nil)
         let profileNickname: Observable<String?> = Observable(nil)

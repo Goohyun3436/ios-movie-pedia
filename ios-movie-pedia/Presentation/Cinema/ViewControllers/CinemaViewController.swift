@@ -72,11 +72,11 @@ final class CinemaViewController: BaseViewController {
         }
         
         viewModel.output.resentSearchTapped.lazyBind { [weak self] query in
-            let vc = SearchViewController()
-            vc.searchDelegate = self
-            vc.likeDelegate = self
-            vc.query = query
-            self?.pushVC(vc)
+            self?.pushVC(SearchViewController(
+                searchDelegate: self,
+                likeDelegate: self,
+                query: query
+            ))
         }
         
         viewModel.output.movieTapped.lazyBind { [weak self] movie in
@@ -94,10 +94,11 @@ final class CinemaViewController: BaseViewController {
     
     //MARK: - Method
     @objc private func searchButtonTapped() {
-        let vc = SearchViewController()
-        vc.likeDelegate = self
-        vc.searchDelegate = self
-        pushVC(vc)
+        pushVC(SearchViewController(
+            searchDelegate: self,
+            likeDelegate: self,
+            query: nil
+        ))
     }
     
 }
