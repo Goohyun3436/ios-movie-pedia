@@ -7,29 +7,26 @@
 
 import UIKit
 
-final class CinemaDetailViewController: UIViewController {
+final class CinemaDetailViewController: BaseViewController {
     
     //MARK: - UI Property
     private let mainView = CinemaDetailView()
-    lazy private var likeButton = {
-        let button = LikeButton()
-        button.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
-        return button
-    }()
+    lazy private var likeButton = LikeButton()
     
     //MARK: - Property
-    var delegate: LikeDelegate?
-    private let titles = ["Synopsis", "Cast", "Poster"]
-    var movie: Movie?
-    private var cast = [Person]()
-    private var backdrops = [Image]()
-    private var posters = [Image]()
-    private var isLike: Bool = false {
-        didSet {
-            likeButton.setLikeButton(isLike)
-        }
+    private let viewModel = CinemaDetailViewModel()
+    
+    //MARK: - Initializer Method
+    init(delegate: LikeDelegate?, movie: Movie?) {
+        print("CinemaDetailViewController", "init")
+        super.init(nibName: nil, bundle: nil)
+        viewModel.delegate = delegate
+        viewModel.input.movieDidChange.value = movie
     }
-    private var isMore: Bool = false
+    
+    deinit {
+        print("CinemaDetailViewController", "deinit")
+    }
     
     //MARK: - Override Method
     override func loadView() {
@@ -40,63 +37,61 @@ final class CinemaDetailViewController: UIViewController {
         super.viewDidLoad()
         mainView.tableView.delegate = self
         mainView.tableView.dataSource = self
-        
-        guard let movie else {
-            return
-        }
-        
-        navigationItem.title = movie.title
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: likeButton)
-        navigationItem.rightBarButtonItem?.isEnabled = movie.release_date != nil
-        isLike = movie.is_like
-        callRequest(movie.id)
     }
     
-    private func callRequest(_ movieId: Int) {
-        let group = DispatchGroup()
-        
-        group.enter()
-        NetworkManager.shared.tmdb(.images(movieId), TMDBImagesResponse.self) { data in
-            self.backdrops = data.backdrops
-            self.posters = data.posters
-            group.leave()
-        } failHandler: { code in
-            self.presentErrorAlert(code)
-            self.backdrops = []
-            self.posters = []
-            group.leave()
+    //MARK: - Setup Method
+    override func setupActions() {
+        likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: likeButton)
+    }
+    
+    override func setupBinds() {
+        print("setbind")
+        viewModel.output.navigationTitle.lazyBind { [weak self] title in
+            print("navigationTitle")
+            self?.navigationItem.title = title
         }
         
-        group.enter()
-        NetworkManager.shared.tmdb(.credits(movieId, .en), TMDBCreditsResponse.self) { data in
-            self.cast = data.cast
-            group.leave()
-        } failHandler: { code in
-            self.presentErrorAlert(code)
-            self.cast = []
-            group.leave()
+        viewModel.output.likeButtonValidation.lazyBind { [weak self] isEnabled in
+            print("likeButtonValidation")
+            self?.navigationItem.rightBarButtonItem?.isEnabled = isEnabled
         }
         
-        group.notify(queue: .main) {
-            self.mainView.backdropScrollView.images = self.backdrops
-            self.mainView.infoStackView.configureData([
-                MovieInfoValue(movieInfo: .genre_ids, value: self.movie?.genre_ids),
-                MovieInfoValue(movieInfo: .release_date, value: self.movie?.release_date),
-                MovieInfoValue(movieInfo: .vote_average, value: self.movie?.vote_average)
+        viewModel.output.movie.lazyBind { [weak self] movie in
+            print("movie")
+            self?.mainView.infoStackView.configureData([
+                MovieInfoValue(movieInfo: .genre_ids, value: movie?.genre_ids),
+                MovieInfoValue(movieInfo: .release_date, value: movie?.release_date),
+                MovieInfoValue(movieInfo: .vote_average, value: movie?.vote_average)
             ])
-            self.mainView.configureTableViewHeight()
         }
+        
+        viewModel.output.isLike.lazyBind { [weak self] isLike in
+            print("isLike")
+            self?.likeButton.setLikeButton(isLike)
+        }
+        
+        viewModel.output.backdrops.lazyBind { [weak self] backdrops in
+            print("backdrops")
+            self?.mainView.backdropScrollView.images = backdrops
+        }
+        
+        viewModel.output.tableViewReloadData.lazyBind { [weak self] _ in
+            print("tableViewReloadData")
+            self?.mainView.configureTableViewHeight()  //refactor point: 좀 더 명확한 호출 시점 필요
+        }
+        
+        viewModel.output.error.lazyBind { [weak self] code in
+            print("error")
+            self?.presentErrorAlert(code)
+        }
+        
+        
     }
     
     //MARK: - Method
-    @objc
-    private func likeButtonTapped() {
-        guard let movieId = movie?.id else {
-            return
-        }
-        
-        isLike.toggle()
-        delegate?.likesDidChange(movieId, onlyCellReload: false)
+    @objc private func likeButtonTapped() {
+        viewModel.input.likeButtonTapped.value = ()
     }
     
 }
@@ -104,30 +99,37 @@ final class CinemaDetailViewController: UIViewController {
 //MARK: - UITableViewDelegate
 extension CinemaDetailViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return titles.count
+        return viewModel.output.contents.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = indexPath.row
+        let content = viewModel.output.contents[row]
         
-        if row == 0 {
+        switch content {
+        case .overview:
             let cell = mainView.tableView.dequeueReusableCell(withIdentifier: OverviewTableViewCell.id, for: indexPath) as! OverviewTableViewCell
             
-            cell.delegate = self
+//            cell.delegate = self
             
-            cell.configureData(titles[row], movie?.overview)
+            let data = viewModel.output.movie.value?.overview
+            cell.configureData(content.title, data)
             
             return cell
-        } else if row == 1 {
+            
+        case .cast:
             let cell = mainView.tableView.dequeueReusableCell(withIdentifier: CastTableViewCell.id, for: indexPath) as! CastTableViewCell
             
-            cell.configureData(titles[row], cast)
+            let data = viewModel.output.cast.value
+            cell.configureData(content.title, data)
             
             return cell
-        } else {
+            
+        case .poster:
             let cell = mainView.tableView.dequeueReusableCell(withIdentifier: PosterMiniTableViewCell.id, for: indexPath) as! PosterMiniTableViewCell
             
-            cell.configureData(titles[row], posters)
+            let data = viewModel.output.posters.value
+            cell.configureData(content.title, data)
             
             return cell
         }

@@ -80,10 +80,10 @@ final class CinemaViewController: BaseViewController {
         }
         
         viewModel.output.movieTapped.lazyBind { [weak self] movie in
-            let vc = CinemaDetailViewController()
-            vc.delegate = self
-            vc.movie = movie
-            self?.pushVC(vc)
+            self?.pushVC(CinemaDetailViewController(
+                delegate: self,
+                movie: movie
+            ))
         }
     }
     

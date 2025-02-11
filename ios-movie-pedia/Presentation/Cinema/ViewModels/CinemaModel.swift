@@ -20,3 +20,20 @@ enum CinemaContent: CaseIterable {
         }
     }
 }
+
+enum CinemaDetailContent: CaseIterable {
+    case overview
+    case cast
+    case poster
+    
+    var title: String {
+        switch self {
+        case .overview:
+            return "Synopsis"
+        case .cast:
+            return "Cast"
+        case .poster:
+            return "Poster"
+        }
+    }
+}
