@@ -28,7 +28,7 @@ final class SearchTableViewCell: BaseTableViewCell {
     
     //MARK: - Property
     static let id = "SearchTableViewCell"
-    var delegate: LikeDelegate?
+    weak var delegate: LikeDelegate?
     private var movieId: Int?
     private var isLike: Bool = false {
         didSet {

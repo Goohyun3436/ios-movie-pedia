@@ -13,7 +13,7 @@ protocol SearchDelegate {
     func searchRemove(_ text: String)
 }
 
-protocol LikeDelegate {
+protocol LikeDelegate: AnyObject {
     func likesDidChange(_ movieId: Int, onlyCellReload: Bool)
 }
 
