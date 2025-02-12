@@ -25,18 +25,13 @@ final class CinemaDetailView: BaseView {
     
     //MARK: - Property
     private var tableViewHeightConstraint: Constraint?
-//    private var
+    private var tableViewHeightWithoutOverView: CGFloat = 420.0
     
     //MARK: - Method
     func configureTableViewHeight() {
         tableView.reloadData()
         
-        var height: CGFloat = 0
-        
-        for item in tableView.visibleCells {
-            height += item.frame.height
-            print(item.frame.height)
-        }
+        let height: CGFloat = tableViewHeightWithoutOverView + tableView.visibleCells[0].frame.height
         
         tableViewHeightConstraint?.deactivate()
         
