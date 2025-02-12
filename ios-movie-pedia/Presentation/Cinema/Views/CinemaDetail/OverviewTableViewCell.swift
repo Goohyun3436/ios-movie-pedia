@@ -24,7 +24,7 @@ final class OverviewTableViewCell: BaseTableViewCell {
     weak var delegate: MoreDelegate?
     
     //MARK: - Method
-    func configureData(
+    func setData(
         _ title: String,
         _ overview: String?,
         _ moreButtonTitle: String,
@@ -51,13 +51,13 @@ final class OverviewTableViewCell: BaseTableViewCell {
     }
     
     //MARK: - Override Method
-    override func configureHierarchy() {
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(moreButton)
-        contentView.addSubview(overviewLabel)
+    override func setupUI() {
+        [titleLabel, moreButton, overviewLabel].forEach {
+            contentView.addSubview($0)
+        }
     }
     
-    override func configureLayout() {
+    override func setupConstraints() {
         titleLabel.snp.makeConstraints { make in
             make.leading.top.equalTo(contentView).offset(16)
         }
@@ -75,12 +75,10 @@ final class OverviewTableViewCell: BaseTableViewCell {
         }
     }
     
-    override func configureView() {
+    override func setupAttributes() {
         selectionStyle = .none
-        moreButton.setTitle("More", for: .normal)
         moreButton.titleLabel?.font = AppFont.title2.font
         overviewLabel.text = ContentMessage.overview.loading
-        overviewLabel.numberOfLines = 3
         overviewLabel.lineBreakMode = .byCharWrapping
     }
     

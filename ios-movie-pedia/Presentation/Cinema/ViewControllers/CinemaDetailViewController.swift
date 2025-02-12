@@ -66,7 +66,7 @@ final class CinemaDetailViewController: BaseViewController {
         }
         
         viewModel.output.tableViewReloadData.lazyBind { [weak self] _ in
-            self?.mainView.configureTableViewHeight()  //refactor point: 좀 더 명확한 호출 시점 필요
+            self?.mainView.setupTableViewHeight()  //refactor point: 좀 더 명확한 호출 시점 필요
         }
         
         viewModel.output.error.lazyBind { [weak self] code in
@@ -102,7 +102,7 @@ extension CinemaDetailViewController: UITableViewDelegate, UITableViewDataSource
             let data = viewModel.output.movie.value?.overview
             let moreButtonTitle = viewModel.output.moreButtonTitle
             let numberOfLines = viewModel.output.overviewNumberOfLines
-            cell.configureData(content.title, data, moreButtonTitle, numberOfLines)
+            cell.setData(content.title, data, moreButtonTitle, numberOfLines)
             
             return cell
             
@@ -110,7 +110,7 @@ extension CinemaDetailViewController: UITableViewDelegate, UITableViewDataSource
             let cell = mainView.tableView.dequeueReusableCell(withIdentifier: CastTableViewCell.id, for: indexPath) as! CastTableViewCell
             
             let data = viewModel.output.cast.value
-            cell.configureData(content.title, data)
+            cell.setData(content.title, data)
             
             return cell
             
@@ -118,7 +118,7 @@ extension CinemaDetailViewController: UITableViewDelegate, UITableViewDataSource
             let cell = mainView.tableView.dequeueReusableCell(withIdentifier: PosterMiniTableViewCell.id, for: indexPath) as! PosterMiniTableViewCell
             
             let data = viewModel.output.posters.value
-            cell.configureData(content.title, data)
+            cell.setData(content.title, data)
             
             return cell
         }

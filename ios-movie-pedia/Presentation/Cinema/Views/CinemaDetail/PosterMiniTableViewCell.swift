@@ -32,7 +32,7 @@ final class PosterMiniTableViewCell: BaseTableViewCell {
     }
     
     //MARK: - Method
-    func configureData(_ title: String, _ posters: [Image]) {
+    func setData(_ title: String, _ posters: [Image]) {
         titleLabel.text = title
         self.posters = posters
         
@@ -46,13 +46,13 @@ final class PosterMiniTableViewCell: BaseTableViewCell {
     }
     
     //MARK: - Override Method
-    override func configureHierarchy() {
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(collectionView)
-        contentView.addSubview(noneContentLabel)
+    override func setupUI() {
+        [titleLabel, collectionView, noneContentLabel].forEach {
+            contentView.addSubview($0)
+        }
     }
     
-    override func configureLayout() {
+    override func setupConstraints() {
         titleLabel.snp.makeConstraints { make in
             make.leading.top.equalTo(contentView).offset(16)
         }
@@ -70,7 +70,7 @@ final class PosterMiniTableViewCell: BaseTableViewCell {
         }
     }
     
-    override func configureView() {
+    override func setupAttributes() {
         noneContentLabel.text = ContentMessage.poster.loading
     }
     

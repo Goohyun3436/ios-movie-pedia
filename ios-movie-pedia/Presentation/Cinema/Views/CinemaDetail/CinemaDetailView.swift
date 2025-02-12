@@ -28,7 +28,7 @@ final class CinemaDetailView: BaseView {
     private var tableViewHeightWithoutOverView: CGFloat = 420.0
     
     //MARK: - Method
-    func configureTableViewHeight() {
+    func setupTableViewHeight() {
         tableView.reloadData()
         
         let height: CGFloat = tableViewHeightWithoutOverView + tableView.visibleCells[0].frame.height
@@ -40,16 +40,17 @@ final class CinemaDetailView: BaseView {
         }
     }
     
-    //MARK: - Override Method
-    override func configureHierarchy() {
+    //MARK: - Setup Method
+    override func setupUI() {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubview(backdropScrollView)
-        contentView.addSubview(infoStackView)
-        contentView.addSubview(tableView)
+        
+        [backdropScrollView, infoStackView, tableView].forEach {
+            contentView.addSubview($0)
+        }
     }
     
-    override func configureLayout() {
+    override func setupConstraints() {
         scrollView.snp.makeConstraints { make in
             make.width.equalTo(safeAreaLayoutGuide)
             make.verticalEdges.equalTo(safeAreaLayoutGuide)
@@ -77,9 +78,8 @@ final class CinemaDetailView: BaseView {
         }
     }
     
-    override func configureView() {
+    override func setupAttributes() {
         scrollView.bounces = false
-        
         tableView.isScrollEnabled = false
         tableView.separatorStyle = .none
     }
