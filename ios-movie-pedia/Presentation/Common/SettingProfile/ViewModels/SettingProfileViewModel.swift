@@ -67,7 +67,7 @@ final class SettingProfileViewModel: BaseViewModel {
         }
         
         input.viewDidLoad.lazyBind { [weak self] _ in
-            let profile = UserStorage.shared.getProfile()
+            let profile = UserStaticStorage.profile
             self?.profile = profile
             
             self?.input.profileImageDidChange.value = profile.image
@@ -105,6 +105,7 @@ final class SettingProfileViewModel: BaseViewModel {
             guard let isOnboarding = self?.input.isOnboarding.value else { return }
             
             if isOnboarding {
+                UserStorage.shared.removeProfile()
                 self?.output.popVC.value = ()
             } else {
                 self?.output.dismissVC.value = ()
@@ -158,11 +159,11 @@ final class SettingProfileViewModel: BaseViewModel {
     
     private func createUser() {
         profile.created_at = DateFormatterManager.shared.getToday()
-        UserStorage.shared.saveProfile(profile)
+        UserStorage.shared.profile = profile
     }
     
     private func updateUser() {
-        UserStorage.shared.saveProfile(profile)
+        UserStorage.shared.profile = profile
         profileDelegate?.profileImageDidChange(profile.image)
         profileDelegate?.nicknameDidChange(profile.nickname)
     }

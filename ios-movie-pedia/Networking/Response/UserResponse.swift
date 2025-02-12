@@ -7,19 +7,6 @@
 
 import Foundation
 
-struct User {
-    static var likes = [Int]() {
-        didSet {
-            UserStorage.shared.saveLikes()
-        }
-    }
-    static var searches = [String]() {
-        didSet {
-            UserStorage.shared.saveSearches()
-        }
-    }
-}
-
 struct Profile: Codable {
     // refactor point: static 없이 랜덤 이미지 적용하는 방법
     static let randomImage = "profile_\(Int.random(in: 0...11))"

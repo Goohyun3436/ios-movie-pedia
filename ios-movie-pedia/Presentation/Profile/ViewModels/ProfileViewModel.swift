@@ -19,6 +19,7 @@ final class ProfileViewModel {
     
     //MARK: - Output
     let profile: Observable<Profile?> = Observable(nil)
+    let likes: Observable<[Int]> = Observable([])
     
     let questionTapped: Observable<Void?> = Observable(nil)
     let inquiryTapped: Observable<Void?> = Observable(nil)
@@ -34,7 +35,8 @@ final class ProfileViewModel {
     //MARK: - Bind
     init() {
         viewWillAppear.lazyBind { [weak self] _ in
-            self?.profile.value = UserStorage.shared.getProfile()
+            self?.profile.value = UserStaticStorage.profile
+            self?.likes.value = UserStaticStorage.likes
         }
         
         profileViewTapped.lazyBind { [weak self] _ in

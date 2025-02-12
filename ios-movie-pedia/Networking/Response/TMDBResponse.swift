@@ -82,7 +82,7 @@ struct Movie: Decodable {
         popularity = try container.decodeIfPresent(Double.self, forKey: CodingKeys.popularity)
         release_date = try container.decodeIfPresent(String.self, forKey: CodingKeys.release_date)
         vote_average = try container.decodeIfPresent(Double.self, forKey: CodingKeys.vote_average)
-        is_like = User.likes.contains(id)
+        is_like = UserStaticStorage.likes.contains(id)
     }
 }
 

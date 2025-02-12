@@ -13,42 +13,44 @@ final class UserStorage {
     
     private init() {}
     
-    func getProfile() -> Profile {
-        guard let saved = UserDefaultManager.shared.loadJsonData(type: Profile.self, forKey: .profile) else {
-            return Profile(image: Profile.randomImage, nickname: nil)
+    @UserDefaultJSON(key: .profile, empty: Profile(image: Profile.randomImage, nickname: nil))
+    var profile {
+        didSet {
+            UserStaticStorage.profile = profile
         }
-        
-        return saved
     }
     
-    func getLikes() -> [Int] {
-        return UserDefaultManager.shared.getArrayData(forKey: .likes)
+    @UserDefault(key: .likes, empty: [Int]())
+    var likes {
+        didSet {
+            UserStaticStorage.likes = likes
+        }
     }
     
-    func getSearches() -> [String] {
-        return UserDefaultManager.shared.getArrayData(forKey: .searches)
-    }
-    
-    func saveLikes() {
-        UserDefaultManager.shared.saveData(User.likes, forKey: .likes)
-    }
-    
-    func saveSearches() {
-        UserDefaultManager.shared.saveData(User.searches, forKey: .searches)
-    }
-    
-    func saveProfile(_ profile: Profile) {
-        UserDefaultManager.shared.saveJsonData(profile, type: Profile.self, forKey: .profile)
+    @UserDefault(key: .searches, empty: [String]())
+    var searches {
+        didSet {
+            UserStaticStorage.searches = searches
+        }
     }
     
     func removeProfile() {
         UserDefaultManager.shared.removeObject(forKey: .profile)
+        UserStaticStorage.profile = Profile(image: Profile.randomImage, nickname: nil)
     }
     
     func resign()  {
         UserDefaultManager.shared.removeObject(forKey: .profile)
-        User.likes = []
-        User.searches = []
+        UserStaticStorage.profile = Profile(image: Profile.randomImage, nickname: nil)
+        UserStorage.shared.likes = []
+        UserStorage.shared.searches = []
     }
     
+}
+
+//refactor point: read-only 설정
+enum UserStaticStorage {
+    static var profile = Profile(image: Profile.randomImage, nickname: nil)
+    static var likes = [Int]()
+    static var searches = [String]()
 }

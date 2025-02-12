@@ -31,10 +31,10 @@ final class CinemaViewModel: BaseViewModel {
         let backButtonTitle = Observable("")
         let rightBarButtonImage = Observable("magnifyingglass")
         
-        let profile: Observable<Profile?> = Observable(nil)
-        let likes: Observable<[Int]> = Observable(User.likes)
         let titles = CinemaContent.allCases
-        let searches: Observable<[String]> = Observable(User.searches)
+        let profile: Observable<Profile?> = Observable(nil)
+        let likes: Observable<[Int]> = Observable([])
+        let searches: Observable<[String]> = Observable([])
         let movies: Observable<[Movie]> = Observable([])
         let error: Observable<TMDBStatusCode> = Observable(.success)
         
@@ -48,8 +48,9 @@ final class CinemaViewModel: BaseViewModel {
         output = Output()
         
         input.viewWillAppear.lazyBind { [weak self] _ in
-            self?.output.profile.value = UserStorage.shared.getProfile()
-            self?.output.likes.value = User.likes
+            self?.output.profile.value = UserStaticStorage.profile
+            self?.output.likes.value = UserStaticStorage.likes
+            self?.output.searches.value = UserStaticStorage.searches
             self?.getMovies()
         }
         
@@ -67,29 +68,34 @@ final class CinemaViewModel: BaseViewModel {
         }
         
         input.searchAdd.lazyBind { [weak self] query in
-            guard let query else { return }
+            guard let query, var searches = self?.output.searches.value else { return }
             
-            if let index = User.searches.lastIndex(of: query) {
-                User.searches.remove(at: index)
+            if let index = searches.lastIndex(of: query) {
+                searches.remove(at: index)
             }
             
-            User.searches.insert(query, at: 0)
-            self?.output.searches.value = User.searches
+            searches.insert(query, at: 0)
+            self?.output.searches.value = searches
+            UserStorage.shared.searches = searches
         }
         
         input.searchesRemoveAll.lazyBind { [weak self] _ in
-            User.searches.removeAll()
-            self?.output.searches.value = User.searches
+            guard var searches = self?.output.searches.value else { return }
+            
+            searches.removeAll()
+            self?.output.searches.value = searches
+            UserStorage.shared.searches = searches
         }
         
         input.searchRemove.lazyBind { [weak self] query in
-            guard let query else { return }
+            guard let query, var searches = self?.output.searches.value else { return }
             
-            if let index = User.searches.firstIndex(of: query) {
-                User.searches.remove(at: index)
+            if let index = searches.firstIndex(of: query) {
+                searches.remove(at: index)
             }
             
-            self?.output.searches.value = User.searches
+            self?.output.searches.value = searches
+            UserStorage.shared.searches = searches
         }
         
         input.likesDidChange.lazyBind { [weak self] movieId, onlyCellReload in
@@ -106,10 +112,12 @@ final class CinemaViewModel: BaseViewModel {
                 return
             }
             
-            if let index = User.likes.firstIndex(of: movieId) {
-                User.likes.remove(at: index)
+            guard var likes = self?.output.likes.value else { return }
+            
+            if let index = likes.firstIndex(of: movieId) {
+                likes.remove(at: index)
             } else {
-                User.likes.append(movieId)
+                likes.append(movieId)
             }
             
             for i in movies.indices {
@@ -118,7 +126,8 @@ final class CinemaViewModel: BaseViewModel {
                 }
             }
             
-            self?.output.likes.value = User.likes
+            self?.output.likes.value = likes
+            UserStorage.shared.likes = likes
         }
     }
     

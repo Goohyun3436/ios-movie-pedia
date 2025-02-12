@@ -42,6 +42,7 @@ final class SearchViewModel: BaseViewModel {
     var searchDelegate: SearchDelegate?
     var likeDelegate: LikeDelegate?
     
+    private var likes = UserStaticStorage.likes
     private var query: Query?
     private var page = Observable(0)
     private var totalPages: Int = 0
@@ -86,12 +87,15 @@ final class SearchViewModel: BaseViewModel {
         }
         
         input.likesDidChange.lazyBind { [weak self] (movieId, onlyCellReload) in
-            guard let movieId, var movies = self?.output.movies.value else { return }
+            guard let movieId,
+                  var movies = self?.output.movies.value,
+                  var likes = self?.likes
+            else { return }
             
-            if let index = User.likes.firstIndex(of: movieId) {
-                User.likes.remove(at: index)
+            if let index = likes.firstIndex(of: movieId) {
+                likes.remove(at: index)
             } else {
-                User.likes.append(movieId)
+                likes.append(movieId)
             }
             
             for i in movies.indices {
@@ -101,6 +105,8 @@ final class SearchViewModel: BaseViewModel {
             }
             
             self?.output.movies.value = movies
+            self?.likes = likes
+            UserStorage.shared.likes = likes
             self?.likeDelegate?.likesDidChange(movieId, onlyCellReload: true)
         }
         

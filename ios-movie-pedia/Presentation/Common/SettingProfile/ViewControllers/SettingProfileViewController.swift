@@ -120,6 +120,7 @@ final class SettingProfileViewController: BaseViewController {
             self?.navigationItem.rightBarButtonItem?.isEnabled = validation
         }
         
+        //refactor point: init 시점에 이미지 넘겨주기
         viewModel.output.profileImageTapped.lazyBind { [weak self] image in
             let vc = SettingProfileImageViewController(delegate: self)
             vc.viewModel.input.profileImageDidChange.value = image
@@ -127,7 +128,6 @@ final class SettingProfileViewController: BaseViewController {
         }
         
         viewModel.output.popVC.lazyBind { [weak self] _ in
-            UserStorage.shared.removeProfile()
             self?.popVC()
         }
         

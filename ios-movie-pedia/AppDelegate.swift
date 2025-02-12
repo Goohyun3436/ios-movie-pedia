@@ -16,8 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         DispatchQueue.global().async {
-            User.likes = UserStorage.shared.getLikes()
-            User.searches = UserStorage.shared.getSearches()
+            UserStaticStorage.profile = UserStorage.shared.profile
+            UserStaticStorage.likes = UserStorage.shared.likes
+            UserStaticStorage.searches = UserStorage.shared.searches
         }
         
         AppAppearance.setUpAppearance()
