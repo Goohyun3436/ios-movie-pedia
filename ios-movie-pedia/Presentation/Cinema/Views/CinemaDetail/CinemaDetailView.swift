@@ -25,6 +25,7 @@ final class CinemaDetailView: BaseView {
     
     //MARK: - Property
     private var tableViewHeightConstraint: Constraint?
+//    private var
     
     //MARK: - Method
     func configureTableViewHeight() {
@@ -34,6 +35,7 @@ final class CinemaDetailView: BaseView {
         
         for item in tableView.visibleCells {
             height += item.frame.height
+            print(item.frame.height)
         }
         
         tableViewHeightConstraint?.deactivate()
@@ -54,7 +56,8 @@ final class CinemaDetailView: BaseView {
     
     override func configureLayout() {
         scrollView.snp.makeConstraints { make in
-            make.edges.equalTo(safeAreaLayoutGuide)
+            make.width.equalTo(safeAreaLayoutGuide)
+            make.verticalEdges.equalTo(safeAreaLayoutGuide)
         }
         
         contentView.snp.makeConstraints { make in
@@ -75,7 +78,7 @@ final class CinemaDetailView: BaseView {
         tableView.snp.makeConstraints { make in
             make.horizontalEdges.bottom.equalToSuperview()
             make.top.equalTo(infoStackView.snp.bottom)
-            tableViewHeightConstraint = make.height.equalTo(508).constraint
+            tableViewHeightConstraint = make.height.greaterThanOrEqualTo(508).constraint
         }
     }
     

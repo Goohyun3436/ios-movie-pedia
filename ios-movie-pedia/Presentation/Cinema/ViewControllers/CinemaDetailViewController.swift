@@ -100,7 +100,9 @@ extension CinemaDetailViewController: UITableViewDelegate, UITableViewDataSource
             cell.delegate = self
             
             let data = viewModel.output.movie.value?.overview
-            cell.configureData(content.title, data)
+            let moreButtonTitle = viewModel.output.moreButtonTitle
+            let numberOfLines = viewModel.output.overviewNumberOfLines
+            cell.configureData(content.title, data, moreButtonTitle, numberOfLines)
             
             return cell
             
@@ -131,8 +133,8 @@ extension CinemaDetailViewController: UITableViewDelegate, UITableViewDataSource
 //MARK: - MoreDelegate
 extension CinemaDetailViewController: MoreDelegate {
     
-    func didChange(_ isMore: Bool) {
-        mainView.configureTableViewHeight()
+    func didChange() {
+        viewModel.input.moreButtonTapped.value = ()
     }
     
 }

@@ -16,6 +16,7 @@ final class CinemaDetailViewModel: BaseViewModel {
     struct Input {
         let movieDidChange: Observable<Movie?> = Observable(nil)
         let likeButtonTapped: Observable<Void?> = Observable(nil)
+        let moreButtonTapped: Observable<Void?> = Observable(nil)
     }
     
     //MARK: - Output
@@ -28,7 +29,9 @@ final class CinemaDetailViewModel: BaseViewModel {
         let backdrops: Observable<[Image]> = Observable([])
         let posters: Observable<[Image]> = Observable([])
         let isLike = Observable(false)
-        let isMore = Observable(false)
+        var isMore = false
+        var moreButtonTitle = "More"
+        var overviewNumberOfLines = 3
         let tableViewReloadData: Observable<Void?> = Observable(nil)
         let error: Observable<TMDBStatusCode> = Observable(.success)
     }
@@ -54,6 +57,16 @@ final class CinemaDetailViewModel: BaseViewModel {
             
             self?.output.isLike.value.toggle()
             self?.delegate?.likesDidChange(movieId, onlyCellReload: false)
+        }
+        
+        input.moreButtonTapped.lazyBind { [weak self] _ in
+            self?.output.isMore.toggle()
+            
+            guard let isMore = self?.output.isMore else { return }
+            
+            self?.output.moreButtonTitle = isMore ? "Hide" : "More"
+            self?.output.overviewNumberOfLines = isMore ? 0 : 3
+            self?.output.tableViewReloadData.value = ()
         }
     }
     

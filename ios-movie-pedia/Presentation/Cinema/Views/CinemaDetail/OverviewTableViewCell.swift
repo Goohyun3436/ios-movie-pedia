@@ -22,10 +22,14 @@ final class OverviewTableViewCell: BaseTableViewCell {
     //MARK: - Property
     static let id = "OverviewTableViewCell"
     weak var delegate: MoreDelegate?
-    private var isMore: Bool = false
     
     //MARK: - Method
-    func configureData(_ title: String, _ overview: String?) {
+    func configureData(
+        _ title: String,
+        _ overview: String?,
+        _ moreButtonTitle: String,
+        _ numberOfLines: Int
+    ) {
         titleLabel.text = title
         
         guard let overview, !overview.isEmpty else {
@@ -35,16 +39,15 @@ final class OverviewTableViewCell: BaseTableViewCell {
         }
         
         moreButton.isHidden = false
+        moreButton.setTitle(moreButtonTitle, for: .normal)
         overviewLabel.text = overview
         overviewLabel.textColor = AppColor.white
+        overviewLabel.numberOfLines = numberOfLines
     }
     
     @objc
     private func moreButtonTapped() {
-        isMore.toggle()
-        moreButton.setTitle(isMore ? "Hide" : "More", for: .normal)
-        overviewLabel.numberOfLines = isMore ? 0 : 3
-        delegate?.didChange(isMore)
+        delegate?.didChange()
     }
     
     //MARK: - Override Method

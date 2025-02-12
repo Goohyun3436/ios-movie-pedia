@@ -8,5 +8,5 @@
 import Foundation
 
 protocol MoreDelegate: AnyObject {
-    func didChange(_ isMore: Bool)
+    func didChange()
 }
