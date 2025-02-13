@@ -17,6 +17,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let scene = (scene as? UIWindowScene) else { return }
+        
+        UserStaticStorage.profile = UserStorage.shared.profile
+        UserStaticStorage.likes = UserStorage.shared.likes
+        UserStaticStorage.searches = UserStorage.shared.searches
+        
         window = UIWindow(windowScene: scene)
         
         window?.rootViewController = UserStaticStorage.profile.nickname == nil

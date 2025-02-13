@@ -15,12 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        DispatchQueue.global().async {
-            UserStaticStorage.profile = UserStorage.shared.profile
-            UserStaticStorage.likes = UserStorage.shared.likes
-            UserStaticStorage.searches = UserStorage.shared.searches
-        }
-        
         AppAppearance.setUpAppearance()
         
 //        Thread.sleep(forTimeInterval: 2.0)
